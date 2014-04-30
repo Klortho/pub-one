@@ -1,0 +1,393 @@
+<!DOCTYPE pmfu-record SYSTEM "pmfudtd/pmfu.dtd">
+<pmfu-record xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:mml="http://www.w3.org/1998/Math/MathML" record-type="article" xml:lang="en">
+  <source-meta>
+    <object-id pub-id-type="nlm-ta">Clin Med Res</object-id>
+    <object-id pub-id-type="iso-abbrev">Clin Med Res</object-id>
+    <object-id pub-id-type="NLMUniqueID">101175887</object-id>
+    <object-id pub-id-type="hwp">clinmedres</object-id>
+    <title-group>
+      <title>Clinical Medicine &#x00026; Research</title>
+    </title-group>
+    <issn publication-format="print">1539-4182</issn>
+    <issn publication-format="electronic">1554-6179</issn>
+    <issn-l>1539-4182</issn-l>
+    <publisher>
+      <publisher-name>Marshfield Clinic</publisher-name>
+    </publisher>
+  </source-meta>
+  <document-meta>
+    <object-id pub-id-type="doi">10.3121/cmr.2012.1112</object-id>
+    <object-id pub-id-type="publisher-id">0110007</object-id>
+    <object-id pub-id-type="publisher-id">cmr.2012.1112</object-id>
+    <object-id pub-id-type="pmid">23262189</object-id>
+    <object-id pub-id-type="pmcid">PMC3573090</object-id>
+    <subj-group subj-group-type="publication-type">
+      <subject>Journal Article</subject>
+      <subject>Multicenter Study</subject>
+      <subject>Research Support, Non-U.S. Gov't</subject>
+    </subj-group>
+    <title-group>
+      <title>Laboratory Evaluation for Vitamin B<sub>12</sub> Deficiency: The Case for Cascade
+        Testing</title>
+    </title-group>
+    <contrib-group>
+      <contrib contrib-type="author">
+        <name>
+          <surname>Berg</surname>
+          <given-names initials="RL">Richard L.</given-names>
+        </name>
+        <degrees>MS</degrees>
+        <aff>
+          <label>*</label> Biomedical Informatics Research Center, Marshfield Clinic Research
+          Foundation, Marshfield, Wisconsin, USA </aff>
+      </contrib>
+      <contrib contrib-type="author">
+        <name>
+          <surname>Shaw</surname>
+          <given-names initials="GR">Gene R.</given-names>
+        </name>
+        <degrees>MD</degrees>
+        <aff>
+          <label>&#x02020;</label>Department of Lab/Pathology, Marshfield Clinic, Marshfield,
+          Wisconsin, USA </aff>
+        <fn fn-type="corresp">
+          <p>Corresponding Author: Gene R. Shaw, MD; Marshfield Clinic; Department of Lab/Pathology;
+            1000 North Oak Avenue; Marshfield, WI 54449; Tel: (715) 221-6300; Fax: (715) 387-7121;
+            E-mail: <email>shaw.gene@marshfieldclinic.org</email></p>
+        </fn>
+      </contrib>
+    </contrib-group>
+    <pub-date date-type="epub">
+      <day>21</day>
+      <month>12</month>
+      <year>2012</year>
+    </pub-date>
+    <pub-date date-type="ppub">
+      <month>2</month>
+      <year>2013</year>
+    </pub-date>
+    <volume>11</volume>
+    <issue>1</issue>
+    <fpage>7</fpage>
+    <lpage>15</lpage>
+    <pub-history>
+      <date date-type="received">
+        <day>24</day>
+        <month>7</month>
+        <year>2012</year>
+      </date>
+      <date date-type="rev-recd">
+        <day>01</day>
+        <month>10</month>
+        <year>2012</year>
+      </date>
+      <date date-type="accepted">
+        <day>03</day>
+        <month>10</month>
+        <year>2012</year>
+      </date>
+      <date date-type="MEDLINE-created">
+        <day>01</day>
+        <month>08</month>
+        <year>2013</year>
+      </date>
+      <date date-type="MEDLINE-completed">
+        <day>15</day>
+        <month>02</month>
+        <year>2013</year>
+      </date>
+      <date date-type="MEDLINE-revised">
+        <day>21</day>
+        <month>11</month>
+        <year>2013</year>
+      </date>
+      <date date-type="entrez" iso-8601-date="20121225T060000"/>
+      <date date-type="pubmed" iso-8601-date="20121225T060000"/>
+      <date date-type="medline" iso-8601-date="20130802T060000"/>
+    </pub-history>
+    <permissions>
+      <copyright-statement>&#x000a9; 2011 Marshfield Clinic</copyright-statement>
+      <copyright-year>2013</copyright-year>
+    </permissions>
+    <abstract>
+      <sec>
+        <title>Objective</title>
+        <p>Potential vitamin B<sub>12</sub> deficiency is a common clinical diagnostic problem, and
+          many providers have a low threshold for initiating therapy. The goal of this study was to
+          systematically evaluate current practice patterns regarding the laboratory evaluation of
+          suspected vitamin B<sub>12</sub> deficiency.</p>
+      </sec>
+      <sec>
+        <title>Methods</title>
+        <p>This retrospective study reviewed the electronic medical records of 192 patients
+          initiated on intramuscular vitamin B<sub>12</sub> injections.</p>
+      </sec>
+      <sec>
+        <title>Results</title>
+        <p>Only 12 patients had objectively documented hematologic responses: decrease of mean
+          corpuscular volume by &#x02265;5 fL with stable or improved hemoglobin. Another 5 patients
+          had equivocal hematologic responses. There was one plausible neurologic response. Thus,
+          only 18 (9.4%) of 192 patients had data supportive of a clinical response. In these 18
+          patients, the baseline serum B<sub>12</sub> level was &#x02264;107 pg/mL; only 3 patients
+          also had a baseline serum methylmalonic acid level, which was &#x02265;1.29 &#x003bc;mol/L
+          in all 3 patients.</p>
+      </sec>
+      <sec>
+        <title>Conclusions</title>
+        <p>Currently, only a small minority of patients initiated on intramuscular vitamin
+            B<sub>12</sub> supplementation derive any meaningful clinical benefit. Furthermore,
+          current testing recommendations for vitamin B<sub>12</sub> deficiency are usually not
+          followed. Up-front ordering of a diagnostic testing cascade is recommended to improve
+          compliance; an example is presented with decision points chosen to improve specificity for
+          clinically evident vitamin B<sub>12</sub> deficiency without loss of sensitivity.
+          Ultimately, a better understanding of vitamin B<sub>12</sub> physiology is needed to
+          develop and evaluate laboratory tests that more accurately reflect true intracellular
+          vitamin B<sub>12</sub> status.</p>
+      </sec>
+    </abstract>
+    <kwd-group kwd-group-type="chemical-list">
+      <compound-kwd>
+        <compound-kwd-part content-type="RegistryNumber">0</compound-kwd-part>
+        <compound-kwd-part content-type="NameOfSubstance">Hemoglobins</compound-kwd-part>
+      </compound-kwd>
+      <compound-kwd>
+        <compound-kwd-part content-type="RegistryNumber">8LL8S712J7</compound-kwd-part>
+        <compound-kwd-part content-type="NameOfSubstance">Methylmalonic Acid</compound-kwd-part>
+      </compound-kwd>
+      <compound-kwd>
+        <compound-kwd-part content-type="RegistryNumber">P6YC3EG204</compound-kwd-part>
+        <compound-kwd-part content-type="NameOfSubstance">Vitamin B 12</compound-kwd-part>
+      </compound-kwd>
+    </kwd-group>
+    <kwd-group kwd-group-type="MeshHeadingList">
+      <kwd content-type="not-major">Adolescent</kwd>
+      <kwd content-type="not-major">Adult</kwd>
+      <kwd content-type="not-major">Aged</kwd>
+      <kwd content-type="not-major">Aged, 80 and over</kwd>
+      <kwd content-type="not-major">Algorithms</kwd>
+      <kwd content-type="not-major">Female</kwd>
+      <nested-kwd>
+        <kwd content-type="not-major">Hemoglobins</kwd>
+        <nested-kwd>
+          <kwd content-type="not-major">metabolism</kwd>
+        </nested-kwd>
+      </nested-kwd>
+      <kwd content-type="not-major">Humans</kwd>
+      <kwd content-type="not-major">Injections, Intramuscular</kwd>
+      <kwd content-type="not-major">Male</kwd>
+      <nested-kwd>
+        <kwd content-type="not-major">Methylmalonic Acid</kwd>
+        <nested-kwd>
+          <kwd content-type="not-major">blood </kwd>
+        </nested-kwd>
+      </nested-kwd>
+      <kwd content-type="not-major">Middle Aged</kwd>
+      <kwd content-type="not-major">Retrospective Studies</kwd>
+      <nested-kwd>
+        <kwd content-type="not-major">Vitamin B 12</kwd>
+        <nested-kwd>
+          <kwd content-type="not-major">administration &amp; dosage </kwd>
+          <kwd content-type="major">therapeutic use </kwd>
+        </nested-kwd>
+      </nested-kwd>
+      <nested-kwd>
+        <kwd content-type="not-major">Vitamin B 12 Deficiency</kwd>
+        <nested-kwd>
+          <kwd content-type="not-major">blood</kwd>
+          <kwd content-type="major">diagnosis</kwd>
+          <kwd content-type="major">drug therapy</kwd>
+        </nested-kwd>
+      </nested-kwd>
+      <kwd content-type="not-major">Young Adult</kwd>
+    </kwd-group>
+    <funding-group>
+      <award-group>
+        <funding-source country="United States">NCATS NIH HHS</funding-source>
+        <award-id>UL1 TR000427</award-id>
+      </award-group>
+    </funding-group>
+
+    <notes notes-type="cited-articles">
+      <ref-list>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Clin Chem. 2000 Aug;46(8 Pt
+              2):1277-83</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">10926922</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Am J Med Sci. 1994
+              Nov;308(5):276-83</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">7977446</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">N Engl J Med. 1988 Jun
+              30;318(26):1720-8</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">3374544</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Am J Clin Pathol. 1996
+              Jul;106(1):57-63</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">8701933</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Br J Haematol. 1997
+              Jun;97(4):695-700</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">9217166</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">N Engl J Med. 1999 May
+              13;340(19):1449-54</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">10320382</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Arch Intern Med. 1999 Jun
+              28;159(12):1289-98</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">10386505</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Clin Chem. 2006
+              Feb;52(2):278-85</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">16384886</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">J Intern Med. 2007
+              Jan;261(1):65-73</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">17222169</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Clin Chem Lab Med.
+              2007;45(12):1746-50</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">18067452</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Blood. 2008 Sep
+              15;112(6):2214-21</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">18606874</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Mol Genet Metab. 2009
+              Nov;98(3):285-8</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">19581117</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Br J Haematol. 2009
+              Nov;147(3):386-91</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">19686235</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Clin Chem. 2009
+              Dec;55(12):2198-206</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">19833840</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Clin Biochem. 2010
+              May;43(7-8):645-9</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">20144600</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">J Inherit Metab Dis. 2011
+              Feb;34(1):67-73</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">20577903</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">J Neurol. 2011
+              Mar;258(3):393-401</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">20890610</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Clin Chem. 2011
+              Jun;57(6):856-63</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">21482749</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Am J Clin Nutr. 2011
+              Jul;94(1):359S-365S</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">21593496</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Am J Clin Nutr. 2011
+              Jul;94(1):348S-358S</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">21593511</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Am J Clin Nutr. 2011
+              Jul;94(1):313S-321S</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">21593512</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Am J Clin Nutr. 2011
+              Aug;94(2):552-61</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">21677051</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">N Engl J Med. 2012 May
+              3;366(18):1742-3</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">22551146</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Am J Hematol. 1990
+              Jun;34(2):99-107</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">2339684</pub-id>
+          </mixed-citation>
+        </ref>
+        <ref>
+          <mixed-citation>
+            <named-content content-type="citation-string">Eur J Clin Nutr. 2003
+              Feb;57(2):349-57</named-content>
+            <pub-id pub-id-type="pmid" specific-use="v1">12571671</pub-id>
+          </mixed-citation>
+        </ref>
+
+      </ref-list>
+    </notes>
+  </document-meta>
+
+</pmfu-record>

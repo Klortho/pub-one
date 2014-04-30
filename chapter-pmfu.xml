@@ -1,0 +1,127 @@
+<!DOCTYPE pmfu-record SYSTEM "pmfudtd/pmfu.dtd">
+<pmfu-record xmlns:xlink="http://www.w3.org/1999/xlink" xml:lang="en" record-type="chapter">
+  <source-meta>
+      <object-id pub-id-type="pmcid">glyco2</object-id>
+    <title-group>
+      <title>Essentials of Glycobiology</title>
+    </title-group>
+    <isbn>9780879697709</isbn>
+    <contrib-group>
+      <contrib contrib-type="editor" xlink:type="simple">
+        <name name-style="western">
+          <surname>Varki</surname>
+          <given-names initials="A">Ajit</given-names>
+        </name>
+      </contrib>
+      <contrib contrib-type="editor" xlink:type="simple">
+        <name name-style="western">
+          <surname>Cummings</surname>
+          <given-names initials="RD">Richard D</given-names>
+        </name>
+      </contrib>
+      <contrib contrib-type="editor" xlink:type="simple">
+        <name name-style="western">
+          <surname>Esko</surname>
+          <given-names initials="JD">Jeffrey D</given-names>
+        </name>
+      </contrib>
+      <contrib contrib-type="editor" xlink:type="simple">
+        <name name-style="western">
+          <surname>Freeze</surname>
+          <given-names initials="HH">Hudson H</given-names>
+        </name>
+      </contrib>
+      <contrib contrib-type="editor" xlink:type="simple">
+        <name name-style="western">
+          <surname>Stanley</surname>
+          <given-names initials="P">Pamela</given-names>
+        </name>
+      </contrib>
+      <contrib contrib-type="editor" xlink:type="simple">
+        <name name-style="western">
+          <surname>Bertozzi</surname>
+          <given-names initials="CR">Carolyn R</given-names>
+        </name>
+      </contrib>
+      <contrib contrib-type="editor" xlink:type="simple">
+        <name name-style="western">
+          <surname>Hart</surname>
+          <given-names initials="GW">Gerald W</given-names>
+        </name>
+      </contrib>
+      <contrib contrib-type="editor" xlink:type="simple">
+        <name name-style="western">
+          <surname>Etzler</surname>
+          <given-names initials="ME">Marilynn E</given-names>
+        </name>
+      </contrib>
+    </contrib-group>
+    <pub-date date-type="ppub">
+      <year>2009</year>
+    </pub-date>  
+    <publisher>
+      <publisher-name>Cold Spring Harbor Laboratory Press</publisher-name>
+      <publisher-loc>Cold Spring Harbor (NY)</publisher-loc>
+    </publisher>
+    <edition>2nd</edition>
+    
+    <permissions>
+      <copyright-statement>Copyright &#x000a9; 2009, The Consortium of Glycobiology Editors, La Jolla, California</copyright-statement>
+      <copyright-year>2009</copyright-year>
+    </permissions>
+  </source-meta>
+  
+  <document-meta>
+   <object-id pub-id-type="pmcid">20301281</object-id>
+   <object-id pub-id-type="bookaccession">NBK1966</object-id>
+   <title-group>
+      <title>Glycosylphosphatidylinositol Anchors</title>
+     <alt-title alt-title-type="label">Chapter 11</alt-title>
+     <alt-title alt-title-type="number">11</alt-title>
+   </title-group>
+    <contrib-group>
+      <contrib contrib-type="author" xlink:type="simple">
+        <name name-style="western">
+          <surname>Ferguson</surname>
+          <given-names initials="MAJ">Michael AJ</given-names>
+        </name>
+      </contrib>
+      <contrib contrib-type="author" xlink:type="simple">
+        <name name-style="western">
+          <surname>Kinoshita</surname>
+          <given-names initials="T">Taroh</given-names>
+        </name>
+      </contrib>
+      <contrib contrib-type="author" xlink:type="simple">
+        <name name-style="western">
+          <surname>Hart</surname>
+          <given-names initials="GW">Gerald W</given-names>
+        </name>
+      </contrib>
+    </contrib-group>
+    <elocation-id>ch11</elocation-id>
+   <pub-history>
+     <date date-type="pubmed" iso-8601-date="20100320T060000"/>
+     <date date-type="medline" iso-8601-date="20100320T060000"/>
+     <date date-type="pubmed" iso-8601-date="20100320T060000"/>
+   </pub-history>
+    <abstract>
+      <p>Plasma membrane proteins are either peripheral proteins or integral membrane proteins. The latter include proteins that span the lipid bilayer once or several times and those that are covalently attached to lipids. Proteins attached to glycosylphosphatidylinositol (GPI) via their carboxyl termini are found in the outer leaflet of the lipid bilayer and face the extracellular environment. The GPI membrane anchor may be conveniently thought of as an alternative to the single transmembrane domain of type-1 integral membrane proteins. This chapter reviews the discovery, distribution, structure, biosynthesis, properties, and suggested functions of GPI membrane anchors and related molecules.</p>
+    </abstract>
+   <notes notes-type="sections">
+     <sec id="glyco2__ch11__ch11.s1"><title>BACKGROUND AND DISCOVERY</title></sec>
+     <sec id="glyco2__ch11__ch11.s2"><title>DIVERSITY OF PROTEINS WITH GPI ANCHORS</title></sec>
+     <sec id="glyco2__ch11__ch11.s3"><title>STRUCTURE OF GPI ANCHORS</title></sec>
+     <sec id="glyco2__ch11__ch11.s5"><title>THE CHEMISTRY OF GPI ANCHORS</title></sec>
+     <sec id="glyco2__ch11__ch11.s6"><title>GPI BIOSYNTHESIS AND TRAFFICKING</title></sec>
+     <sec id="glyco2__ch11__ch11.s7"><title>IDENTIFICATION OF GPI-ANCHORED PROTEINS</title></sec>
+     <sec id="glyco2__ch11__ch11.s8"><title>MEMBRANE PROPERTIES OF GPI-ANCHORED PROTEINS</title></sec>
+     <sec id="glyco2__ch11__ch11.s9"><title>GPI ANCHORS AS TOOLS IN CELL BIOLOGY</title></sec>
+     <sec id="glyco2__ch11__ch11.s10"><title>BIOLOGICAL FUNCTIONS OF GPI ANCHORS</title></sec>
+     <sec id="glyco2__ch11__ch11.s11"><title>GPI ANCHORS AND DISEASE</title></sec>
+     <sec id="glyco2__ch11__ch11.rl1"><title>FURTHER READING</title></sec>
+   </notes>
+    </document-meta>
+
+
+</pmfu-record>
