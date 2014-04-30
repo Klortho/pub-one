@@ -1,5 +1,5 @@
-<!DOCTYPE pmfu-record SYSTEM "pmfudtd/pmfu.dtd">
-<pmfu-record xmlns:xlink="http://www.w3.org/1999/xlink" xml:lang="en" record-type="chapter">
+<!DOCTYPE pm-record SYSTEM "../dtd/pmfu.dtd">
+<pm-record xmlns:xlink="http://www.w3.org/1999/xlink" xml:lang="en" record-type="chapter">
   <source-meta>
       <object-id pub-id-type="pmcid">glyco2</object-id>
     <title-group>
@@ -58,19 +58,19 @@
     </contrib-group>
     <pub-date date-type="ppub">
       <year>2009</year>
-    </pub-date>  
+    </pub-date>
     <publisher>
       <publisher-name>Cold Spring Harbor Laboratory Press</publisher-name>
       <publisher-loc>Cold Spring Harbor (NY)</publisher-loc>
     </publisher>
     <edition>2nd</edition>
-    
+
     <permissions>
       <copyright-statement>Copyright &#x000a9; 2009, The Consortium of Glycobiology Editors, La Jolla, California</copyright-statement>
       <copyright-year>2009</copyright-year>
     </permissions>
   </source-meta>
-  
+
   <document-meta>
    <object-id pub-id-type="pmcid">20301281</object-id>
    <object-id pub-id-type="bookaccession">NBK1966</object-id>
@@ -124,4 +124,4 @@
     </document-meta>
 
 
-</pmfu-record>
+</pm-record>

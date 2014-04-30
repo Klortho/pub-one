@@ -1,5 +1,5 @@
-<!DOCTYPE pmfu-record SYSTEM "pmfudtd/pmfu.dtd">
-<pmfu-record record-type="book" xmlns:xlink="http://www.w3.org/1999/xlink" xml:lang="en">
+<!DOCTYPE pm-record SYSTEM "../dtd/pmfu.dtd">
+<pm-record record-type="book" xmlns:xlink="http://www.w3.org/1999/xlink" xml:lang="en">
   <source-meta>
     <object-id pub-id-type="pmcid">glyco2</object-id>
     <object-id pub-id-type="pmid">20301239</object-id>
@@ -59,7 +59,7 @@
     </contrib-group>
     <pub-date date-type="ppub">
       <year>2009</year>
-    </pub-date>  
+    </pub-date>
     <publisher>
       <publisher-name>Cold Spring Harbor Laboratory Press</publisher-name>
       <publisher-loc>Cold Spring Harbor (NY)</publisher-loc>
@@ -83,8 +83,8 @@
       <sec id="glyco2__acknow"><title>Acknowledgments</title></sec>
       <sec id="glyco2__bksandmonographresources"><title>Books and Monograph Resources</title></sec>
       <sec id="glyco2__abbrev"><title>Abbreviations</title></sec>
-      
-      <sec id="glyco2__I.xml"><label>Part I</label><title>General Principles</title> 
+
+      <sec id="glyco2__I.xml"><label>Part I</label><title>General Principles</title>
         <sec id="glyco2__ch1"><label>Chapter 1</label><title>Historical Background and Overview</title></sec>
         <sec id="glyco2__ch2"><label>Chapter 2</label><title>Structural Basis of Glycan Diversity</title></sec>
         <sec id="glyco2__ch3"><label>Chapter 3</label><title>Cellular Organization of Glycosylation</title></sec>
@@ -152,5 +152,5 @@
       <sec id="glyco2__errata"><title>Errata</title></sec>
     </notes>
   </source-meta>
- 
-</pmfu-record>
+
+</pm-record>
