@@ -295,7 +295,7 @@
 <!--                    BOOK ATTRIBUTES                            -->
 <!--                    Attributes for the top-level element
                         <book>                                     -->
-<!ENTITY % pm-record-atts
+<!ENTITY % pub-one-record-atts
            "%jats-common-atts;                                       
              record-type  CDATA                             #IMPLIED
              xml:lang   NMTOKEN                           'en'
@@ -304,7 +304,7 @@
              %xinclude.xmlns.attrib;
              %Schema.xmlns.attrib;"                                  >
 
-<!ENTITY % pm-record-set-atts
+<!ENTITY % pub-one-record-set-atts
            "%XLINK.xmlns.attrib;
              %MATHML.xmlns.attrib;
              %xinclude.xmlns.attrib;
@@ -355,7 +355,7 @@
 
 
 <!-- ============================================================= -->
-<!--                    PMFU ELEMENTS                   -->
+<!--                    pub-one ELEMENTS                   -->
 <!-- ============================================================= -->
 
 
@@ -365,14 +365,14 @@
                           front-matter?, book-body?, book-back?)"    >
 
 
-<!ELEMENT  pm-record-set         (pm-record+)         >
-<!ATTLIST  pm-record-set
-            %pm-record-set-atts;                                       >
+<!ELEMENT  pub-one-record-set         (pub-one-record+)         >
+<!ATTLIST  pub-one-record-set
+            %pub-one-record-set-atts;                                       >
 
                                                              
-<!ELEMENT  pm-record         (source-meta, document-meta?)         >
-<!ATTLIST  pm-record
-            %pm-record-atts;                                       >
+<!ELEMENT  pub-one-record         (source-meta, document-meta?)         >
+<!ATTLIST  pub-one-record
+            %pub-one-record-atts;                                       >
 
 
 <!-- ============================================================= -->
