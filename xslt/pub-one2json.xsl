@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                 version="2.0"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlns:xlink="http://www.w3.org/1999/xlink" 
                 xmlns:mml="http://www.w3.org/1998/Math/MathML"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema" 
                 exclude-result-prefixes="xsl xlink mml xsi xs">
 
     <xsl:import href="xml2json-2.0.xsl"/>
@@ -19,24 +19,7 @@
     <xsl:param name="pmid"/>
     <xsl:param name="doi"/>
 
-    <xsl:variable name="article-id">
-        <xsl:choose>
-            <xsl:when test="$pmcid">
-                <xsl:value-of select="$pmcid"/>
-            </xsl:when>
-            <xsl:when test="$nbkid">
-                <xsl:value-of select="$nbkid"/>
-            </xsl:when>
-            <xsl:when test="$pmid">
-                <xsl:value-of select="$pmid"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="generate-id(/pm-record)"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-
-    <!--
+    <!-- 
       Overrides the named template in xml2json.xsl.  This is the top-level template that will
       generate the intermediate XML format, before conversion into JSON.
     -->
@@ -45,7 +28,23 @@
     </xsl:template>
 
 
-    <xsl:template match="pm-record">
+    <xsl:template match="pm-record|pub-one-record">
+        <xsl:variable name="article-id">
+            <xsl:choose>
+                <xsl:when test="$pmcid">
+                    <xsl:value-of select="$pmcid"/>
+                </xsl:when>
+                <xsl:when test="$nbkid">
+                    <xsl:value-of select="$nbkid"/>
+                </xsl:when>
+                <xsl:when test="$pmid">
+                    <xsl:value-of select="$pmid"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="generate-id(self::node())"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <o>
             <s k="id">
                 <xsl:value-of select="$article-id"/>
@@ -169,7 +168,7 @@
                     <xsl:value-of select="object-id[@pub-id-type='iso-abbrev']"/>
                 </s>
             </xsl:when>
-            <xsl:when test="parent::pm-record/@record-type='section'">
+            <xsl:when test="parent::node()/@record-type='section'">
                 <s k="container-title">
                     <xsl:apply-templates select="title-group/title"/>
                     <xsl:if test="title-group/subtitle">
@@ -179,14 +178,19 @@
                 </s>
             </xsl:when>
         </xsl:choose>
-        <xsl:if test="publisher">
-            <s k="publisher">
-                <xsl:value-of select="publisher/publisher-name"/>
-            </s>
-            <s k="publisher-place">
-                <xsl:value-of select="publisher/publisher-loc"/>
-            </s>
-        </xsl:if>
+        <xsl:apply-templates select="publisher/publisher-name"/>
+        <xsl:apply-templates select="publisher/publisher-loc"/>
+    </xsl:template>
+    
+    <xsl:template match="publisher-name">
+        <s k="publisher">
+            <xsl:value-of select="."/>
+        </s>
+    </xsl:template>
+    <xsl:template match="publisher-loc">
+        <s k="publisher-place">
+            <xsl:value-of select="."/>
+        </s>
     </xsl:template>
 
     <xsl:template match="document-meta|source-meta">
@@ -222,16 +226,15 @@
     </xsl:template>
 
     <xsl:template match="year|month|day">
-        <xsl:variable name='v' as='xs:integer' select='.'/>
         <n>
-            <xsl:value-of select="$v"/>
+            <xsl:value-of select="."/>
         </n>
     </xsl:template>
 
     <xsl:template match="fpage">
         <s k="page">
             <xsl:value-of select="."/>
-            <xsl:if test="following-sibling::lpage">
+            <xsl:if test="following-sibling::lpage and (string() != string(following-sibling::lpage))">
                 <xsl:text>-</xsl:text>
                 <xsl:value-of select="following-sibling::lpage"/>
             </xsl:if>
