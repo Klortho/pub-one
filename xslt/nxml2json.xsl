@@ -152,7 +152,7 @@
                 <xsl:apply-templates select="pub-date[@pub-type='epub']"/>
             </xsl:otherwise>
         </xsl:choose>
-        <xsl:apply-templates select="fpage"/>
+        <xsl:apply-templates select="fpage|elocation-id"/>
         <xsl:apply-templates select="volume"/>
         <xsl:apply-templates select="issue"/>
         <xsl:call-template name="article-ids"/>
@@ -176,7 +176,7 @@
         </n>
     </xsl:template>
     
-    <xsl:template match="fpage">
+    <xsl:template match="fpage|elocation-id">
         <s k="page">
             <xsl:value-of select="."/>
             <xsl:if test="following-sibling::lpage">
