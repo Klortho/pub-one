@@ -12,7 +12,7 @@
         <xsl:apply-templates/>
     </xsl:template>
 
-    <xsl:template match="pm-record">
+    <xsl:template match="pm-record|pub-one-record">
         <xsl:call-template name="lang"/>
         <xsl:apply-templates select="document-meta|source-meta"/>
         <xsl:apply-templates select="document-meta" mode="title"/>
@@ -183,7 +183,7 @@
 
     <xsl:template match="document-meta|source-meta" mode="title">
         <xsl:choose>
-            <xsl:when test="self::source-meta and parent::pm-record[@record-type='article']">
+            <xsl:when test="self::source-meta and parent::node()[@record-type='article']">
                 <xsl:text>JT  - </xsl:text>
             </xsl:when>
             <xsl:when test="self::source-meta">
@@ -293,7 +293,7 @@
             <xsl:value-of select="object-id[@pub-id-type='nlm-ta']"/>
             <xsl:text>&#x0A;</xsl:text>
         </xsl:if>
-        <xsl:if test="parent::pm-record[@record-type='section' or @record-type='article']">
+        <xsl:if test="parent::node()[@record-type='section' or @record-type='article']">
             <xsl:apply-templates select="self::*" mode="title"/>
         </xsl:if>        
         <xsl:if test="publisher/publisher-loc">
@@ -327,7 +327,7 @@
                 <xsl:when test="@related-article-type='peer-reviewed-article'"></xsl:when>-->
             </xsl:choose>
             <xsl:value-of select="if(@journal-id) then concat(@journal-id, ' ')
-                else concat(/pm-record/source-meta/object-id[@pub-id-type='nlm-ta'], ' ')"/>
+                else concat(ancestor::node()/source-meta/object-id[@pub-id-type='nlm-ta'], ' ')"/>
             <xsl:if test="@vol">
                 <xsl:value-of select="concat(@vol, ':')"/>
             </xsl:if>

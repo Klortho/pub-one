@@ -12,7 +12,7 @@
         <xsl:apply-templates/>
     </xsl:template>
 
-    <xsl:template match="pm-record">
+    <xsl:template match="pm-record|pub-one-record">
         <xsl:apply-templates select="@record-type"/>
         <xsl:apply-templates select="//contrib-group"/>
         <xsl:apply-templates select="document-meta" mode="title"/>
@@ -62,10 +62,10 @@
     
     <xsl:template match="document-meta|source-meta" mode="title">
         <xsl:choose>
-            <xsl:when test="self::source-meta and parent::pm-record[@record-type='article']">
+            <xsl:when test="self::source-meta and parent::node()[@record-type='article']">
                 <xsl:text>JF  - </xsl:text>
             </xsl:when>
-            <xsl:when test="self::source-meta and parent::pm-record[@record-type='section']">
+            <xsl:when test="self::source-meta and parent::node()[@record-type='section']">
                 <xsl:text>T2  - </xsl:text>
             </xsl:when>
             <xsl:when test="self::source-meta">
@@ -263,7 +263,7 @@
             <xsl:value-of select="object-id[@pub-id-type='nlm-ta']"/>
             <xsl:text>&#x0A;</xsl:text>
         </xsl:if>
-        <xsl:if test="parent::pm-record[@record-type='section' or @record-type='article']">
+        <xsl:if test="parent::node()[@record-type='section' or @record-type='article']">
             <xsl:apply-templates select="self::*" mode="title"/>
         </xsl:if>    
         <xsl:apply-templates select="publisher/publisher-name"/>
