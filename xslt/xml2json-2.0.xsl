@@ -4,7 +4,9 @@
                 xmlns:np="http://ncbi.gov/portal/XSLT/namespace"
                 extension-element-prefixes="np">
 
-
+  <!-- Overridden by the instance stylesheet -->
+  <xsl:param name="dtd-annotation"/>
+    
   <!-- Turn off pretty-printing by setting this to false() -->
   <xsl:param name='pretty' select='true()'/>
 
@@ -215,25 +217,6 @@
       <xsl:text>,</xsl:text>
     </xsl:if>
   </xsl:function>
-    
-  <!--
-    This function strips leading zeros (which aren't allowed in numeric values).
-  -->
-  
-  <xsl:function name="np:strip-leading-0">
-    <xsl:param name="string"/>
-    <xsl:choose>
-      <xsl:when test="number($string)">
-        <xsl:value-of select="number($string)"/>
-      </xsl:when>
-      <xsl:when test="starts-with($string,'0')">
-        <xsl:value-of select="np:strip-leading-0(substring($string,2))"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$string"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:function>
 
   <!--
     There are five main utility functions for outputing stuff, as illustrated here.
@@ -309,9 +292,33 @@
     <xsl:value-of select='np:dq(np:json-escape($v))'/>
   </xsl:function>
 
+
+
+
+  <xsl:function name='np:strip-leading-zeros'>
+    <xsl:param name='n'/>
+    
+    <xsl:choose>
+      <xsl:when test="starts-with($n, '0')">
+        <xsl:value-of select="np:strip-leading-zeros(substring($n, 2))"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$n"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  
   <xsl:function name='np:number-value'>
     <xsl:param name='v'/>
-    <xsl:value-of select='normalize-space($v)'/>
+    <xsl:variable name='nsv' select='normalize-space($v)'/>
+    <xsl:choose>
+      <xsl:when test='starts-with($nsv, "0") and not(starts-with($nsv, "0."))'>
+        <xsl:value-of select='np:strip-leading-zeros($nsv)'/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select='$nsv'/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:function>
 
   <xsl:function name='np:boolean-value'>
@@ -474,17 +481,17 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:param>
-    <xsl:param name='value' select='normalize-space(.)'/>
+    <xsl:param name='value' select='.'/>
 
     <xsl:choose>
       <xsl:when test='$context = "o"'>
         <n k='{$k}'>
-          <xsl:value-of select='np:strip-leading-0($value)'/>
+          <xsl:value-of select='normalize-space($value)'/>
         </n>
       </xsl:when>
       <xsl:when test='$context = "a"'>
         <n>
-          <xsl:value-of select='np:strip-leading-0($value)'/>
+          <xsl:value-of select='normalize-space($value)'/>
         </n>
       </xsl:when>
       <xsl:otherwise>
@@ -518,10 +525,10 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:param>
-    <xsl:param name='value' select='normalize-space(.)'/>
+    <xsl:param name='value' select='.'/>
 
     <n k='{$k}'>
-      <xsl:value-of select='np:strip-leading-0($value)'/>
+      <xsl:value-of select='normalize-space($value)'/>
     </n>
   </xsl:template>
 
@@ -532,9 +539,9 @@
     and produces a quoted string from the content.
   -->
   <xsl:template name='n-in-a'>
-    <xsl:param name='value' select='normalize-space(.)'/>
+    <xsl:param name='value' select='.'/>
     <n>
-      <xsl:value-of select='np:strip-leading-0($value)'/>
+      <xsl:value-of select='normalize-space($value)'/>
     </n>
   </xsl:template>
 
