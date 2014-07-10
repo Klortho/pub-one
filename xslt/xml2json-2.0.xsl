@@ -215,6 +215,25 @@
       <xsl:text>,</xsl:text>
     </xsl:if>
   </xsl:function>
+    
+  <!--
+    This function strips leading zeros (which aren't allowed in numeric values).
+  -->
+  
+  <xsl:function name="np:strip-leading-0">
+    <xsl:param name="string"/>
+    <xsl:choose>
+      <xsl:when test="number($string)">
+        <xsl:value-of select="number($string)"/>
+      </xsl:when>
+      <xsl:when test="starts-with($string,'0')">
+        <xsl:value-of select="np:strip-leading-0(substring($string,2))"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$string"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
 
   <!--
     There are five main utility functions for outputing stuff, as illustrated here.
@@ -455,17 +474,17 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:param>
-    <xsl:param name='value' select='.'/>
+    <xsl:param name='value' select='normalize-space(.)'/>
 
     <xsl:choose>
       <xsl:when test='$context = "o"'>
         <n k='{$k}'>
-          <xsl:value-of select='normalize-space($value)'/>
+          <xsl:value-of select='np:strip-leading-0($value)'/>
         </n>
       </xsl:when>
       <xsl:when test='$context = "a"'>
         <n>
-          <xsl:value-of select='normalize-space($value)'/>
+          <xsl:value-of select='np:strip-leading-0($value)'/>
         </n>
       </xsl:when>
       <xsl:otherwise>
@@ -499,10 +518,10 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:param>
-    <xsl:param name='value' select='.'/>
+    <xsl:param name='value' select='normalize-space(.)'/>
 
     <n k='{$k}'>
-      <xsl:value-of select='normalize-space($value)'/>
+      <xsl:value-of select='np:strip-leading-0($value)'/>
     </n>
   </xsl:template>
 
@@ -513,9 +532,9 @@
     and produces a quoted string from the content.
   -->
   <xsl:template name='n-in-a'>
-    <xsl:param name='value' select='.'/>
+    <xsl:param name='value' select='normalize-space(.)'/>
     <n>
-      <xsl:value-of select='normalize-space($value)'/>
+      <xsl:value-of select='np:strip-leading-0($value)'/>
     </n>
   </xsl:template>
 
