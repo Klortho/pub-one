@@ -194,7 +194,7 @@
     </xsl:template>
     
     <xsl:template match="text()[ancestor::title or ancestor::subtitle or ancestor::abstract]">
-        <xsl:value-of select="normalize-space(.)"/>
+        <xsl:value-of select="."/>
     </xsl:template>
     
     <xsl:template match="fpage|elocation-id">
