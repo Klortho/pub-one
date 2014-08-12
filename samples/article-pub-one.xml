@@ -1,5 +1,5 @@
-<!DOCTYPE pm-record SYSTEM "../dtd/pmfu.dtd">
-<pm-record xmlns:xlink="http://www.w3.org/1999/xlink"
+<!DOCTYPE pub-one-record SYSTEM "../dtd/pub-one0.dtd">
+<pub-one-record xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mml="http://www.w3.org/1998/Math/MathML" record-type="article" xml:lang="en">
   <source-meta>
     <object-id pub-id-type="nlm-ta">Clin Med Res</object-id>
@@ -390,4 +390,4 @@
     </notes>
   </document-meta>
 
-</pm-record>
+</pub-one-record>

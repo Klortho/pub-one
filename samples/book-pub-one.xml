@@ -1,5 +1,5 @@
-<!DOCTYPE pm-record SYSTEM "../dtd/pmfu.dtd">
-<pm-record record-type="book" xmlns:xlink="http://www.w3.org/1999/xlink" xml:lang="en">
+<!DOCTYPE pub-one-record SYSTEM "../dtd/pub-one0.dtd">
+<pub-one-record record-type="book" xmlns:xlink="http://www.w3.org/1999/xlink" xml:lang="en">
   <source-meta>
     <object-id pub-id-type="pmcid">glyco2</object-id>
     <object-id pub-id-type="pmid">20301239</object-id>
@@ -153,4 +153,4 @@
     </notes>
   </source-meta>
 
-</pm-record>
+</pub-one-record>
