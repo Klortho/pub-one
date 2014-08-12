@@ -71,85 +71,273 @@
       <date date-type="pubmed" iso-8601-date="20100320T060000"/>
     </pub-history>
     <permissions>
-      <copyright-statement>Copyright &#x000a9; 2009, The Consortium of Glycobiology Editors, La Jolla, California</copyright-statement>
+      <copyright-statement>Copyright &#x000a9; 2009, The Consortium of Glycobiology Editors, La
+        Jolla, California</copyright-statement>
       <copyright-year>2009</copyright-year>
     </permissions>
-   <notes notes-type="subsections">
-      <sec id="glyco2__foreword"><title>Foreword</title></sec>
-      <sec id="glyco2__forewordfromfirstedition"><title>Foreword from First Edition</title></sec>
-      <sec id="glyco2__preface"><title>Preface</title></sec>
-      <sec id="glyco2__prefacefromfirstedition"><title>Preface from First Edition</title></sec>
-      <sec id="glyco2__contrib"><title>Contributors</title></sec>
-      <sec id="glyco2__acknow"><title>Acknowledgments</title></sec>
-      <sec id="glyco2__bksandmonographresources"><title>Books and Monograph Resources</title></sec>
-      <sec id="glyco2__abbrev"><title>Abbreviations</title></sec>
+    <notes notes-type="subsections">
+      <sec id="glyco2__foreword">
+        <title>Foreword</title>
+      </sec>
+      <sec id="glyco2__forewordfromfirstedition">
+        <title>Foreword from First Edition</title>
+      </sec>
+      <sec id="glyco2__preface">
+        <title>Preface</title>
+      </sec>
+      <sec id="glyco2__prefacefromfirstedition">
+        <title>Preface from First Edition</title>
+      </sec>
+      <sec id="glyco2__contrib">
+        <title>Contributors</title>
+      </sec>
+      <sec id="glyco2__acknow">
+        <title>Acknowledgments</title>
+      </sec>
+      <sec id="glyco2__bksandmonographresources">
+        <title>Books and Monograph Resources</title>
+      </sec>
+      <sec id="glyco2__abbrev">
+        <title>Abbreviations</title>
+      </sec>
 
-      <sec id="glyco2__I.xml"><label>Part I</label><title>General Principles</title>
-        <sec id="glyco2__ch1"><label>Chapter 1</label><title>Historical Background and Overview</title></sec>
-        <sec id="glyco2__ch2"><label>Chapter 2</label><title>Structural Basis of Glycan Diversity</title></sec>
-        <sec id="glyco2__ch3"><label>Chapter 3</label><title>Cellular Organization of Glycosylation</title></sec>
-        <sec id="glyco2__ch4"><label>Chapter 4</label><title>Glycosylation Precursors</title></sec>
-        <sec id="glyco2__ch5"><label>Chapter 5</label><title>Glycosyltransferases and Glycan-processing Enzymes</title></sec>
-        <sec id="glyco2__ch6"><label>Chapter 6</label><title>Biological Roles of Glycans</title></sec>
-        <sec id="glyco2__ch7"><label>Chapter 7</label><title>A Genomic View of Glycobiology</title></sec>
+      <sec id="glyco2__I.xml">
+        <label>Part I</label>
+        <title>General Principles</title>
+        <sec id="glyco2__ch1">
+          <label>Chapter 1</label>
+          <title>Historical Background and Overview</title>
+        </sec>
+        <sec id="glyco2__ch2">
+          <label>Chapter 2</label>
+          <title>Structural Basis of Glycan Diversity</title>
+        </sec>
+        <sec id="glyco2__ch3">
+          <label>Chapter 3</label>
+          <title>Cellular Organization of Glycosylation</title>
+        </sec>
+        <sec id="glyco2__ch4">
+          <label>Chapter 4</label>
+          <title>Glycosylation Precursors</title>
+        </sec>
+        <sec id="glyco2__ch5">
+          <label>Chapter 5</label>
+          <title>Glycosyltransferases and Glycan-processing Enzymes</title>
+        </sec>
+        <sec id="glyco2__ch6">
+          <label>Chapter 6</label>
+          <title>Biological Roles of Glycans</title>
+        </sec>
+        <sec id="glyco2__ch7">
+          <label>Chapter 7</label>
+          <title>A Genomic View of Glycobiology</title>
+        </sec>
       </sec>
-      <sec id="glyco2__II.xml"><label>Part II</label><title>Structure and Biosynthesis</title>
-        <sec id="glyco2__ch8"><label>Chapter 8</label><title>N-Glycans</title></sec>
-        <sec id="glyco2__ch9"><label>Chapter 9</label><title>O-GalNAc Glycans</title></sec>
-        <sec id="glyco2__ch10"><label>Chapter 10</label><title>Glycosphingolipids</title></sec>
-        <sec id="glyco2__ch11"><label>Chapter 11</label><title>Glycosylphosphatidylinositol Anchors</title></sec>
-        <sec id="glyco2__ch12"><label>Chapter 12</label><title>Other Classes of ER/Golgi-derived Glycans</title></sec>
-        <sec id="glyco2__ch13"><label>Chapter 13</label><title>Structures Common to Different Glycans</title></sec>
-        <sec id="glyco2__ch14"><label>Chapter 14</label><title>Sialic Acids</title></sec>
-        <sec id="glyco2__ch15"><label>Chapter 15</label><title>Hyaluronan</title></sec>
-        <sec id="glyco2__ch16"><label>Chapter 16</label><title>Proteoglycans and Sulfated Glycosaminoglycans</title></sec>
-        <sec id="glyco2__ch17"><label>Chapter 17</label><title>Nucleocytoplasmic Glycosylation</title></sec>
-        <sec id="glyco2__ch18"><label>Chapter 18</label><title>The O-GlcNAc Modification</title></sec>
+      <sec id="glyco2__II.xml">
+        <label>Part II</label>
+        <title>Structure and Biosynthesis</title>
+        <sec id="glyco2__ch8">
+          <label>Chapter 8</label>
+          <title>N-Glycans</title>
+        </sec>
+        <sec id="glyco2__ch9">
+          <label>Chapter 9</label>
+          <title>O-GalNAc Glycans</title>
+        </sec>
+        <sec id="glyco2__ch10">
+          <label>Chapter 10</label>
+          <title>Glycosphingolipids</title>
+        </sec>
+        <sec id="glyco2__ch11">
+          <label>Chapter 11</label>
+          <title>Glycosylphosphatidylinositol Anchors</title>
+        </sec>
+        <sec id="glyco2__ch12">
+          <label>Chapter 12</label>
+          <title>Other Classes of ER/Golgi-derived Glycans</title>
+        </sec>
+        <sec id="glyco2__ch13">
+          <label>Chapter 13</label>
+          <title>Structures Common to Different Glycans</title>
+        </sec>
+        <sec id="glyco2__ch14">
+          <label>Chapter 14</label>
+          <title>Sialic Acids</title>
+        </sec>
+        <sec id="glyco2__ch15">
+          <label>Chapter 15</label>
+          <title>Hyaluronan</title>
+        </sec>
+        <sec id="glyco2__ch16">
+          <label>Chapter 16</label>
+          <title>Proteoglycans and Sulfated Glycosaminoglycans</title>
+        </sec>
+        <sec id="glyco2__ch17">
+          <label>Chapter 17</label>
+          <title>Nucleocytoplasmic Glycosylation</title>
+        </sec>
+        <sec id="glyco2__ch18">
+          <label>Chapter 18</label>
+          <title>The O-GlcNAc Modification</title>
+        </sec>
       </sec>
-      <sec id="glyco2__III.xml"><label>Part III</label><title>Organismal Diversity</title>
-        <sec id="glyco2__ch19"><label>Chapter 19</label><title>Evolution of Glycan Diversity</title></sec>
-        <sec id="glyco2__ch20"><label>Chapter 20</label><title>Eubacteria and Archaea</title></sec>
-        <sec id="glyco2__ch21"><label>Chapter 21</label><title>Fungi</title></sec>
-        <sec id="glyco2__ch22"><label>Chapter 22</label><title>Viridiplantae</title></sec>
-        <sec id="glyco2__ch23"><label>Chapter 23</label><title>Nematoda</title></sec>
-        <sec id="glyco2__ch24"><label>Chapter 24</label><title>Arthropoda</title></sec>
-        <sec id="glyco2__ch25"><label>Chapter 25</label><title>Deuterostomes</title></sec>
+      <sec id="glyco2__III.xml">
+        <label>Part III</label>
+        <title>Organismal Diversity</title>
+        <sec id="glyco2__ch19">
+          <label>Chapter 19</label>
+          <title>Evolution of Glycan Diversity</title>
+        </sec>
+        <sec id="glyco2__ch20">
+          <label>Chapter 20</label>
+          <title>Eubacteria and Archaea</title>
+        </sec>
+        <sec id="glyco2__ch21">
+          <label>Chapter 21</label>
+          <title>Fungi</title>
+        </sec>
+        <sec id="glyco2__ch22">
+          <label>Chapter 22</label>
+          <title>Viridiplantae</title>
+        </sec>
+        <sec id="glyco2__ch23">
+          <label>Chapter 23</label>
+          <title>Nematoda</title>
+        </sec>
+        <sec id="glyco2__ch24">
+          <label>Chapter 24</label>
+          <title>Arthropoda</title>
+        </sec>
+        <sec id="glyco2__ch25">
+          <label>Chapter 25</label>
+          <title>Deuterostomes</title>
+        </sec>
       </sec>
-      <sec id="glyco2__IV.xml"><label>Part IV</label><title>Glycan-binding Proteins</title>
-        <sec id="glyco2__ch26"><label>Chapter 26</label><title>Discovery and Classification of Glycan-Binding Proteins</title></sec>
-        <sec id="glyco2__ch27"><label>Chapter 27</label><title>Principles of Glycan Recognition</title></sec>
-        <sec id="glyco2__ch28"><label>Chapter 28</label><title>R-type Lectins</title></sec>
-        <sec id="glyco2__ch29"><label>Chapter 29</label><title>L-type Lectins</title></sec>
-        <sec id="glyco2__ch30"><label>Chapter 30</label><title>P-type Lectins</title></sec>
-        <sec id="glyco2__ch31"><label>Chapter 31</label><title>C-type Lectins</title></sec>
-        <sec id="glyco2__ch32"><label>Chapter 32</label><title>I-type Lectins</title></sec>
-        <sec id="glyco2__ch33"><label>Chapter 33</label><title>Galectins</title></sec>
-        <sec id="glyco2__ch34"><label>Chapter 34</label><title>Microbial Lectins: Hemagglutinins, Adhesins, and Toxins</title></sec>
-        <sec id="glyco2__ch35"><label>Chapter 35</label><title>Proteins that Bind Sulfated Glycosaminoglycans</title></sec>
+      <sec id="glyco2__IV.xml">
+        <label>Part IV</label>
+        <title>Glycan-binding Proteins</title>
+        <sec id="glyco2__ch26">
+          <label>Chapter 26</label>
+          <title>Discovery and Classification of Glycan-Binding Proteins</title>
+        </sec>
+        <sec id="glyco2__ch27">
+          <label>Chapter 27</label>
+          <title>Principles of Glycan Recognition</title>
+        </sec>
+        <sec id="glyco2__ch28">
+          <label>Chapter 28</label>
+          <title>R-type Lectins</title>
+        </sec>
+        <sec id="glyco2__ch29">
+          <label>Chapter 29</label>
+          <title>L-type Lectins</title>
+        </sec>
+        <sec id="glyco2__ch30">
+          <label>Chapter 30</label>
+          <title>P-type Lectins</title>
+        </sec>
+        <sec id="glyco2__ch31">
+          <label>Chapter 31</label>
+          <title>C-type Lectins</title>
+        </sec>
+        <sec id="glyco2__ch32">
+          <label>Chapter 32</label>
+          <title>I-type Lectins</title>
+        </sec>
+        <sec id="glyco2__ch33">
+          <label>Chapter 33</label>
+          <title>Galectins</title>
+        </sec>
+        <sec id="glyco2__ch34">
+          <label>Chapter 34</label>
+          <title>Microbial Lectins: Hemagglutinins, Adhesins, and Toxins</title>
+        </sec>
+        <sec id="glyco2__ch35">
+          <label>Chapter 35</label>
+          <title>Proteins that Bind Sulfated Glycosaminoglycans</title>
+        </sec>
       </sec>
-      <sec id="glyco2__V.xml"><label>Part V</label><title>Glycans in Physiology and Disease</title>
-        <sec id="glyco2__ch36"><label>Chapter 36</label><title>Glycans in Glycoprotein Quality Control</title></sec>
-        <sec id="glyco2__ch37"><label>Chapter 37</label><title>Free Glycans as Signaling Molecules</title></sec>
-        <sec id="glyco2__ch38"><label>Chapter 38</label><title>Glycans in Development and Systemic Physiology</title></sec>
-        <sec id="glyco2__ch39"><label>Chapter 39</label><title>Bacterial and Viral Infections</title></sec>
-        <sec id="glyco2__ch40"><label>Chapter 40</label><title>Parasitic Infections</title></sec>
-        <sec id="glyco2__ch41"><label>Chapter 41</label><title>Genetic Disorders of Glycan Degradation</title></sec>
-        <sec id="glyco2__ch42"><label>Chapter 42</label><title>Genetic Disorders of Glycosylation</title></sec>
-        <sec id="glyco2__ch43"><label>Chapter 43</label><title>Glycans in Acquired Human Diseases</title></sec>
-        <sec id="glyco2__ch44"><label>Chapter 44</label><title>Glycosylation Changes in Cancer</title></sec>
+      <sec id="glyco2__V.xml">
+        <label>Part V</label>
+        <title>Glycans in Physiology and Disease</title>
+        <sec id="glyco2__ch36">
+          <label>Chapter 36</label>
+          <title>Glycans in Glycoprotein Quality Control</title>
+        </sec>
+        <sec id="glyco2__ch37">
+          <label>Chapter 37</label>
+          <title>Free Glycans as Signaling Molecules</title>
+        </sec>
+        <sec id="glyco2__ch38">
+          <label>Chapter 38</label>
+          <title>Glycans in Development and Systemic Physiology</title>
+        </sec>
+        <sec id="glyco2__ch39">
+          <label>Chapter 39</label>
+          <title>Bacterial and Viral Infections</title>
+        </sec>
+        <sec id="glyco2__ch40">
+          <label>Chapter 40</label>
+          <title>Parasitic Infections</title>
+        </sec>
+        <sec id="glyco2__ch41">
+          <label>Chapter 41</label>
+          <title>Genetic Disorders of Glycan Degradation</title>
+        </sec>
+        <sec id="glyco2__ch42">
+          <label>Chapter 42</label>
+          <title>Genetic Disorders of Glycosylation</title>
+        </sec>
+        <sec id="glyco2__ch43">
+          <label>Chapter 43</label>
+          <title>Glycans in Acquired Human Diseases</title>
+        </sec>
+        <sec id="glyco2__ch44">
+          <label>Chapter 44</label>
+          <title>Glycosylation Changes in Cancer</title>
+        </sec>
       </sec>
-      <sec id="glyco2__VI.xml"><label>Part VI</label><title>Methods and Applications</title>
-        <sec id="glyco2__ch45"><label>Chapter 45</label><title>Antibodies and Lectins in Glycan Analysis</title></sec>
-        <sec id="glyco2__ch46"><label>Chapter 46</label><title>Glycosylation Mutants of Cultured Cells</title></sec>
-        <sec id="glyco2__ch47"><label>Chapter 47</label><title>Structural Analysis of Glycans</title></sec>
-        <sec id="glyco2__ch48"><label>Chapter 48</label><title>Glycomics</title></sec>
-        <sec id="glyco2__ch49"><label>Chapter 49</label><title>Chemical and Enzymatic Synthesis of Glycans and Glycoconjugates</title></sec>
-        <sec id="glyco2__ch50"><label>Chapter 50</label><title>Chemical Tools for Inhibiting Glycosylation</title></sec>
-        <sec id="glyco2__ch51"><label>Chapter 51</label><title>Glycans in Biotechnology and the Pharmaceutical Industry</title></sec>
+      <sec id="glyco2__VI.xml">
+        <label>Part VI</label>
+        <title>Methods and Applications</title>
+        <sec id="glyco2__ch45">
+          <label>Chapter 45</label>
+          <title>Antibodies and Lectins in Glycan Analysis</title>
+        </sec>
+        <sec id="glyco2__ch46">
+          <label>Chapter 46</label>
+          <title>Glycosylation Mutants of Cultured Cells</title>
+        </sec>
+        <sec id="glyco2__ch47">
+          <label>Chapter 47</label>
+          <title>Structural Analysis of Glycans</title>
+        </sec>
+        <sec id="glyco2__ch48">
+          <label>Chapter 48</label>
+          <title>Glycomics</title>
+        </sec>
+        <sec id="glyco2__ch49">
+          <label>Chapter 49</label>
+          <title>Chemical and Enzymatic Synthesis of Glycans and Glycoconjugates</title>
+        </sec>
+        <sec id="glyco2__ch50">
+          <label>Chapter 50</label>
+          <title>Chemical Tools for Inhibiting Glycosylation</title>
+        </sec>
+        <sec id="glyco2__ch51">
+          <label>Chapter 51</label>
+          <title>Glycans in Biotechnology and the Pharmaceutical Industry</title>
+        </sec>
       </sec>
-      <sec id="glyco2__glossary"><title>Glossary</title></sec>
-      <sec id="glyco2__studyguide"><title>Study Guide</title></sec>
-      <sec id="glyco2__errata"><title>Errata</title></sec>
+      <sec id="glyco2__glossary">
+        <title>Glossary</title>
+      </sec>
+      <sec id="glyco2__studyguide">
+        <title>Study Guide</title>
+      </sec>
+      <sec id="glyco2__errata">
+        <title>Errata</title>
+      </sec>
     </notes>
   </source-meta>
 
