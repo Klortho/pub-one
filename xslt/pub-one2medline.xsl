@@ -14,7 +14,8 @@
 
     <xsl:template match="pm-record|pub-one-record">
         <xsl:call-template name="lang"/>
-        <xsl:apply-templates select="document-meta|source-meta"/>
+        <xsl:apply-templates select="document-meta"/>
+        <xsl:apply-templates select="source-meta"/>        
         <xsl:apply-templates select="document-meta" mode="title"/>
         <xsl:if test="@record-type='book'">
             <xsl:apply-templates select="source-meta" mode="title"/>
@@ -84,13 +85,13 @@
     
     <xsl:template match="object-id">
         <xsl:choose>
-            <xsl:when test="@pub-id-type='pmcid'">
-                <xsl:text>PMC - </xsl:text>
+            <xsl:when test="@pub-id-type='pmid'">
+                <xsl:text>PMID- </xsl:text>
                 <xsl:value-of select="."/>
                 <xsl:text>&#x0A;</xsl:text>
             </xsl:when>
-            <xsl:when test="@pub-id-type='pmid'">
-                <xsl:text>PMID- </xsl:text>
+            <xsl:when test="@pub-id-type='pmcid'">
+                <xsl:text>PMC - </xsl:text>
                 <xsl:value-of select="."/>
                 <xsl:text>&#x0A;</xsl:text>
             </xsl:when>
