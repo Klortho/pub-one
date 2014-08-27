@@ -46,6 +46,8 @@
             </xsl:choose>
         </xsl:variable>
         <o>
+		  		<s k="source">PMC</s>
+				<xsl:call-template name="accessed"/>
             <s k="id">
                 <xsl:value-of select="$article-id"/>
             </s>
@@ -240,6 +242,26 @@
                     <xsl:apply-templates select="year"/>
                     <xsl:apply-templates select="month"/>
                     <xsl:apply-templates select="day"/>
+                </a>
+            </a>
+        </o>
+    </xsl:template>
+
+    <xsl:template name="accessed">
+	 	<xsl:variable name="date" select="string(current-date())"/>
+	 	<xsl:variable name="year" select="substring-before($date,'-')"/>
+	 	<xsl:variable name="month" select="substring-before(substring-after($date,concat($year,'-')),'-')"/>
+    	<xsl:variable name="day" select="substring-before(substring-after($date,concat($year,'-',$month,'-')),'-')"/>
+	     <o k="accessed">
+            <a k="date-parts">
+                <a>
+                    <n><xsl:value-of select="$year"/></n>
+						  <xsl:if test="$month!=''">
+                    		<n><xsl:value-of select="$month"/></n>
+								<xsl:if test="$day!=''">
+                    			<n><xsl:value-of select="$day"/></n>
+									</xsl:if>
+								</xsl:if>
                 </a>
             </a>
         </o>
