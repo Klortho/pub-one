@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 version="2.0"
-                xmlns:xlink="http://www.w3.org/1999/xlink" 
+                xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:mml="http://www.w3.org/1998/Math/MathML"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 exclude-result-prefixes="xsl xlink mml xsi xs">
 
     <xsl:import href="xml2json-2.0.xsl"/>
@@ -18,8 +18,9 @@
     <xsl:param name="nbkid"/>
     <xsl:param name="pmid"/>
     <xsl:param name="doi"/>
+    <xsl:param name='accessed'/>
 
-    <!-- 
+    <!--
       Overrides the named template in xml2json.xsl.  This is the top-level template that will
       generate the intermediate XML format, before conversion into JSON.
     -->
@@ -46,8 +47,8 @@
             </xsl:choose>
         </xsl:variable>
         <o>
-		  		<s k="source">PMC</s>
-				<xsl:call-template name="accessed"/>
+            <s k="source">PMC</s>
+            <xsl:call-template name="accessed"/>
             <s k="id">
                 <xsl:value-of select="$article-id"/>
             </s>
@@ -183,20 +184,20 @@
         <xsl:apply-templates select="publisher/publisher-name"/>
         <xsl:apply-templates select="publisher/publisher-loc"/>
 
-		  <!-- ISSN Processing - use issn-l first, then print, then electronic -->
-		  <xsl:choose>
-		  	<xsl:when test="issn-l">
-				<xsl:apply-templates select="issn-l"/>
-				</xsl:when>
-		  	<xsl:when test="issn[@publication-format='print']">
-				<xsl:apply-templates select="issn[@publication-format='print']"/>
-				</xsl:when>
-		  	<xsl:when test="issn[@publication-format='electronic']">
-				<xsl:apply-templates select="issn[@publication-format='electronic']"/>
-				</xsl:when>
-		  	</xsl:choose>
+      <!-- ISSN Processing - use issn-l first, then print, then electronic -->
+      <xsl:choose>
+        <xsl:when test="issn-l">
+        <xsl:apply-templates select="issn-l"/>
+        </xsl:when>
+        <xsl:when test="issn[@publication-format='print']">
+        <xsl:apply-templates select="issn[@publication-format='print']"/>
+        </xsl:when>
+        <xsl:when test="issn[@publication-format='electronic']">
+        <xsl:apply-templates select="issn[@publication-format='electronic']"/>
+        </xsl:when>
+        </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template match="publisher-name">
         <s k="publisher">
             <xsl:value-of select="."/>
@@ -209,11 +210,11 @@
     </xsl:template>
 
 
-	<xsl:template match="issn | issn-l">
-		<s k="ISSN">
+  <xsl:template match="issn | issn-l">
+    <s k="ISSN">
             <xsl:value-of select="."/>
         </s>
-		</xsl:template>
+    </xsl:template>
 
     <xsl:template match="document-meta|source-meta">
         <xsl:choose>
@@ -247,24 +248,40 @@
         </o>
     </xsl:template>
 
+    <!--
+      Output the accessed date.  If it was passed in as a parameter, use that.  Otherwise, use today's date.
+    -->
     <xsl:template name="accessed">
-	 	<xsl:variable name="date" select="string(current-date())"/>
-	 	<xsl:variable name="year" select="substring-before($date,'-')"/>
-	 	<xsl:variable name="month" select="substring-before(substring-after($date,concat($year,'-')),'-')"/>
-    	<xsl:variable name="day" select="substring-before(substring-after($date,concat($year,'-',$month,'-')),'-')"/>
-	     <o k="accessed">
-            <a k="date-parts">
-                <a>
-                    <n><xsl:value-of select="$year"/></n>
-						  <xsl:if test="$month!=''">
-                    		<n><xsl:value-of select="$month"/></n>
-								<xsl:if test="$day!=''">
-                    			<n><xsl:value-of select="$day"/></n>
-									</xsl:if>
-								</xsl:if>
-                </a>
-            </a>
-        </o>
+        <xsl:variable name="date">
+            <xsl:choose>
+                <xsl:when test='$accessed != ""'>
+                    <xsl:value-of select='$accessed'/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="string(current-date())"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:analyze-string regex="^(\d+)(-(\d+)(-(\d+))?)?" select="$date">
+            <xsl:matching-substring>
+                <xsl:variable name="year" select="regex-group(1)"/>
+                <xsl:variable name="month" select="regex-group(3)"/>
+                <xsl:variable name="day" select="regex-group(5)"/>
+                <o k="accessed">
+                    <a k="date-parts">
+                        <a>
+                            <n><xsl:value-of select="number($year)"/></n>
+                            <xsl:if test="$month != ''">
+                                <n><xsl:value-of select="number($month)"/></n>
+                                <xsl:if test="$day != ''">
+                                    <n><xsl:value-of select="number($day)"/></n>
+                                </xsl:if>
+                            </xsl:if>
+                        </a>
+                    </a>
+                </o>
+            </xsl:matching-substring>
+        </xsl:analyze-string>
     </xsl:template>
 
     <xsl:template match="year|month|day">
