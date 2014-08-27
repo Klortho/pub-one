@@ -180,6 +180,19 @@
         </xsl:choose>
         <xsl:apply-templates select="publisher/publisher-name"/>
         <xsl:apply-templates select="publisher/publisher-loc"/>
+
+		  <!-- ISSN Processing - use issn-l first, then print, then electronic -->
+		  <xsl:choose>
+		  	<xsl:when test="issn-l">
+				<xsl:apply-templates select="issn-l"/>
+				</xsl:when>
+		  	<xsl:when test="issn[@publication-format='print']">
+				<xsl:apply-templates select="issn[@publication-format='print']"/>
+				</xsl:when>
+		  	<xsl:when test="issn[@publication-format='electronic']">
+				<xsl:apply-templates select="issn[@publication-format='electronic']"/>
+				</xsl:when>
+		  	</xsl:choose>
     </xsl:template>
     
     <xsl:template match="publisher-name">
@@ -192,6 +205,13 @@
             <xsl:value-of select="."/>
         </s>
     </xsl:template>
+
+
+	<xsl:template match="issn | issn-l">
+		<s k="ISSN">
+            <xsl:value-of select="."/>
+        </s>
+		</xsl:template>
 
     <xsl:template match="document-meta|source-meta">
         <xsl:choose>
