@@ -42,7 +42,9 @@
 	
 	<xsl:template match="book | book-part[@book-part-type='toc']">
 		<pub-one-record record-type="book" xml:lang="{if (@xml:lang) then (lower-case(@xml:lang)) else 'en'}">
-			<xsl:call-template name="write-source-meta"/>
+			<xsl:call-template name="write-source-meta">
+				<xsl:with-param name="abbreviated" select="'yes'"/>
+				</xsl:call-template>
 			<xsl:call-template name="repeat-source-meta-as-document-meta"/>
 		</pub-one-record>
 	</xsl:template>
@@ -64,8 +66,11 @@
 	
 	
 	<xsl:template name="write-source-meta">
+		<xsl:param name="abbreviated"/>
 		<source-meta>
-			<xsl:call-template name="write-source-meta-guts"/>
+			<xsl:call-template name="write-source-meta-guts">
+				<xsl:with-param name="metalevel" select="if ($abbreviated='yes') then 'abbreviated' else ''"/>
+				</xsl:call-template>
 		</source-meta>
 	</xsl:template>
 
@@ -76,19 +81,20 @@
 	</xsl:template>
 
 <xsl:template name="write-source-meta-guts">
+	<xsl:param name="metalevel"/>
 			<!-- write <object-id> -->
 			<xsl:apply-templates select="MedlineCitation/Article/Journal/ISOAbbreviation |
 							MedlineCitation/MedlineJournalInfo/NlmUniqueId |
 							MedlineCitation/MedlineJournalInfo/MedlineTA |
 							MedlineCitation/MedlineJournalInfo/NlmUniqueID |
-							front/journal-meta//journal-id "/>
+							front/journal-meta//journal-id[not(@journal-id-type='pubmed-jr-id') and not(@journal-id-type='issn')] "/>
 			<xsl:choose>
 				<xsl:when test="/book-part/@book-part-type='toc'">
 					<xsl:call-template name="write-oids-from-params"/>
 				</xsl:when>
 				<xsl:when test="/book-part and $book_id != '' ">
-					<object-id pub-id-type="pmcid">
-						<xsl:value-of select="$book_id"/>
+					<object-id pub-id-type="pmcbookid">
+						<xsl:value-of select="concat('NBK', $book_id)"/>
 					</object-id>
 				</xsl:when>
 			</xsl:choose>
@@ -121,10 +127,12 @@
 			<xsl:apply-templates select="book-meta/volume"/>
 			<xsl:apply-templates select="book-meta/history"/>
 			<xsl:apply-templates select="book-meta/permissions"/>
-			<xsl:apply-templates select="book-meta/abstract"/>
+			<xsl:if test="$metalevel!='abbreviated'">
+				<xsl:apply-templates select="book-meta/abstract"/>
+				</xsl:if>
 			
-			<!-- write subsections -->
-			<xsl:if test="self::book-part and /book-part/@book-part-type='toc' and body/list">
+			<!-- write subsections in <document-meta> -->
+			<xsl:if test="self::book-part and /book-part/@book-part-type='toc' and body/list and $metalevel!='abbreviated'">
 				<xsl:apply-templates select="body" mode="write-chapters"/>
 				</xsl:if>
 			
@@ -135,7 +143,7 @@
 		<xsl:variable name="bookpartype" select="/book-part/@book-part-type"/>
 		<document-meta>
 			<!-- write <object-id> -->
-			<xsl:apply-templates select="PubmedData/ArticleIdList/ArticleId | MedlineCitation/OtherID |
+			<xsl:apply-templates select="PubmedData/ArticleIdList/ArticleId | MedlineCitation/OtherID[not(@Source='NLM')] |
 							front/article-meta/article-id | 
 							book-part-meta/book-part-id"/>
 			<!-- write article-ids from parameters pmid and pmcid -->
@@ -218,7 +226,7 @@
 			
 			<!-- write related articles -->
 			<xsl:call-template name="relart"/>
-			<xsl:apply-templates select="front/article-meta/related-article | front/article-meta/related-object"/>
+			<xsl:apply-templates select="front/article-meta/related-object | /article//related-article"/>
 			
 			<!-- write abstract(s) -->
 			<xsl:apply-templates select="MedlineCitation/Article/Abstract | front/article-meta/abstract | front/article-meta/trans-abstract |
@@ -229,11 +237,15 @@
 			</xsl:if>
 			
 			<!-- write keyword groups : these include MESH headings and chemical lists -->
-			<xsl:apply-templates select="MedlineCitation/ChemicalList | MedlineCitation/MeshHeadingList | MedlineCitation/GeneSymbolList |
+			<xsl:apply-templates select="MedlineCitation/ChemicalList | MedlineCitation/KeywordList | MedlineCitation/MeshHeadingList | MedlineCitation/GeneSymbolList |
 				MedlineCitation/PersonalNameSubjectList | MedlineCitation/Article/DataBankList | MedlineCitation/SupplMeshList"/>
 			<xsl:if test="MedlineCitation/SpaceFlightMission">
 				<xsl:call-template name="write-space-flight-keywords"/>
 				</xsl:if>
+			
+			<!-- write article language(s) -->
+			<!-- context node = PubmedArticle or article or book-part -->
+			<xsl:call-template name="write-languages"/>
 			
 			<!-- write funding information -->
 			<xsl:apply-templates select="front/article-meta/funding-group | MedlineCitation/Article/GrantList"/>
@@ -328,15 +340,42 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<!-- <xsl:template match="article-id[@pub-id-type='pmid']">
+		<object-id pub-id-type="pubmed">
+			<xsl:apply-templates/>
+			</object-id>
+	</xsl:template> -->
+
+	<xsl:template match="article-id[@pub-id-type='manuscript']">
+		<object-id pub-id-type="manuscript-id">
+			<xsl:value-of select="translate(.,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
+			</object-id>
+	</xsl:template>
+
+
 	<xsl:template name="write-oids-from-params">
 		<!--<xsl:message> got here! pmcid="<xsl:value-of select="$pmcid"/>" | pmid="<xsl:value-of select="$pmid"/>"</xsl:message>-->
 		<xsl:if test="$pmcid!=''">
-			<object-id pub-id-type="pmcid">
-				<xsl:value-of select="$pmcid"/>
-			</object-id>
+			<xsl:choose>
+				<xsl:when test="number($pmcid) and /article">
+					<object-id pub-id-type="pmc">
+						<xsl:value-of select="concat('PMC',$pmcid)"/>
+					</object-id>
+					</xsl:when>
+				<xsl:when test="number($pmcid) and (/book or /book-part)">
+					<object-id pub-id-type="pmcbookid">
+						<xsl:value-of select="concat('NBK',$pmcid)"/>
+					</object-id>
+					</xsl:when>
+				<xsl:otherwise>
+					<object-id pub-id-type="pmcbookid">
+						<xsl:value-of select="$pmcid"/>
+					</object-id>
+					</xsl:otherwise>
+				</xsl:choose>
 		</xsl:if>
 		<xsl:if test="$pmid!='' and $pmid != '0'">
-			<object-id pub-id-type="pmid">
+			<object-id pub-id-type="pubmed">
 				<xsl:value-of select="$pmid"/>
 			</object-id>
 		</xsl:if>
@@ -665,7 +704,7 @@
 	</xsl:template>	
 	
 	<xsl:template match="NlmUniqueID">
-		<object-id pub-id-type="NLMUniqueID">
+		<object-id pub-id-type="nlm-journal-id">
 			<xsl:value-of select="."/>
 		</object-id>
 	</xsl:template>	
@@ -728,7 +767,7 @@
 	</xsl:template>
 	
 	<xsl:template match="ArticleId">
-		<object-id pub-id-type="{@IdType}">
+		<object-id pub-id-type="{if (@IdType='mid') then 'manuscript-id' else @IdType}">
 			<xsl:apply-templates/>
 		</object-id>
 	</xsl:template>
@@ -1335,19 +1374,22 @@
 	<xsl:template name="get-relart-type">
 		<xsl:param name="reftype"/>
 		<xsl:choose>
-		<!-- TODO Check that all related article types are mapped -->
-			<xsl:when test="$reftype='CommentIn'">commentary</xsl:when>
 			<xsl:when test="$reftype='CommentOn'">commentary-article</xsl:when>
-			<xsl:when test="$reftype='ErratumFor'">corrected-article</xsl:when>
-			<xsl:when test="$reftype='RepublishedFrom'">republished-article</xsl:when>
-			<xsl:when test="$reftype='ReprintOf'">republished-article</xsl:when>
-			<xsl:when test="$reftype='RetractionOf'">retracted-article</xsl:when>
-			<xsl:when test="$reftype='OriginalReportIn'">companion</xsl:when>
-			<xsl:when test="$reftype='SummaryForPatientsIn'">companion</xsl:when>
-			<xsl:when test="$reftype='RepublishedIn'">republished-article</xsl:when>
-			<xsl:when test="$reftype='ReprintIn'">republished-article</xsl:when>
-			<xsl:when test="$reftype='RetractionIn'">retraction-forward</xsl:when>
+			<xsl:when test="$reftype='CommentIn'">commentary</xsl:when>
 			<xsl:when test="$reftype='ErratumIn'">correction-forward</xsl:when>
+			<xsl:when test="$reftype='ErratumFor'">corrected-article</xsl:when>
+			<xsl:when test="$reftype='PartialRetractionIn'">retraction-forward</xsl:when>
+			<xsl:when test="$reftype='PartialRetractionOf'">retracted-article</xsl:when>
+			<xsl:when test="$reftype='RepublishedFrom'">republished-article</xsl:when>
+			<xsl:when test="$reftype='RepublishedIn'">republished-article</xsl:when>
+			<xsl:when test="$reftype='RetractionOf'">retracted-article</xsl:when>
+			<xsl:when test="$reftype='RetractionIn'">retraction-forward</xsl:when>
+			<xsl:when test="$reftype='UpdateIn'">update</xsl:when>
+			<xsl:when test="$reftype='UpdateOf'">updated-article</xsl:when>
+			<xsl:when test="$reftype='SummaryForPatientsIn'">companion</xsl:when>
+			<xsl:when test="$reftype='OriginalReportIn'">companion</xsl:when>
+			<xsl:when test="$reftype='ReprintOf'">republished-article</xsl:when>
+			<xsl:when test="$reftype='ReprintIn'">republished-article</xsl:when>
 			<xsl:when test="$reftype='Cites'">cites</xsl:when>
 		</xsl:choose>
 	</xsl:template>
@@ -1473,8 +1515,9 @@
 						<xsl:attribute name="journal-id">
 							<xsl:value-of select="$nlmta"/>
 						</xsl:attribute>
-					</xsl:if>
--->				</related-article>
+					</xsl:if> -->		
+					<xsl:value-of select="RefSource"/>
+				</related-article>
 			</xsl:when>
 			<xsl:otherwise>
 					<xsl:apply-templates select="RefSource">
@@ -1591,9 +1634,27 @@
 		</permissions>
 		</xsl:template>
 
+	<xsl:template name="write-languages">
+		<kwd-group kwd-group-type="document-languages">
+			<xsl:choose>
+				<xsl:when test="self::PubmedArticle">
+					<xsl:for-each select="MedlineCitation/Article/Language">
+						<kwd><xsl:apply-templates/></kwd>
+						</xsl:for-each>
+					</xsl:when>
+				<xsl:otherwise>
+					<xsl:for-each-group select="descendant-or-self::node()/@xml:lang" group-by=".">
+						<kwd><xsl:value-of select="."/></kwd>
+						</xsl:for-each-group>
+					</xsl:otherwise>	
+				</xsl:choose>
+		</kwd-group>
+		</xsl:template>
+
+
 	
-	<xsl:template match="ChemicalList | MeshHeadingList | GeneSymbolList | PersonalNameSubjectList | DataBankList | SupplMeshList">
-		<kwd-group kwd-group-type="{local-name()}">
+	<xsl:template match="ChemicalList | MeshHeadingList | GeneSymbolList | PersonalNameSubjectList | DataBankList | SupplMeshList | KeywordList">
+		<kwd-group kwd-group-type="{if (self::KeywordList and @Owner) then (@Owner) else (local-name())}">
 			<xsl:apply-templates/>
 		</kwd-group>
 	</xsl:template>	
@@ -1631,7 +1692,7 @@
 		</xsl:choose>
 	</xsl:template>	
 	
-	<xsl:template match="DescriptorName">
+	<xsl:template match="DescriptorName | Keyword">
 		<kwd content-type="{if (@MajorTopicYN='N') then 'not-major' else 'major'}">
 			<xsl:apply-templates/>
 		</kwd>
@@ -1933,6 +1994,64 @@
 		</xsl:if>
 	</xsl:template>
 	
+
+<xsl:template match="related-article">
+	<related-article>
+		<xsl:apply-templates select="@*"/>
+		<xsl:choose>
+			<xsl:when test="not(normalize-space)">
+				<xsl:call-template name="build-relart-string"/>
+				</xsl:when>
+			<xsl:when test="@vol and @page and (not(contains(.,@vol)) or not(contains(.,@page)))">
+				<xsl:call-template name="build-relart-string"/>
+				</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates/>
+				</xsl:otherwise>
+			</xsl:choose>
+	</related-article>
+	</xsl:template>
+	
+
+	<xsl:template name="build-relart-string">
+		<!-- context node: related-article -->
+		<xsl:variable name="jname" select="normalize-space(/article/front/journal-meta/journal-id[@journal-id-type='nlm-ta'])"/>
+		<xsl:variable name="jid" select="normalize-space(@journal-id)"/>
+		<xsl:choose>
+			<xsl:when test="@journal-id and (@journal-id-type='nlm-ta' or @journal-id-type='iso-abbrev')">
+				<xsl:value-of select="$jid"/>
+				<xsl:choose>
+					<xsl:when test="substring($jid,string-length($jid),1)='.'">
+						<xsl:text> </xsl:text>
+						</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>. </xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$jname"/>
+				<xsl:choose>
+					<xsl:when test="substring($jname,string-length($jname),1)='.'">
+						<xsl:text> </xsl:text>
+						</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>. </xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:otherwise>
+			</xsl:choose>
+		<xsl:if test="normalize-space(@vol)">
+			<xsl:value-of select="@vol"/>
+			<xsl:text>:</xsl:text>
+			</xsl:if>
+		<xsl:if test="normalize-space(@page)">
+			<xsl:value-of select="@page"/>
+			</xsl:if>
+		<xsl:if test="@vol or @page">
+			<xsl:text>.</xsl:text>
+			</xsl:if>
+		</xsl:template>
 
 
 	
