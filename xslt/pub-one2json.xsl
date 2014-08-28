@@ -160,17 +160,21 @@
     </xsl:template>
 
     <xsl:template match="source-meta" mode="container">
+	 		<!-- process abbreviated journal title as container-title-short -->
         <xsl:choose>
             <xsl:when test="object-id[@pub-id-type='nlm-ta']">
-                <s k="container-title">
+                <s k="container-title-short">
                     <xsl:value-of select="object-id[@pub-id-type='nlm-ta']"/>
                 </s>
             </xsl:when>
             <xsl:when test="object-id[@pub-id-type='iso-abbrev']">
-                <s k="container-title">
+                <s k="container-title-short">
                     <xsl:value-of select="object-id[@pub-id-type='iso-abbrev']"/>
                 </s>
             </xsl:when>
+        </xsl:choose>
+		  <!-- process full title as container-title -->
+        <xsl:choose>
             <xsl:when test="parent::node()/@record-type='section'">
                 <s k="container-title">
                     <xsl:apply-templates select="title-group/title"/>
@@ -180,6 +184,18 @@
                     </xsl:if>
                 </s>
             </xsl:when>
+            <xsl:when test="normalize-space(title-group/title/text())">
+                <s k="container-title">
+                    <xsl:apply-templates select="title-group/title"/>
+                    <xsl:if test="title-group/subtitle">
+                        <xsl:text>: </xsl:text>
+                        <xsl:apply-templates select="title-group/subtitle"/>
+                    </xsl:if>
+                </s>
+            </xsl:when>
+				<xsl:otherwise>
+				<xsl:message>OTHERWISE!</xsl:message>
+				</xsl:otherwise>
         </xsl:choose>
         <xsl:apply-templates select="publisher/publisher-name"/>
         <xsl:apply-templates select="publisher/publisher-loc"/>
