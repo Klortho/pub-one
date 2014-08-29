@@ -1016,15 +1016,39 @@
 	</xsl:template>
 
 
-	<xsl:template match="Day">
-		<day>
-			<xsl:apply-templates/>
-		</day>
+	<xsl:template match="Day | day">
+		<xsl:if test="normalize-space()">
+			<day>
+				<xsl:value-of select="number()"/>
+			</day>
+			</xsl:if>
 	</xsl:template>	
-	<xsl:template match="Month">
+	
+	<xsl:template match="month">
 		<month>
-			<xsl:value-of  select="ncbi:month-name-to-number(.)"/>
+			<xsl:choose>
+				<xsl:when test="number()">
+					<xsl:value-of select="number()"/>
+					</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of  select="ncbi:month-name-to-number(.)"/>
+					</xsl:otherwise>
+				</xsl:choose>
 		</month>
+	</xsl:template>	
+	
+	<xsl:template match="volume | issue">
+		<xsl:element name="{local-name()}">
+			<xsl:value-of select="if (number()) then (number()) else ."/>
+		</xsl:element>
+	</xsl:template>	
+	
+	<xsl:template match="Month">
+		<xsl:if test="normalize-space()">
+			<month>
+				<xsl:value-of  select="ncbi:month-name-to-number(.)"/>
+			</month>
+			</xsl:if>
 	</xsl:template>	
 	<xsl:template match="Year">
 		<year>
@@ -1885,15 +1909,15 @@
 				and number($f3)=floor($f3)">
 				<xsl:value-of select="number($f3)"/>
 			</xsl:when>
-			<xsl:when test="$f3 = 'JAN'">01</xsl:when>
-			<xsl:when test="$f3 = 'FEB'">02</xsl:when>
-			<xsl:when test="$f3 = 'MAR'">03</xsl:when>
-			<xsl:when test="$f3 = 'APR'">04</xsl:when>
-			<xsl:when test="$f3 = 'MAY'">05</xsl:when>
-			<xsl:when test="$f3 = 'JUN'">06</xsl:when>
-			<xsl:when test="$f3 = 'JUL'">07</xsl:when>
-			<xsl:when test="$f3 = 'AUG'">08</xsl:when>
-			<xsl:when test="$f3 = 'SEP'">09</xsl:when>
+			<xsl:when test="$f3 = 'JAN'">1</xsl:when>
+			<xsl:when test="$f3 = 'FEB'">2</xsl:when>
+			<xsl:when test="$f3 = 'MAR'">3</xsl:when>
+			<xsl:when test="$f3 = 'APR'">4</xsl:when>
+			<xsl:when test="$f3 = 'MAY'">5</xsl:when>
+			<xsl:when test="$f3 = 'JUN'">6</xsl:when>
+			<xsl:when test="$f3 = 'JUL'">7</xsl:when>
+			<xsl:when test="$f3 = 'AUG'">8</xsl:when>
+			<xsl:when test="$f3 = 'SEP'">9</xsl:when>
 			<xsl:when test="$f3 = 'OCT'">10</xsl:when>
 			<xsl:when test="$f3 = 'NOV'">11</xsl:when>
 			<xsl:when test="$f3 = 'DEC'">12</xsl:when>
