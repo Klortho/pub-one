@@ -330,14 +330,9 @@
 	</xsl:template>
 	
 	<xsl:template match="article-id">
-		<xsl:choose>
-			<xsl:when test="@pub-id-type='pmid'"/>
-			<xsl:otherwise>
-				<object-id pub-id-type="{@pub-id-type}">
-					<xsl:apply-templates/>
-				</object-id>
-			</xsl:otherwise>
-		</xsl:choose>
+		<object-id pub-id-type="{@pub-id-type}">
+			<xsl:apply-templates/>
+		</object-id>
 	</xsl:template>
 
 	<!-- <xsl:template match="article-id[@pub-id-type='pmid']">
@@ -358,7 +353,7 @@
 		<xsl:if test="$pmcid!=''">
 			<xsl:choose>
 				<xsl:when test="number($pmcid) and /article">
-					<object-id pub-id-type="pmc">
+					<object-id pub-id-type="pmcid">
 						<xsl:value-of select="concat('PMC',$pmcid)"/>
 					</object-id>
 					</xsl:when>
@@ -375,7 +370,7 @@
 				</xsl:choose>
 		</xsl:if>
 		<xsl:if test="$pmid!='' and $pmid != '0'">
-			<object-id pub-id-type="pubmed">
+			<object-id pub-id-type="pmid">
 				<xsl:value-of select="$pmid"/>
 			</object-id>
 		</xsl:if>
@@ -761,13 +756,13 @@
 	</xsl:template>
 	
 	<xsl:template match="PMID">
-		<object-id pub-id-type="pubmed">
+		<object-id pub-id-type="pmid"><xsl:comment>Boo</xsl:comment>
 			<xsl:apply-templates/>
 		</object-id>
 	</xsl:template>
 	
 	<xsl:template match="ArticleId">
-		<object-id pub-id-type="{if (@IdType='mid') then 'manuscript-id' else @IdType}">
+		<object-id pub-id-type="{if (@IdType='mid') then 'manuscript-id' else (if (@IdType='pubmed') then 'pmid' else (if (@IdType='pmc') then 'pmcid' else @IdType))}">
 			<xsl:apply-templates/>
 		</object-id>
 	</xsl:template>
