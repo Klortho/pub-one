@@ -11,6 +11,10 @@
   <xsl:include href="dates-and-strings.xsl"/>
   
   <xsl:param name="pmid" as="xs:string" select="''"/>
+  <!-- 
+    pmcid can either be numeric (in which case it is assumed to be a pmcid, and "PMC" is prepended)
+    or of the canonical form like "PMC12345", "NBK12345".
+  -->
   <xsl:param name="pmcid" as="xs:string" select="''"/>
   <xsl:param name="book_id" as="xs:string?" select="tokenize(base-uri(), '\.')[last()-1]"/>
 
@@ -330,9 +334,11 @@
   </xsl:template>
   
   <xsl:template match="article-id">
-    <object-id pub-id-type="{@pub-id-type}">
-      <xsl:apply-templates/>
-    </object-id>
+    <xsl:if test='@pub-id-type != "pmid" or not($pmid) or $pmid = "0"'>
+      <object-id pub-id-type="{@pub-id-type}">
+        <xsl:apply-templates/>
+      </object-id>
+    </xsl:if>
   </xsl:template>
 
   <!-- <xsl:template match="article-id[@pub-id-type='pmid']">
@@ -350,24 +356,29 @@
 
   <xsl:template name="write-oids-from-params">
     <!--<xsl:message> got here! pmcid="<xsl:value-of select="$pmcid"/>" | pmid="<xsl:value-of select="$pmid"/>"</xsl:message>-->
-    <xsl:if test="$pmcid!=''">
+    <xsl:if test="$pmcid != ''">
       <xsl:choose>
         <xsl:when test="number($pmcid) and /article">
           <object-id pub-id-type="pmcid">
-            <xsl:value-of select="concat('PMC',$pmcid)"/>
+            <xsl:value-of select="concat('PMC', $pmcid)"/>
           </object-id>
-          </xsl:when>
+        </xsl:when>
         <xsl:when test="number($pmcid) and (/book or /book-part)">
           <object-id pub-id-type="pmcbookid">
-            <xsl:value-of select="concat('NBK',$pmcid)"/>
+            <xsl:value-of select="concat('NBK', $pmcid)"/>
           </object-id>
-          </xsl:when>
+        </xsl:when>
+        <xsl:when test="starts-with($pmcid, 'PMC')">
+          <object-id pub-id-type="pmcid">
+            <xsl:value-of select="$pmcid"/>
+          </object-id>
+        </xsl:when>
         <xsl:otherwise>
           <object-id pub-id-type="pmcbookid">
             <xsl:value-of select="$pmcid"/>
           </object-id>
-          </xsl:otherwise>
-        </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:if>
     <xsl:if test="$pmid!='' and $pmid != '0'">
       <object-id pub-id-type="pmid">
