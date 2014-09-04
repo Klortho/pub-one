@@ -8,6 +8,11 @@
     
     <xsl:output method="text" encoding="UTF-8"/>
 
+    <!--
+      According to the RIS specification, lines should end with carriage-return, line-feed.
+    -->
+    <xsl:variable name='nl' select='"&#xD;&#xA;"'/>
+
     <xsl:template match="/">
         <xsl:apply-templates/>
     </xsl:template>
@@ -22,6 +27,7 @@
         <xsl:apply-templates select="document-meta|source-meta"/>      
         <xsl:apply-templates select="source-meta" mode="container"/>
         <xsl:text>ER  - </xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="@record-type">
@@ -31,7 +37,10 @@
             <xsl:when test=".='book'">BOOK</xsl:when>
             <xsl:when test=".='section'">CHAP</xsl:when>
         </xsl:choose>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
+      
+        <xsl:text>DB  - PMC</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="contrib-group">
@@ -44,7 +53,7 @@
         <xsl:value-of select="upper-case(substring(ancestor::contrib/@contrib-type, 1, 2))"/>
         <xsl:text>  - </xsl:text>
         <xsl:value-of select="."/>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="name">
@@ -52,7 +61,7 @@
         <xsl:text>  - </xsl:text>
         <xsl:value-of select="surname"/>
         <xsl:apply-templates select="given-names"/>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="given-names">
@@ -80,7 +89,7 @@
             <xsl:text>: </xsl:text>
             <xsl:apply-templates select="title-group/subtitle"/>
         </xsl:if>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="title|subtitle">
@@ -126,7 +135,7 @@
             <xsl:apply-templates select="day"/>
             <xsl:apply-templates select="season"/>
         </xsl:if>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="date">
@@ -137,7 +146,7 @@
         <xsl:text>/</xsl:text>
         <xsl:apply-templates select="day"/>
         <xsl:value-of select="if(@date-type='rev-recd') then '/revised' else concat('/', @date-type)"/>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="year|day">
@@ -172,7 +181,7 @@
     <xsl:template match="abstract|trans-abstract">
         <xsl:text>AB  - </xsl:text>
         <xsl:apply-templates/>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="abstract/title"/>
@@ -200,59 +209,61 @@
     <xsl:template match="fpage|elocation-id">
         <xsl:text>SP  - </xsl:text>
         <xsl:value-of select="."/>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="lpage">
         <xsl:text>EP  - </xsl:text>
         <xsl:value-of select="."/>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="volume">
         <xsl:text>VL  - </xsl:text>
         <xsl:value-of select="."/>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="issue">
         <xsl:text>IS  - </xsl:text>
         <xsl:value-of select="."/>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="issn|isbn">
         <xsl:text>SN  - </xsl:text>
         <xsl:value-of select="."/>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="object-id">
         <xsl:choose>
             <xsl:when test="@pub-id-type='pmcid'">
-                <xsl:text>U1  - </xsl:text>
-                <xsl:value-of select="."/>
-                <xsl:text> (PMC)&#x0A;</xsl:text>
+                <xsl:text>AN  - </xsl:text>
+                <xsl:value-of select="concat(., $nl)"/>
+                <xsl:text>UR  - http://www.ncbi.nlm.nih.gov/pmc/articles/</xsl:text>
+                <xsl:value-of select='concat(., "/", $nl)'/>
             </xsl:when>
             <xsl:when test="@pub-id-type='pmid'">
-                <xsl:text>U2  - </xsl:text>
-                <xsl:value-of select="."/>
-                <xsl:text> (PMID)&#x0A;</xsl:text>
+                <!-- Put the pmid into a U1 line, with the "[pmid]" suffix. -->
+                <xsl:value-of select="concat('U1  - ', ., '[pmid]', $nl)"/>
             </xsl:when>
             <xsl:when test="@pub-id-type='doi'">
                 <xsl:text>DO  - </xsl:text>
                 <xsl:value-of select="."/>
-                <xsl:text>&#x0A;</xsl:text>
+                <xsl:value-of select='$nl'/>
             </xsl:when>
             <xsl:when test="@pub-id-type='publisher-id'">
-                <xsl:text>U3  - </xsl:text>
+                <!-- Also put the publisher ID into a U1 line, using a "[PII]" suffix. -->
+                <xsl:text>U1  - </xsl:text>
                 <xsl:value-of select="."/>
-                <xsl:text> (PII)&#x0A;</xsl:text>
+                <xsl:text>[PII]</xsl:text>
+                <xsl:value-of select='$nl'/>
             </xsl:when>
             <xsl:when test="@pub-id-type='nlm-ta'">
                 <xsl:text>J1  - </xsl:text>
                 <xsl:value-of select="."/>
-                <xsl:text>&#x0A;</xsl:text>
+                <xsl:value-of select='$nl'/>
             </xsl:when>
         </xsl:choose>
     </xsl:template>
@@ -261,7 +272,7 @@
         <xsl:if test="object-id[@pub-id-type='nlm-ta']">
             <xsl:text>J1  - </xsl:text>
             <xsl:value-of select="object-id[@pub-id-type='nlm-ta']"/>
-            <xsl:text>&#x0A;</xsl:text>
+            <xsl:value-of select='$nl'/>
         </xsl:if>
         <xsl:if test="parent::node()[@record-type='section' or @record-type='article']">
             <xsl:apply-templates select="self::*" mode="title"/>
@@ -273,13 +284,13 @@
     <xsl:template match="publisher-name">        
         <xsl:text>PB  - </xsl:text>        
         <xsl:value-of select="."/>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
     
     <xsl:template match="publisher-loc">        
         <xsl:text>CY  - </xsl:text>        
         <xsl:value-of select="."/>
-        <xsl:text>&#x0A;</xsl:text>
+        <xsl:value-of select='$nl'/>
     </xsl:template>
 
 </xsl:stylesheet>
