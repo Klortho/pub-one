@@ -125,7 +125,8 @@
             <a k="author">
                 <xsl:for-each select="contrib[@contrib-type='author']">
                     <o>
-                        <xsl:apply-templates select="string-name|collab|on-behalf-of|name/*"/>
+                        <xsl:apply-templates select="string-name | collab | on-behalf-of | name/* |
+                                                     name-alternatives"/>
                     </o>
                 </xsl:for-each>
             </a>
@@ -134,7 +135,8 @@
             <a k="editor">
                 <xsl:for-each select="contrib[@contrib-type='editor']">
                     <o>
-                        <xsl:apply-templates select="string-name|collab|on-behalf-of|name/*"/>
+                        <xsl:apply-templates select="string-name | collab | on-behalf-of | name/* |
+                                                     name-alternatives"/>
                     </o>
                 </xsl:for-each>
             </a>
@@ -159,8 +161,29 @@
         </s>
     </xsl:template>
 
+    <!-- For name-alternatives, we'll pick one, in a defined precedence order. -->
+    <xsl:template match='name-alternatives'>
+        <xsl:choose>
+            <xsl:when test="name[@name-style='western']">
+                <xsl:apply-templates select="name[@name-style='western']/*"/>
+            </xsl:when>
+            <xsl:when test="name[@name-style='given-only']">
+                <xsl:apply-templates select="name[@name-style='given-only']/*"/>
+            </xsl:when>
+            <xsl:when test="name[@name-style='eastern']">
+                <xsl:apply-templates select="name[@name-style='eastern']/*"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates 
+                    select="name[@name-style != 'western' and @name-style != 'given-only' and
+                                 @name-style != 'eastern'][1]/*"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+
     <xsl:template match="source-meta" mode="container">
-	 		<!-- process abbreviated journal title as container-title-short -->
+            <!-- process abbreviated journal title as container-title-short -->
         <xsl:choose>
             <xsl:when test="object-id[@pub-id-type='nlm-ta']">
                 <s k="container-title-short">
@@ -173,7 +196,7 @@
                 </s>
             </xsl:when>
         </xsl:choose>
-		  <!-- process full title as container-title -->
+          <!-- process full title as container-title -->
         <xsl:choose>
             <xsl:when test="parent::node()/@record-type='section'">
                 <s k="container-title">
@@ -193,9 +216,9 @@
                     </xsl:if>
                 </s>
             </xsl:when>
-				<xsl:otherwise>
-				<xsl:message>OTHERWISE!</xsl:message>
-				</xsl:otherwise>
+                <xsl:otherwise>
+                <xsl:message>OTHERWISE!</xsl:message>
+                </xsl:otherwise>
         </xsl:choose>
         <xsl:apply-templates select="publisher/publisher-name"/>
         <xsl:apply-templates select="publisher/publisher-loc"/>
