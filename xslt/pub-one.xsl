@@ -726,10 +726,10 @@
       <xsl:choose>
         <xsl:when test="(starts-with(normalize-space(),'[') and (ends-with(normalize-space(),']') or ends-with(normalize-space(),'].'))) and count(following-sibling::Language) = 1 and following-sibling::VernacularTitle">
           <!-- vernacular title is article title . article title is english version -->
-          <title><xsl:value-of select="following-sibling::VernacularTitle"/></title>
+          <title><xsl:apply-templates select="following-sibling::VernacularTitle"/></title>
           <trans-title-group xml:lang="en">
             <trans-title>
-              <xsl:apply-templates/>
+              <xsl:apply-templates select="self::node()" mode="trans-title"/>
             </trans-title>
             </trans-title-group>
         </xsl:when>
@@ -748,6 +748,31 @@
       
     </title-group>
   </xsl:template> 
+ 
+ <xsl:template match="VernacularTitle">
+ 	<xsl:choose>
+		<xsl:when test="ends-with(.,'.')">
+			<xsl:value-of select="substring(.,1,string-length()-1)"/>
+			</xsl:when>
+		<xsl:otherwise>
+			<xsl:apply-templates/>
+			</xsl:otherwise>
+ 		</xsl:choose>
+ 	</xsl:template>
+ 
+<xsl:template match="ArticleTitle" mode="trans-title">
+	<xsl:variable name="txt" select="translate(normalize-space(),'[]','')" as="xs:string"/>
+ 	<xsl:choose>
+		<xsl:when test="ends-with($txt,'.')">
+			<xsl:value-of select="substring($txt,1,string-length($txt)-1)"/>
+			</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="$txt"/>
+			</xsl:otherwise>
+ 		</xsl:choose>
+		
+	</xsl:template>
+
   
   <xsl:template name="find-lang">
     <xsl:variable name="vtno" select="count(preceding-sibling::VernacularTitle) + 1"/>
