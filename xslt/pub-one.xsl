@@ -1406,7 +1406,7 @@
   </xsl:template>
   
   <xsl:template name="relart">
-    <xsl:apply-templates select="//CommentsCorrections"/>
+    <xsl:apply-templates select="descendant::CommentsCorrections"/>
   </xsl:template>
   
   <xsl:template match="CommentsCorrections">
