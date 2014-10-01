@@ -234,6 +234,8 @@
         <xsl:apply-templates/>
         <xsl:text>)</xsl:text>
     </xsl:template>
+	 
+	 <xsl:template match="sup" mode="dumptext"/>
 
     <xsl:template match="*[ancestor::title or ancestor::subtitle or ancestor::abstract]
         [not(self::sub or self::sup or self::title[ancestor::abstract])]">
@@ -284,7 +286,7 @@
     
     <xsl:template match="aff">
         <xsl:text>AD  - </xsl:text>
-        <xsl:value-of select="."/>
+        <xsl:apply-templates mode="dumptext"/>
         <xsl:text>&#x0A;</xsl:text>
     </xsl:template>
 
