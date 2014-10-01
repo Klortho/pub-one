@@ -2109,6 +2109,10 @@
     </xsl:template>
 
 
-  
+  <xsl:template match="sup[parent::aff and not(preceding-sibling::*)]">
+  	<label>
+		<xsl:apply-templates/>
+	</label>
+	</xsl:template>
 
 </xsl:stylesheet>
