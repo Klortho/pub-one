@@ -16,7 +16,9 @@
     or of the canonical form like "PMC12345", "NBK12345".
   -->
   <xsl:param name="pmcid" as="xs:string" select="''"/>
-  <xsl:param name="book_id" as="xs:string?" select="tokenize(base-uri(), '\.')[last()-1]"/>
+  
+  <!-- <xsl:param name="book_id" as="xs:string?" select="tokenize(base-uri(), '\.')[last()-1]"/>  -->
+  <xsl:param name="book_id" as="xs:string?"/>
 
 
 
@@ -96,7 +98,7 @@
         <xsl:when test="/book-part/@book-part-type='toc'">
           <xsl:call-template name="write-oids-from-params"/>
         </xsl:when>
-        <xsl:when test="/book-part and $book_id != '' ">
+        <xsl:when test="/book-part and $book_id != '' and $book_id != '0'">
           <object-id pub-id-type="pmcbookid">
             <xsl:value-of select="concat('NBK', $book_id)"/>
           </object-id>
