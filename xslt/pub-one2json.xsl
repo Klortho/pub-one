@@ -56,7 +56,7 @@
             <xsl:if test="@record-type='book'">
                 <xsl:apply-templates select="source-meta" mode="title"/>
             </xsl:if>
-            <xsl:apply-templates select="//contrib-group"/>
+            <xsl:call-template name="contrib-group"/>
             <xsl:apply-templates select="source-meta" mode="container"/>
             <xsl:apply-templates select="document-meta|source-meta"/>
             <s k="type">
@@ -120,10 +120,10 @@
         <xsl:value-of select="."/>
     </xsl:template>
 
-    <xsl:template match="contrib-group">
-        <xsl:if test="contrib[@contrib-type='author']">
+    <xsl:template name="contrib-group">
+        <xsl:if test="//contrib[@contrib-type='author']">
             <a k="author">
-                <xsl:for-each select="contrib[@contrib-type='author']">
+                <xsl:for-each select="//contrib[@contrib-type='author']">
                     <o>
                         <xsl:apply-templates select="string-name | collab | on-behalf-of | name/* |
                                                      name-alternatives"/>
@@ -131,9 +131,9 @@
                 </xsl:for-each>
             </a>
         </xsl:if>
-        <xsl:if test="contrib[@contrib-type='editor']">
+        <xsl:if test="//contrib[@contrib-type='editor']">
             <a k="editor">
-                <xsl:for-each select="contrib[@contrib-type='editor']">
+                <xsl:for-each select="//contrib[@contrib-type='editor']">
                     <o>
                         <xsl:apply-templates select="string-name | collab | on-behalf-of | name/* |
                                                      name-alternatives"/>
