@@ -53,7 +53,7 @@
     
     <xsl:template match="front">
         <xsl:apply-templates select="article-meta" mode="title"/>
-        <xsl:apply-templates select="article-meta/contrib-group"/>
+        <xsl:apply-templates select="article-meta" mode="contrib-group"/>
         <xsl:apply-templates select="journal-meta"/>
         <xsl:apply-templates select="article-meta"/>
         <s k="type">article-journal</s>
@@ -99,14 +99,24 @@
         <xsl:value-of select="."/>
     </xsl:template>
     
-    <xsl:template match="contrib-group">
+    <xsl:template match="article-meta" mode="contrib-group">
         <a k="author">
-            <xsl:for-each select="contrib[@contrib-type='author']">
+            <xsl:for-each select="contrib-group/contrib[@contrib-type='author']">
                 <o>
                     <xsl:apply-templates select="string-name|collab|on-behalf-of|name/*"/>
                 </o>
             </xsl:for-each>
         </a>
+        <xsl:if test="contrib-group/contrib[@contrib-type='editor']">
+            <a k="editor">
+                <xsl:for-each select="contrib-group/contrib[@contrib-type='editor']">
+                    <o>
+                        <xsl:apply-templates select="string-name | collab | on-behalf-of | name/* |
+                            name-alternatives"/>
+                    </o>
+                </xsl:for-each>
+            </a>
+        </xsl:if>
     </xsl:template>
     
     <xsl:template match="string-name|collab|on-behalf-of">
