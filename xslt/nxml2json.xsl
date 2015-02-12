@@ -120,7 +120,7 @@
     </xsl:template>
     
     <xsl:template match="string-name|collab|on-behalf-of">
-        <s k="literal">
+        <s k="family">
             <xsl:value-of select="."/>
         </s>
     </xsl:template>
