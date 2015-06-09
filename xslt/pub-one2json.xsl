@@ -285,7 +285,7 @@
       </xsl:when>
     </xsl:choose>
     
-    <xsl:if test="@ahead-of-print = 'true'">
+    <xsl:if test="@ahead-of-print = 'yes'">
       <s k='status'>
         <xsl:text>ahead-of-print</xsl:text>
       </s>

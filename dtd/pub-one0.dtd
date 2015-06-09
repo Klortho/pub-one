@@ -344,9 +344,10 @@
 <!--                    BOOK METADATA ATTRIBUTES                   -->
 <!--                    Attributes for the <book-meta> element     -->
 <!ENTITY % book-meta-atts
-           "%jats-common-atts;"                                          >                                        
-
-
+           "%jats-common-atts;
+           ahead-of-print (no | yes)                      #IMPLIED"  >
+           
+           
 <!--                    FRONT MATTER ATTRIBUTES                    -->
 <!--                    Attributes for the <front-matter> element  -->
 <!ENTITY % front-matter-atts
