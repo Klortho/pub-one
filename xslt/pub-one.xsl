@@ -148,6 +148,10 @@
   <xsl:template name="write-document-meta">
     <xsl:variable name="bookpartype" select="/book-part/@book-part-type"/>
     <document-meta>
+      <xsl:if test='//processing-instruction(OLF)'>
+        <ahead-of-print/>
+      </xsl:if>
+
       <!-- write <object-id> -->
       <xsl:apply-templates select="PubmedData/ArticleIdList/ArticleId | MedlineCitation/OtherID[not(@Source='NLM')] |
               front/article-meta/article-id | 

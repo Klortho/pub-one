@@ -257,17 +257,40 @@
   </xsl:template>
 
   <xsl:template match="document-meta|source-meta">
+    <!-- issued date and online date-->
     <xsl:choose>
       <xsl:when test="pub-date[@date-type='ppub' or @date-type='epub-ppub']">
-        <xsl:apply-templates select="pub-date[@date-type='ppub' or @date-type='epub-ppub']"/>
+        <xsl:call-template name="issued-date">
+          <xsl:with-param name="pub-date" 
+                          select="pub-date[@date-type='ppub' or @date-type='epub-ppub'][1]"/>
+        </xsl:call-template>
+        <xsl:if test='pub-date[@date-type="epub"]'>
+          <xsl:call-template name="online-date">
+            <xsl:with-param name="pub-date" 
+                            select="pub-date[@date-type='epub'][1]"/>
+          </xsl:call-template>
+        </xsl:if>
       </xsl:when>
       <xsl:when test="pub-date[@date-type='collection']">
-        <xsl:apply-templates select="pub-date[@date-type='collection']"/>
+        <xsl:call-template name="issued-date">
+          <xsl:with-param name="pub-date" 
+                          select="pub-date[@date-type='collection'][1]"/>
+        </xsl:call-template>
       </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="pub-date[@date-type='epub' or @date-type='epubr'][1]"/>
-      </xsl:otherwise>
+      <xsl:when test="pub-date[@date-type='epub' or @date-type='epubr']">
+        <xsl:call-template name="issued-date">
+          <xsl:with-param name="pub-date" 
+                          select="pub-date[@date-type='epub' or @date-type='epubr'][1]"/>
+        </xsl:call-template>
+      </xsl:when>
     </xsl:choose>
+
+    <xsl:if test="ahead-of-print">
+      <s k='status'>
+        <xsl:text>ahead-of-print</xsl:text>
+      </s>
+    </xsl:if>
+
     <xsl:apply-templates select="fpage|elocation-id"/>
     <xsl:apply-templates select="volume"/>
     <xsl:apply-templates select="issue"/>
@@ -276,18 +299,36 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="pub-date">
+  <xsl:template name='issued-date'>
+    <xsl:param name="pub-date"/>
     <o k="issued">
-      <a k="date-parts">
-        <a>
-          <xsl:apply-templates select="year"/>
-          <xsl:apply-templates select="month"/>
-          <xsl:apply-templates select="day"/>
-        </a>
-      </a>
+      <xsl:call-template name='date-parts'>
+        <xsl:with-param name="pub-date" select="$pub-date"/>
+      </xsl:call-template>
     </o>
   </xsl:template>
+  
+  <xsl:template name='online-date'>
+    <xsl:param name="pub-date"/>
+    <o k="epub-date">
+      <xsl:call-template name='date-parts'>
+        <xsl:with-param name="pub-date" select="$pub-date"/>
+      </xsl:call-template>
+    </o>
+  </xsl:template>
+  
+  <xsl:template name='date-parts'>
+    <xsl:param name="pub-date"/>
+    <a k="date-parts">
+      <a>
+        <xsl:apply-templates select="$pub-date/year"/>
+        <xsl:apply-templates select="$pub-date/month"/>
+        <xsl:apply-templates select="$pub-date/day"/>
+      </a>
+    </a>
+  </xsl:template>
 
+ 
   <!--
     Output the accessed date.  If it was passed in as a parameter, use that.  Otherwise, use today's date.
   -->
