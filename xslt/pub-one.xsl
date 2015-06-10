@@ -149,7 +149,7 @@
     <xsl:variable name="bookpartype" select="/book-part/@book-part-type"/>
     <document-meta>
       <xsl:if test='//processing-instruction(OLF)'>
-        <xsl:attribute name='ahead-of-print'>yes</xsl:attribute>
+        <ahead-of-print/>
       </xsl:if>
 
       <!-- write <object-id> -->

@@ -344,8 +344,7 @@
 <!--                    BOOK METADATA ATTRIBUTES                   -->
 <!--                    Attributes for the <book-meta> element     -->
 <!ENTITY % book-meta-atts
-           "%jats-common-atts;
-           ahead-of-print (no | yes)                      #IMPLIED"  >
+           "%jats-common-atts;" >
            
            
 <!--                    FRONT MATTER ATTRIBUTES                    -->
@@ -381,7 +380,7 @@
 <!-- ============================================================= -->
                            
 <!ENTITY % source.document-meta-model  
-                        "(object-id*, subj-group*, title-group?,
+                        "(ahead-of-print?, object-id*, subj-group*, title-group?,
                           issn*, issn-l?, isbn*, 
                           (%contrib-group.class;)*, pub-date*,   
                           publisher*, edition*, volume?, issue?,
@@ -396,6 +395,7 @@
 
 
 
+<!ELEMENT ahead-of-print EMPTY >
 
 
 
