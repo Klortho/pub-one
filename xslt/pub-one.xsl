@@ -340,7 +340,7 @@
   </xsl:template>
   
   <xsl:template match="article-id">
-    <xsl:if test='@pub-id-type != "pmid" or not($pmid) or $pmid = "0"'>
+    <xsl:if test='@pub-id-type != "pmid" or not($pmid) or not($pmid = "0")'>
       <object-id pub-id-type="{@pub-id-type}">
         <xsl:apply-templates/>
       </object-id>
