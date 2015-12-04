@@ -285,7 +285,7 @@
 <!-- JATS-specific templates -->
   <xsl:template match="journal-id">
     <object-id pub-id-type="{@journal-id-type}">
-      <xsl:value-of select="."/>
+      <xsl:value-of select="if (.='PLoS ONE' and @journal-id-type='nlm-ta') then 'PLoS One' else ."/>
     </object-id>
   </xsl:template> 
   
