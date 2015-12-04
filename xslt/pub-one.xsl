@@ -40,14 +40,24 @@
 
 
   <xsl:template match="article">
-    <pub-one-record record-type="article" xml:lang="{if (@xml:lang) then (lower-case(@xml:lang)) else 'en'}">
+    <pub-one-record record-type="article">
+	 	<xsl:attribute name="xml:lang">
+	 		<xsl:call-template name="get-lang">
+				<xsl:with-param name="code" select="if (@xml:lang) then (normalize-space(@xml:lang)) else 'en'"/>
+				</xsl:call-template>
+			</xsl:attribute>
       <xsl:call-template name="write-source-meta"/>
       <xsl:call-template name="write-document-meta"/>
     </pub-one-record>
   </xsl:template>
   
   <xsl:template match="book | book-part[@book-part-type='toc']">
-    <pub-one-record record-type="book" xml:lang="{if (@xml:lang) then (lower-case(@xml:lang)) else 'en'}">
+    <pub-one-record record-type="book">
+	 	<xsl:attribute name="xml:lang">
+	 		<xsl:call-template name="get-lang">
+				<xsl:with-param name="code" select="if (@xml:lang) then (normalize-space(@xml:lang)) else 'en'"/>
+				</xsl:call-template>
+			</xsl:attribute>
       <xsl:call-template name="write-source-meta">
         <xsl:with-param name="abbreviated" select="'yes'"/>
         </xsl:call-template>
@@ -56,14 +66,24 @@
   </xsl:template>
   
   <xsl:template match="book-part[not(@book-part-type='toc')]">
-    <pub-one-record record-type="{@book-part-type}" xml:lang="{if (@xml:lang) then (lower-case(@xml:lang)) else 'en'}">
+    <pub-one-record record-type="{@book-part-type}">
+	 	<xsl:attribute name="xml:lang">
+	 		<xsl:call-template name="get-lang">
+				<xsl:with-param name="code" select="if (@xml:lang) then (normalize-space(@xml:lang)) else 'en'"/>
+				</xsl:call-template>
+			</xsl:attribute>
       <xsl:call-template name="write-source-meta"/>
       <xsl:call-template name="write-document-meta"/>
     </pub-one-record>
   </xsl:template>
   
   <xsl:template match="PubmedArticle">
-    <pub-one-record record-type="article" xml:lang="{MedlineCitation/Article/Language[1]}">
+    <pub-one-record record-type="article">
+	 	<xsl:attribute name="xml:lang">
+	 		<xsl:call-template name="get-lang">
+				<xsl:with-param name="code" select="normalize-space(MedlineCitation/Article/Language[1])"/>
+				</xsl:call-template>
+			</xsl:attribute>
     <!-- TODO - map pubmed article types to @record-type -->
       <xsl:call-template name="write-source-meta"/>
       <xsl:call-template name="write-document-meta"/>
@@ -783,7 +803,11 @@
   <xsl:template name="find-lang">
     <xsl:variable name="vtno" select="count(preceding-sibling::VernacularTitle) + 1"/>
     <xsl:if test="/descendant::Language[position()=$vtno + 1]">
-      <xsl:attribute name="xml:lang" select="/descendant::Language[position()=$vtno + 1]"/>
+	 	<xsl:attribute name="xml:lang">
+	 		<xsl:call-template name="get-lang">
+				<xsl:with-param name="code" select="normalize-space(/descendant::Language[position()=$vtno + 1])"/>
+				</xsl:call-template>
+			</xsl:attribute>
     </xsl:if>
     </xsl:template>
 
@@ -1666,6 +1690,14 @@
       </xsl:choose>
   </xsl:template>
   
+  <xsl:template match="@xml:lang">
+	 	<xsl:attribute name="xml:lang">
+	 		<xsl:call-template name="get-lang">
+				<xsl:with-param name="code" select="normalize-space()"/>
+				</xsl:call-template>
+			</xsl:attribute>
+  	</xsl:template>
+	
   <xsl:template match="AbstractText">
     <xsl:choose>
       <xsl:when test="@Label">
@@ -2126,5 +2158,239 @@
 		<xsl:apply-templates/>
 	</label>
 	</xsl:template>
+
+
+
+	<xsl:template name="get-lang">
+		<xsl:param name="code"/>
+		<xsl:choose>
+			<xsl:when test="lower-case($code)='en'">
+				<xsl:text>en</xsl:text>
+				</xsl:when>
+			<xsl:when test="string-length($code)=2 and $langs/l[@two=lower-case($code)]">
+				<xsl:value-of select="lower-case($code)"/>
+				</xsl:when>
+			<xsl:when test="string-length($code)=3">
+				<xsl:value-of select="if ($langs/l[@three=lower-case($code)]/@two) then ($langs/l[@three=lower-case($code)]/@two) else 'en'"/>
+				</xsl:when>
+			<xsl:when test="contains($code,'-') and string-length(substring-before($code,'-'))=3">
+				<xsl:value-of select="if ($langs/l[@three=lower-case(substring-before($code,'-'))]/@two) then ($langs/l[@three=lower-case(substring-before($code,'-'))]/@two) else 'en'"/>
+				</xsl:when>
+			<xsl:when test="contains($code,'-') and string-length(substring-before($code,'-'))=2">
+				<xsl:value-of select="lower-case(substring-before($code,'-'))"/>
+				</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>en</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:template>
+		
+
+	<xsl:variable name="langs">
+        <l three="aar" two="aa"/> 
+        <l three="abk" two="ab"/> 
+        <l three="afr" two="af"/> 
+        <l three="aka" two="ak"/> 
+        <l three="alb" two="sq"/> 
+        <l three="amh" two="am"/> 
+        <l three="ara" two="ar"/> 
+        <l three="arg" two="an"/> 
+        <l three="arm" two="hy"/> 
+        <l three="asm" two="as"/> 
+        <l three="ava" two="av"/> 
+        <l three="ave" two="ae"/> 
+        <l three="aym" two="ay"/> 
+        <l three="aze" two="az"/> 
+        <l three="bak" two="ba"/> 
+        <l three="bam" two="bm"/> 
+        <l three="baq" two="eu"/> 
+        <l three="bel" two="be"/> 
+        <l three="ben" two="bn"/> 
+        <l three="bih" two="bh"/> 
+        <l three="bis" two="bi"/> 
+        <l three="bod" two="bo"/> 
+        <l three="bos" two="bs"/> 
+        <l three="bre" two="br"/> 
+        <l three="bul" two="bg"/> 
+        <l three="bur" two="my"/> 
+        <l three="cat" two="ca"/> 
+        <l three="ces" two="cs"/> 
+        <l three="cha" two="ch"/> 
+        <l three="che" two="ce"/> 
+        <l three="chi" two="zh"/> 
+        <l three="chu" two="cu"/> 
+        <l three="chv" two="cv"/> 
+        <l three="cor" two="kw"/> 
+        <l three="cos" two="co"/> 
+        <l three="cre" two="cr"/> 
+        <l three="cym" two="cy"/> 
+        <l three="cze" two="cs"/> 
+        <l three="dan" two="da"/> 
+        <l three="deu" two="de"/> 
+        <l three="div" two="dv"/> 
+        <l three="dut" two="nl"/> 
+        <l three="dzo" two="dz"/> 
+        <l three="ell" two="el"/> 
+        <l three="eng" two="en"/> 
+        <l three="epo" two="eo"/> 
+        <l three="est" two="et"/> 
+        <l three="eus" two="eu"/> 
+        <l three="ewe" two="ee"/> 
+        <l three="fao" two="fo"/> 
+        <l three="fas" two="fa"/> 
+        <l three="fij" two="fj"/> 
+        <l three="fin" two="fi"/> 
+        <l three="fra" two="fr"/> 
+        <l three="fre" two="fr"/> 
+        <l three="fry" two="fy"/> 
+        <l three="ful" two="ff"/> 
+        <l three="geo" two="ka"/> 
+        <l three="ger" two="de"/> 
+        <l three="gla" two="gd"/> 
+        <l three="gle" two="ga"/> 
+        <l three="glg" two="gl"/> 
+        <l three="glv" two="gv"/> 
+        <l three="gre" two="el"/> 
+        <l three="grn" two="gn"/> 
+        <l three="guj" two="gu"/> 
+        <l three="hat" two="ht"/> 
+        <l three="hau" two="ha"/> 
+        <l three="heb" two="he"/> 
+        <l three="her" two="hz"/> 
+        <l three="hin" two="hi"/> 
+        <l three="hmo" two="ho"/> 
+        <l three="hrv" two="hr"/> 
+        <l three="hun" two="hu"/> 
+        <l three="hye" two="hy"/> 
+        <l three="ibo" two="ig"/> 
+        <l three="ice" two="is"/> 
+        <l three="ido" two="io"/> 
+        <l three="iii" two="ii"/> 
+        <l three="iku" two="iu"/> 
+        <l three="ile" two="ie"/> 
+        <l three="ina" two="ia"/> 
+        <l three="ind" two="id"/> 
+        <l three="ipk" two="ik"/> 
+        <l three="isl" two="is"/> 
+        <l three="ita" two="it"/> 
+        <l three="jav" two="jv"/> 
+        <l three="jpn" two="ja"/> 
+        <l three="kal" two="kl"/> 
+        <l three="kan" two="kn"/> 
+        <l three="kas" two="ks"/> 
+        <l three="kat" two="ka"/> 
+        <l three="kau" two="kr"/> 
+        <l three="kaz" two="kk"/> 
+        <l three="khm" two="km"/> 
+        <l three="kik" two="ki"/> 
+        <l three="kin" two="rw"/> 
+        <l three="kir" two="ky"/> 
+        <l three="kom" two="kv"/> 
+        <l three="kon" two="kg"/> 
+        <l three="kor" two="ko"/> 
+        <l three="kua" two="kj"/> 
+        <l three="kur" two="ku"/> 
+        <l three="lao" two="lo"/> 
+        <l three="lat" two="la"/> 
+        <l three="lav" two="lv"/> 
+        <l three="lim" two="li"/> 
+        <l three="lin" two="ln"/> 
+        <l three="lit" two="lt"/> 
+        <l three="ltz" two="lb"/> 
+        <l three="lub" two="lu"/> 
+        <l three="lug" two="lg"/> 
+        <l three="mac" two="mk"/> 
+        <l three="mah" two="mh"/> 
+        <l three="mal" two="ml"/> 
+        <l three="mao" two="mi"/> 
+        <l three="mar" two="mr"/> 
+        <l three="may" two="ms"/> 
+        <l three="mkd" two="mk"/> 
+        <l three="mlg" two="mg"/> 
+        <l three="mlt" two="mt"/> 
+        <l three="mon" two="mn"/> 
+        <l three="mri" two="mi"/> 
+        <l three="msa" two="ms"/> 
+        <l three="mya" two="my"/> 
+        <l three="nau" two="na"/> 
+        <l three="nav" two="nv"/> 
+        <l three="nbl" two="nr"/> 
+        <l three="nde" two="nd"/> 
+        <l three="ndo" two="ng"/> 
+        <l three="nep" two="ne"/> 
+        <l three="nld" two="nl"/> 
+        <l three="nno" two="nn"/> 
+        <l three="nob" two="nb"/> 
+        <l three="nor" two="no"/> 
+        <l three="nya" two="ny"/> 
+        <l three="oci" two="oc"/> 
+        <l three="oji" two="oj"/> 
+        <l three="ori" two="or"/> 
+        <l three="orm" two="om"/> 
+        <l three="oss" two="os"/> 
+        <l three="pan" two="pa"/> 
+        <l three="per" two="fa"/> 
+        <l three="pli" two="pi"/> 
+        <l three="pol" two="pl"/> 
+        <l three="por" two="pt"/> 
+        <l three="pus" two="ps"/> 
+        <l three="que" two="qu"/> 
+        <l three="roh" two="rm"/> 
+        <l three="ron" two="ro"/> 
+        <l three="rum" two="ro"/> 
+        <l three="run" two="rn"/> 
+        <l three="rus" two="ru"/> 
+        <l three="sag" two="sg"/> 
+        <l three="san" two="sa"/> 
+        <l three="sin" two="si"/> 
+        <l three="slk" two="sk"/> 
+        <l three="slo" two="sk"/> 
+        <l three="slv" two="sl"/> 
+        <l three="sme" two="se"/> 
+        <l three="smo" two="sm"/> 
+        <l three="sna" two="sn"/> 
+        <l three="snd" two="sd"/> 
+        <l three="som" two="so"/> 
+        <l three="sot" two="st"/> 
+        <l three="spa" two="es"/> 
+        <l three="sqi" two="sq"/> 
+        <l three="srd" two="sc"/> 
+        <l three="srp" two="sr"/> 
+        <l three="ssw" two="ss"/> 
+        <l three="sun" two="su"/> 
+        <l three="swa" two="sw"/> 
+        <l three="swe" two="sv"/> 
+        <l three="tah" two="ty"/> 
+        <l three="tam" two="ta"/> 
+        <l three="tat" two="tt"/> 
+        <l three="tel" two="te"/> 
+        <l three="tgk" two="tg"/> 
+        <l three="tgl" two="tl"/> 
+        <l three="tha" two="th"/> 
+        <l three="tib" two="bo"/> 
+        <l three="tir" two="ti"/> 
+        <l three="ton" two="to"/> 
+        <l three="tsn" two="tn"/> 
+        <l three="tso" two="ts"/> 
+        <l three="tuk" two="tk"/> 
+        <l three="tur" two="tr"/> 
+        <l three="twi" two="tw"/> 
+        <l three="uig" two="ug"/> 
+        <l three="ukr" two="uk"/> 
+        <l three="urd" two="ur"/> 
+        <l three="uzb" two="uz"/> 
+        <l three="ven" two="ve"/> 
+        <l three="vie" two="vi"/> 
+        <l three="vol" two="vo"/> 
+        <l three="wel" two="cy"/> 
+        <l three="wln" two="wa"/> 
+        <l three="wol" two="wo"/> 
+        <l three="xho" two="xh"/> 
+        <l three="yid" two="yi"/> 
+        <l three="yor" two="yo"/> 
+        <l three="zha" two="za"/> 
+        <l three="zho" two="zh"/> 
+        <l three="zul" two="zu"/>
+		</xsl:variable>
 
 </xsl:stylesheet>
