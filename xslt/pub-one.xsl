@@ -839,7 +839,7 @@
           <xsl:apply-templates select="CollectiveName"/>
           </xsl:when>
         <xsl:otherwise>
-          <name><xsl:apply-templates select="LastName, ForeName"/></name>
+          <name><xsl:apply-templates select="LastName, ForeName, Suffix"/></name>
           </xsl:otherwise>
         </xsl:choose>
       <xsl:apply-templates select="Affiliation"/>
@@ -883,7 +883,13 @@
     </given-names>
   </xsl:template>
   
+   <xsl:template match="Suffix">
+    <suffix>
+      <xsl:apply-templates/>
+    </suffix>
+  </xsl:template>
   
+ 
   <xsl:template name="build-pub-dates">
     <xsl:param name="PubModel"/>
     <xsl:choose>
