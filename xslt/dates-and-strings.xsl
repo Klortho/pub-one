@@ -573,11 +573,21 @@ xfeff d65279 zero width no-break space
 			</xsl:call-template>
 		</xsl:variable>
 
+ <!--<xsl:comment>date="<xsl:value-of select="$date"/>"; &#xD;
+ order="<xsl:value-of select="$order"/>";&#xD;
+ nsd="<xsl:value-of select="$nsd"/>";&#xD;
+x1="<xsl:value-of select="$x1"/>"; &#xD;
+x2="<xsl:value-of select="$x2"/>";&#xD; 
+x3="<xsl:value-of select="$x3"/>"; &#xD;
+quartercheck="<xsl:value-of select="$quartercheck"/>"; &#xD;
+x2-is-valid-month="<xsl:value-of select="$x2-is-valid-month"/>"; 
+  </xsl:comment> -->
+
 		<xsl:choose>
 			<xsl:when test="contains($quartercheck,'QUARTER')
 			             or contains($quartercheck,'QTR')
 						 or contains($quartercheck,'Q')">
-                <xsl:choose>
+               <xsl:choose>
                 	<xsl:when test="number($x1) > 1000">
 						<season><xsl:value-of select=
 						   "concat($x2,' ',$x3)"/></season>
@@ -596,17 +606,23 @@ xfeff d65279 zero width no-break space
 					<!-- when "year month day-day" don't process as a range -->
 					<xsl:when test="number($x1) > 1000
 					  and $x2-is-valid-month='true' 
-					  and (contains($x3,'-') or contains($x3,'_ENTITYSTART'))">
+					  and contains($x3,'-') and number(substring-before($x3,'-'))">
 						<day>
 							<!-- for a day range, take the first day -->
-							<xsl:choose>
-								<xsl:when test="contains($x3,'-')">
-									<xsl:value-of select="substring-before($x3,'-')"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="substring-before($x3,'_ENTITYSTART')"/>
-								</xsl:otherwise>
-							</xsl:choose>
+							<xsl:value-of select="substring-before($x3,'-')"/>
+						</day>
+						<xsl:call-template name="find-month-season">
+							<xsl:with-param name="month" select="$x2"/>
+						</xsl:call-template>
+						<year><xsl:value-of select="$x1"/></year>
+					</xsl:when>
+					
+					<xsl:when test="number($x1) > 1000
+					  and $x2-is-valid-month='true' 
+					  and contains($x3,'_ENTITYSTART') and number(substring-before($x3,'_ENTITYSTART'))">
+						<day>
+							<!-- for a day range, take the first day -->
+							<xsl:value-of select="substring-before($x3,'_ENTITYSTART')"/>
 						</day>
 						<xsl:call-template name="find-month-season">
 							<xsl:with-param name="month" select="$x2"/>
