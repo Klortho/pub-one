@@ -868,7 +868,7 @@
           <name><xsl:apply-templates select="LastName, ForeName, Initials, Suffix"/></name>
           </xsl:otherwise>
         </xsl:choose>
-      <xsl:apply-templates select="Affiliation"/>
+      <xsl:apply-templates select="Affiliation | AffiliationInfo"/>
     </contrib>
   </xsl:template>
   
@@ -887,7 +887,11 @@
     </contrib-id>
   </xsl:template>
   
-  <xsl:template match="Affiliation">
+  <xsl:template match="AffiliationInfo">
+      <xsl:apply-templates/>
+  </xsl:template>
+  
+   <xsl:template match="Affiliation">
     <aff>
       <xsl:apply-templates/>
     </aff>
