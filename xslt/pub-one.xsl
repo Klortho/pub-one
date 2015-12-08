@@ -414,7 +414,7 @@
   </xsl:template>
 
   <xsl:template match="contrib-group">
-    <contrib-group>
+   <contrib-group>
       <xsl:apply-templates select="* except aff[@id]"/>
     </contrib-group>
     </xsl:template>
@@ -496,6 +496,27 @@
   <xsl:template match="collab/named-content">
     <xsl:apply-templates/>
   </xsl:template>
+
+  <xsl:template match="address">
+    <xsl:choose>
+	 	<xsl:when test="email and parent::contrib">
+			<xsl:apply-templates select="email"/>
+			<xsl:if test="*[not(self::email)]">
+				<address>
+					<xsl:apply-templates select="* except email"/>
+				</address>
+				</xsl:if>
+			</xsl:when>
+		<xsl:otherwise>
+			<address>
+				<xsl:apply-templates/>
+			</address>
+			</xsl:otherwise>
+	 	</xsl:choose>
+  </xsl:template>
+
+
+
 
   <xsl:template match="corresp">
     <fn fn-type="corresp">
