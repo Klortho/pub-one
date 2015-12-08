@@ -863,7 +863,7 @@
           <xsl:apply-templates select="CollectiveName"/>
           </xsl:when>
         <xsl:otherwise>
-          <name><xsl:apply-templates select="LastName, ForeName, Suffix"/></name>
+          <name><xsl:apply-templates select="LastName, ForeName, Initials, Suffix"/></name>
           </xsl:otherwise>
         </xsl:choose>
       <xsl:apply-templates select="Affiliation"/>
@@ -905,6 +905,14 @@
       </xsl:attribute>
       <xsl:apply-templates/>
     </given-names>
+  </xsl:template>
+  
+  <xsl:template match="Initials">
+  	<xsl:if test="not(preceding-sibling::ForeName)">
+    	<given-names initials="{.}">
+       	<xsl:apply-templates/>
+    	</given-names>
+		</xsl:if>
   </xsl:template>
   
    <xsl:template match="Suffix">
@@ -1178,51 +1186,63 @@
   </xsl:template>
   
   <xsl:template match="MedlinePgn">
+    <xsl:variable name="pgn">
+	 	<xsl:choose>
+			<xsl:when test="contains(.,'--')">
+				<xsl:call-template name="cleanPgn">
+					<xsl:with-param name="str" select="."/>
+					</xsl:call-template>
+				</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+	 	</xsl:variable>
     
     <xsl:choose>
-      <xsl:when test="contains(lower-case(.),'suppl:')">
+      <xsl:when test="contains(lower-case($pgn),'suppl:')">
         <xsl:call-template name="fpage">
-          <xsl:with-param name="pagestring" select="substring-after(lower-case(.),'suppl:')"/>
+          <xsl:with-param name="pagestring" select="substring-after(lower-case($pgn),'suppl:')"/>
         </xsl:call-template>
         <xsl:call-template name="lpage">
-          <xsl:with-param name="pagestring" select="substring-after(lower-case(.),'suppl:')"/>
+          <xsl:with-param name="pagestring" select="substring-after(lower-case($pgn),'suppl:')"/>
         </xsl:call-template>
       </xsl:when>
-      <xsl:when test="contains(lower-case(.),'suppl ')">
+      <xsl:when test="contains(lower-case($pgn),'suppl ')">
         <xsl:choose>
           <!-- <MedlinePgn>Suppl 1:9-14</MedlinePgn> -->
-          <xsl:when test="contains(substring-after(lower-case(.),'suppl '),':')">
+          <xsl:when test="contains(substring-after(lower-case($pgn),'suppl '),':')">
             <xsl:call-template name="fpage">
-              <xsl:with-param name="pagestring" select="substring-after(.,':')"/>
+              <xsl:with-param name="pagestring" select="substring-after($pgn,':')"/>
             </xsl:call-template>
             <xsl:call-template name="lpage">
-              <xsl:with-param name="pagestring" select="substring-after(.,':')"/>
+              <xsl:with-param name="pagestring" select="substring-after($pgn,':')"/>
             </xsl:call-template>
           </xsl:when>
           <xsl:otherwise>
             <xsl:call-template name="fpage">
-              <xsl:with-param name="pagestring" select="substring-after(lower-case(.),'suppl ')"/>
+              <xsl:with-param name="pagestring" select="substring-after(lower-case($pgn),'suppl ')"/>
             </xsl:call-template>
             <xsl:call-template name="lpage">
-              <xsl:with-param name="pagestring" select="substring-after(lower-case(.),'suppl ')"/>
+              <xsl:with-param name="pagestring" select="substring-after(lower-case($pgn),'suppl ')"/>
             </xsl:call-template>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="contains(.,'-') and contains(substring-after(.,'-'),'-')">
+      <xsl:when test="contains($pgn,'-') and contains(substring-after($pgn,'-'),'-')">
       <!--<MedlinePgn>29-1 - 29-3</MedlinePgn> pmid="12179563 -->
         <fpage>
-          <xsl:value-of select="normalize-space(substring-before(.,substring-after(substring-after(.,'-'),' ')))"/>
+          <xsl:value-of select="normalize-space(substring-before($pgn,substring-after(substring-after($pgn,'-'),' ')))"/>
         </fpage>
         <lpage>
-          <xsl:value-of select="normalize-space(substring-after(substring-after(.,'-'),'-'))"/>
+          <xsl:value-of select="normalize-space(substring-after(substring-after($pgn,'-'),'-'))"/>
         </lpage>
         </xsl:when>
-      <xsl:when test="contains(.,'-') and contains(.,',')">
-        <xsl:variable name="ef" select="substring-before(.,',')"/>
+      <xsl:when test="contains($pgn,'-') and contains($pgn,',')">
+        <xsl:variable name="ef" select="substring-before($pgn,',')"/>
         <xsl:variable name="el">
             <xsl:call-template name="substring-after-last-space">
-              <xsl:with-param name="str" select="."/>
+              <xsl:with-param name="str" select="$pgn"/>
             </xsl:call-template>
             </xsl:variable>
       <xsl:choose>
@@ -1244,42 +1264,42 @@
           </xsl:when>
         <xsl:otherwise>
         <xsl:choose>
-          <xsl:when test="contains(substring-before(.,','),'-')">
+          <xsl:when test="contains(substring-before($pgn,','),'-')">
             <xsl:call-template name="fpage">
-              <xsl:with-param name="pagestring" select="substring-before(.,'-')"/>
+              <xsl:with-param name="pagestring" select="substring-before($pgn,'-')"/>
             </xsl:call-template>                        
           </xsl:when>
           <xsl:otherwise>
             <xsl:call-template name="fpage">
-              <xsl:with-param name="pagestring" select="substring-before(.,',')"/>
+              <xsl:with-param name="pagestring" select="substring-before($pgn,',')"/>
             </xsl:call-template>
           </xsl:otherwise>
         </xsl:choose>
         <xsl:call-template name="lpage">
           <xsl:with-param name="pagestring">
             <xsl:call-template name="find-lpage-string">
-              <xsl:with-param name="str" select="."/>
+              <xsl:with-param name="str" select="$pgn"/>
             </xsl:call-template>
           </xsl:with-param>
         </xsl:call-template>
         </xsl:otherwise>
         </xsl:choose>
         
-        <page-range><xsl:value-of select="."/></page-range>
+        <page-range><xsl:value-of select="$pgn"/></page-range>
       </xsl:when>
-      <xsl:when test="starts-with(.,':')">
+      <xsl:when test="starts-with($pgn,':')">
         <xsl:call-template name="fpage">
-          <xsl:with-param name="pagestring" select="substring-after(.,':')"/>
+          <xsl:with-param name="pagestring" select="substring-after($pgn,':')"/>
         </xsl:call-template>
         <xsl:call-template name="lpage">
-          <xsl:with-param name="pagestring" select="substring-after(.,':')"/>
+          <xsl:with-param name="pagestring" select="substring-after($pgn,':')"/>
         </xsl:call-template>
       </xsl:when>
-      <xsl:when test="contains(.,';')">
-        <xsl:variable name="beforesemi" select="substring-before(.,';')"/>
-        <xsl:variable name="aftersemi" select="substring-after(.,';')"/>
+      <xsl:when test="contains($pgn,';')">
+        <xsl:variable name="beforesemi" select="substring-before($pgn,';')"/>
+        <xsl:variable name="aftersemi" select="substring-after($pgn,';')"/>
           <xsl:choose>
-            <xsl:when test="contains(substring-before(.,';'),'-')">
+            <xsl:when test="contains(substring-before($pgn,';'),'-')">
               <xsl:call-template name="fpage">
                 <xsl:with-param name="pagestring" select="$beforesemi"/>
                 </xsl:call-template>
@@ -1293,18 +1313,36 @@
                 </xsl:call-template>
               </xsl:otherwise>
             </xsl:choose>
-        <page-range><xsl:value-of select="."/></page-range>
+        <page-range><xsl:value-of select="$pgn"/></page-range>
         </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="fpage">
-          <xsl:with-param name="pagestring" select="."/>
+          <xsl:with-param name="pagestring" select="$pgn"/>
         </xsl:call-template>
         <xsl:call-template name="lpage">
-          <xsl:with-param name="pagestring" select="."/>
+          <xsl:with-param name="pagestring" select="$pgn"/>
         </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+ 
+ 	<xsl:template name="cleanPgn">
+		<xsl:param name="str"/>
+		<xsl:if test="$str">
+			<xsl:choose>
+				<xsl:when test="contains($str,'--')">
+					<xsl:call-template name="cleanPgn">
+						<xsl:with-param name="str" select="replace($str,'--','-')"/>
+						</xsl:call-template>
+					</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$str"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:if>
+		</xsl:template>
+ 
+ 
   
   <xsl:template name="find-lpage-string">
     <xsl:param name="str"/>
