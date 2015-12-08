@@ -863,7 +863,7 @@
           <xsl:apply-templates select="CollectiveName"/>
           </xsl:when>
         <xsl:otherwise>
-          <name><xsl:apply-templates select="LastName, ForeName, Suffix"/></name>
+          <name><xsl:apply-templates select="LastName, ForeName, Initials, Suffix"/></name>
           </xsl:otherwise>
         </xsl:choose>
       <xsl:apply-templates select="Affiliation"/>
@@ -905,6 +905,14 @@
       </xsl:attribute>
       <xsl:apply-templates/>
     </given-names>
+  </xsl:template>
+  
+  <xsl:template match="Initials">
+  	<xsl:if test="not(preceding-sibling::ForeName)">
+    	<given-names initials="{.}">
+       	<xsl:apply-templates/>
+    	</given-names>
+		</xsl:if>
   </xsl:template>
   
    <xsl:template match="Suffix">
