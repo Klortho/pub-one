@@ -614,7 +614,9 @@
   
   
   <xsl:template match="pub-date">
-    <pub-date date-type="{if (@date-type) then (@date-type) else (@pub-type)}">
+    <pub-date date-type="{if (@publication-format='electronic') then 'epub' else
+	                       (if (@publication-format='print') then 'ppub' else
+								   (if (@date-type) then (@date-type) else (@pub-type)))}">
       <xsl:attribute name="iso-8601-date">
         <xsl:call-template name="build-iso-date">
           <xsl:with-param name="year" select="year"/>
