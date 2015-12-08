@@ -414,7 +414,7 @@
   </xsl:template>
 
   <xsl:template match="contrib-group">
-    <contrib-group>
+   <contrib-group>
       <xsl:apply-templates select="* except aff[@id]"/>
     </contrib-group>
     </xsl:template>
@@ -496,6 +496,27 @@
   <xsl:template match="collab/named-content">
     <xsl:apply-templates/>
   </xsl:template>
+
+  <xsl:template match="address">
+    <xsl:choose>
+	 	<xsl:when test="email and parent::contrib">
+			<xsl:apply-templates select="email"/>
+			<xsl:if test="*[not(self::email)]">
+				<address>
+					<xsl:apply-templates select="* except email"/>
+				</address>
+				</xsl:if>
+			</xsl:when>
+		<xsl:otherwise>
+			<address>
+				<xsl:apply-templates/>
+			</address>
+			</xsl:otherwise>
+	 	</xsl:choose>
+  </xsl:template>
+
+
+
 
   <xsl:template match="corresp">
     <fn fn-type="corresp">
@@ -868,7 +889,7 @@
           <name><xsl:apply-templates select="LastName, ForeName, Initials, Suffix"/></name>
           </xsl:otherwise>
         </xsl:choose>
-      <xsl:apply-templates select="Affiliation"/>
+      <xsl:apply-templates select="Affiliation | AffiliationInfo"/>
     </contrib>
   </xsl:template>
   
@@ -880,14 +901,59 @@
   
   <xsl:template match="Identifier">
     <contrib-id contrib-id-type='{lower-case(@Source)}'>
-      <xsl:if test="@Source='ORCID'">
-        <xsl:text>http://orcid.org/</xsl:text>
-      </xsl:if>
+	 <xsl:choose>
+      <xsl:when test="@Source='ORCID'">
+			<xsl:call-template name="clean-orcid">
+				<xsl:with-param name="str" select="normalize-space()"/>
+				</xsl:call-template>
+       </xsl:when>
+		<xsl:otherwise>
       <xsl:apply-templates/>
+		</xsl:otherwise>
+		</xsl:choose>
     </contrib-id>
   </xsl:template>
   
-  <xsl:template match="Affiliation">
+  <xsl:template match="contrib-id">
+    <contrib-id contrib-id-type='{lower-case(@contrib-id-type)}'>
+	 	<xsl:choose>
+      	<xsl:when test="lower-case(@contrib-id-type)='orcid'">
+				<xsl:call-template name="clean-orcid">
+					<xsl:with-param name="str" select="normalize-space()"/>
+					</xsl:call-template>
+       		</xsl:when>
+			<xsl:otherwise>
+      		<xsl:apply-templates/>
+				</xsl:otherwise>
+			</xsl:choose>
+    </contrib-id>
+  	</xsl:template>
+  
+  <xsl:template name="clean-orcid">
+  	<xsl:param name="str"/>
+	<xsl:if test="$str">
+		<xsl:choose>
+			<xsl:when test="contains($str,'orcid.org/')">
+				<xsl:call-template name="clean-orcid">
+					<xsl:with-param name="str" select="substring-after($str,'orcid.org/')"/>
+					</xsl:call-template>
+				</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$str"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+		</xsl:template>	
+  
+  
+  
+  
+  
+  <xsl:template match="AffiliationInfo">
+      <xsl:apply-templates/>
+  </xsl:template>
+  
+   <xsl:template match="Affiliation">
     <aff>
       <xsl:apply-templates/>
     </aff>
