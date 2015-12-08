@@ -659,15 +659,15 @@ x3-is-valid-month="<xsl:value-of select="$x3-is-valid-month"/>";
 						</xsl:when>
 					<xsl:when test="number($x3) >= 0">
 						<day><xsl:value-of select="number($x3)"/></day>
-				<xsl:call-template name="find-month-season">
-					<xsl:with-param name="month" select="$x2"/>
-				</xsl:call-template>
+						<xsl:call-template name="find-month-season">
+							<xsl:with-param name="month" select="$x2"/>
+							</xsl:call-template>
 					</xsl:when>
 					<xsl:otherwise>
 						<day><xsl:value-of select="$x3"/></day>
-				<xsl:call-template name="find-month-season">
-					<xsl:with-param name="month" select="$x2"/>
-				</xsl:call-template>
+						<xsl:call-template name="find-month-season">
+							<xsl:with-param name="month" select="$x2"/>
+							</xsl:call-template>
 					</xsl:otherwise>
 				</xsl:choose>
 				<year><xsl:value-of select="$x1"/></year>
