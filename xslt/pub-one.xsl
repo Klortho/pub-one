@@ -20,6 +20,70 @@
   <!-- <xsl:param name="book_id" as="xs:string?" select="tokenize(base-uri(), '\.')[last()-1]"/>  -->
   <xsl:param name="book_id" as="xs:string?"/>
 
+	<xsl:variable name="article-doi">
+		<xsl:variable name="pmc-doi">
+			<xsl:variable name="d1c">
+				<xsl:call-template name="clean-doi">
+					<xsl:with-param name="str" select="normalize-space(/article/front/article-meta/article-id[@pub-id-type='doi'])"/>
+					</xsl:call-template>
+				</xsl:variable>
+			<xsl:variable name="d1">
+				<xsl:call-template name="doi-format-test">
+					<xsl:with-param name="doi" select="$d1c"/>
+					</xsl:call-template>
+				</xsl:variable>
+			<xsl:if test="$d1='true'">
+				<xsl:value-of select="$d1c"/>
+			 </xsl:if>
+			</xsl:variable>
+		<xsl:variable name="pm-ArticleId">
+			<xsl:variable name="d2c">
+				<xsl:call-template name="clean-doi">
+					<xsl:with-param name="str" select="normalize-space(//PubmedArticle/PubmedData/ArticleIdList/ArticleId[@IdType='doi'])"/>
+					</xsl:call-template>
+				</xsl:variable>
+			<xsl:variable name="d2">
+				<xsl:call-template name="doi-format-test">
+					<xsl:with-param name="doi" select="$d2c"/>
+					</xsl:call-template>
+				</xsl:variable>
+			<xsl:if test="$d2='true'">
+				<xsl:value-of select="$d2c"/>
+			 </xsl:if>
+			</xsl:variable>
+		<xsl:variable name="pm-elocdoi">
+			<xsl:variable name="d3c">
+				<xsl:call-template name="clean-doi">
+					<xsl:with-param name="str" select="normalize-space(//PubmedArticle/MedlineCitation/Article/ELocationID[@EIdType='doi'])"/>
+					</xsl:call-template>
+				</xsl:variable>
+			<xsl:variable name="d3">
+				<xsl:call-template name="doi-format-test">
+					<xsl:with-param name="doi" select="$d3c"/>
+					</xsl:call-template>
+				</xsl:variable>
+			<xsl:if test="$d3='true'">
+				<xsl:value-of select="$d3c"/>
+			 </xsl:if>
+			</xsl:variable>
+	<xsl:choose>
+		<xsl:when test="normalize-space($pmc-doi)">
+			<xsl:value-of select="$pmc-doi"/>
+			</xsl:when>
+		<xsl:when test="normalize-space($pm-ArticleId) and normalize-space($pm-elocdoi)">
+			<xsl:if test="$pm-ArticleId=$pm-elocdoi">
+				<xsl:value-of select="$pm-ArticleId"/>
+				</xsl:if>
+			</xsl:when>
+		<xsl:when test="normalize-space($pm-ArticleId)">
+			<xsl:value-of select="$pm-ArticleId"/>
+			</xsl:when>
+		<xsl:when test="normalize-space($pm-elocdoi)">
+			<xsl:value-of select="$pm-elocdoi"/>
+			</xsl:when>
+		</xsl:choose>
+  </xsl:variable>
+  
 
 
   <xsl:template match="/">
@@ -373,6 +437,16 @@
       </object-id>
   </xsl:template> -->
 
+  <xsl:template match="article-id[@pub-id-type='doi']">
+  	<xsl:if test="normalize-space($article-doi)">
+      <object-id pub-id-type="doi">
+        <xsl:value-of select="$article-doi"/>
+      </object-id>
+		</xsl:if>
+	</xsl:template>
+  
+  
+  
   <xsl:template match="article-id[@pub-id-type='manuscript']">
     <object-id pub-id-type="manuscript-id">
       <xsl:value-of select="translate(.,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
@@ -850,12 +924,19 @@
     </object-id>
   </xsl:template>
   
-  <xsl:template match="ArticleId">
+  <xsl:template match="ArticleId[@IdType!='doi']">
     <object-id pub-id-type="{if (@IdType='mid') then 'manuscript-id' else (if (@IdType='pubmed') then 'pmid' else (if (@IdType='pmc') then 'pmcid' else @IdType))}">
       <xsl:apply-templates/>
     </object-id>
   </xsl:template>
   
+  <xsl:template match="ArticleId[@IdType='doi']">
+  	<xsl:if test="normalize-space($article-doi)">
+		<object-id pub-id-type="doi">
+  			<xsl:value-of select="$article-doi"/>
+		</object-id>
+		</xsl:if>
+  	</xsl:template>
   
   <xsl:template match="PublicationTypeList">
     <subj-group subj-group-type="publication-type">
@@ -2266,7 +2347,131 @@
 	</xsl:template>
 
 
+<!--DOI CLEANUP TEMPLATES -->
+	<xsl:template name="clean-doi">
+		<xsl:param name="str"/>
+		<xsl:choose>
+			<xsl:when test="contains($str, 'doi.org/')">
+				<xsl:value-of select="substring-after($str, 'doi.org/')"/>				
+			</xsl:when>
+			<xsl:when test="contains($str, 'http://')">
+				<xsl:value-of select="substring-after($str, 'http://')"/>				
+			</xsl:when>
+			<xsl:when test="contains($str,'DOI: ')">
+				<xsl:value-of select="substring-after($str,'DOI: ')"/>
+			</xsl:when>
+			<xsl:when test="contains($str,'DOI:')">
+				<xsl:value-of select="substring-after($str,'DOI:')"/>
+			</xsl:when>
+			<xsl:when test="contains($str,'doi: ')">
+				<xsl:value-of select="substring-after($str,'doi: ')"/>
+			</xsl:when>
+			<xsl:when test="contains($str,'doi:')">
+				<xsl:value-of select="substring-after($str,'doi:')"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$str"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 
+   <!-- *********************************************************** -->
+   <!-- Template: doi-check 
+   
+        Test takes in the value of the doi and tests it by
+        calling another template. This test will probably only be 
+        applied to the following:
+           pub-id/@pub-id-type[.='doi'] 
+           journal-id/@journal-id-type[.='doi']
+           article-id/@pub-id-type[.='doi']
+           related-article[@ext-link-type='doi']/@xlink:href
+           issue-id[@pub-id-type = 'doi']
+           ext-link[@ext-link-type = 'doi']/@xlink:href
+           object-id[@pub-id-type = 'doi']
+     -->
+   <!-- *********************************************************** 
+   <xsl:template name="doi-check">
+   	<xsl:param name="value"/>
+      
+      <xsl:variable name="good-doi">
+         <xsl:call-template name="doi-format-test">
+            <xsl:with-param name="doi" select="$value"/>
+         </xsl:call-template>
+      </xsl:variable>
+      
+      <xsl:if test="$good-doi = 'false'">
+         <xsl:call-template name="make-error">
+            <xsl:with-param name="error-type">doi format check</xsl:with-param>
+            <xsl:with-param name="description">
+               <xsl:text>Malformed doi value: '</xsl:text>
+               <xsl:value-of select="$value"/>
+               <xsl:text>'</xsl:text>
+            </xsl:with-param>
+         </xsl:call-template>                                       
+      </xsl:if>
+   </xsl:template>
+-->
+
+   <!-- *********************************************************** -->
+   <!-- Template: doi-format-test 
+
+        Check the format of a doi and return true
+        if well formed, false otherwise.
+        
+        Format is specified here:
+        http://www.doi.org/handbook_2000/enumeration.html#2.2
+     -->
+   <!-- *********************************************************** -->
+   <xsl:template name="doi-format-test">
+      <xsl:param name="doi"/>
+      
+      <xsl:variable name="normalized-doi">
+			<xsl:value-of  select="normalize-space($doi)"/>
+			</xsl:variable>
+		
+	
+      <!-- Format tests -->
+      <xsl:choose>
+         <!-- Cannot be empty -->
+         <xsl:when test="not($normalized-doi)">
+            <xsl:text>false</xsl:text>
+         </xsl:when>
+         
+         <!-- No spaces allowed -->
+         <xsl:when test="contains($normalized-doi, ' ')">
+            <xsl:text>false</xsl:text>
+         </xsl:when>
+         
+         <!-- Prefix must start with '10.' -->
+         <xsl:when test="not(starts-with($normalized-doi, '10.'))">
+            <xsl:text>false</xsl:text>
+         </xsl:when>
+         
+         <!-- Must be something following the preamble in the prefix.
+         In other words, cannot immediately follow the '10.' with a '/'-->
+         <xsl:when test="substring($normalized-doi, 4,1) = '/'">
+            <xsl:text>false</xsl:text>
+         </xsl:when>
+         
+         <!-- '/' must separate prefix from the suffix -->
+         <xsl:when test="not(contains(substring-after($normalized-doi, '10.'), '/'))">
+            <xsl:text>false</xsl:text>
+         </xsl:when>
+         
+         <!-- Must be content after the '/' to form the suffix -->
+         <xsl:when test="not(substring-after($normalized-doi, '/'))">
+            <xsl:text>false</xsl:text>
+         </xsl:when>
+         
+         <!-- Must be OK!!-->
+         <xsl:otherwise>
+            <xsl:text>true</xsl:text>
+         </xsl:otherwise>
+      </xsl:choose>      
+   </xsl:template>
+
+
+<!-- LANGUAGE CLEANUP TEMPLATES -->
 	<xsl:template name="get-lang">
 		<xsl:param name="code"/>
 		<xsl:choose>
