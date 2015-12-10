@@ -2126,7 +2126,8 @@
     <xsl:variable name="spaces" select="string-length($str) - string-length(translate($str,' ',''))"/>
     <xsl:choose>
       <xsl:when test="$str != $STR">
-        <xsl:value-of select="translate($str,'abcdefghijklmnopqrstuvwxyz.,- ','')"/>
+        <xsl:value-of select="translate($str,concat($lowerLatin,'.,- '),'')"/>
+		 <!-- <xsl:text>[$str="</xsl:text><xsl:value-of select="$str"/><xsl:text>|$STR="</xsl:text><xsl:value-of select="$STR"/><xsl:text>]</xsl:text> -->
       </xsl:when>
       <xsl:when test="$spaces=0">
         <xsl:value-of select="substring($str,1,1)"/>

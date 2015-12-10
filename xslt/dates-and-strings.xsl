@@ -2079,7 +2079,7 @@ x3-is-valid-month="<xsl:value-of select="$x3-is-valid-month"/>";
 	
 	
 	<!-- Latin Extended: Assemble everything we have so far -->
-	<xsl:param name="lowerLatin" select="concat(
+	<xsl:param name="lowerLatin" select="concat($lower,
 		$lowerLat1,$lowerExtendedA,$lowerExtendedB,$lowerExtendedAdditional,
 		$titleLower)"/>
 	<xsl:param name="upperLatin" select="concat(
