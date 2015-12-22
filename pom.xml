@@ -4,14 +4,18 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>gov.ncbi.pmc</groupId>
   <artifactId>pub-one</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>PubOne resources</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
   <build>
     <resources>
       <resource>
         <directory>.</directory>
-        <includes>          
+        <includes>
           <include>dtd/**</include>
           <include>samples/**</include>
           <include>xslt/**</include>
@@ -21,4 +25,37 @@
     </resources>
   </build>
 
+  <dependencies>
+    <dependency>
+      <groupId>xml-resolver</groupId>
+      <artifactId>xml-resolver</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.13</version>
+    </dependency>
+
+    <!-- hamcrest 2.0.0.0 and junit 4 -->
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-junit</artifactId>
+      <version>2.0.0.0</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>Saxon-HE</artifactId>
+      <version>9.6.0-7</version>
+    </dependency>
+
+  </dependencies>
 </project>
