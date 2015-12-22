@@ -35,7 +35,6 @@ import net.sf.saxon.s9api.XsltTransformer;
 
 
 public class PubOneTest {
-    Logger log = LoggerFactory.getLogger(PubOneTest.class);
     Processor saxonProcessor;
     Resolver resolver;
     XsltCompiler compiler;
@@ -62,7 +61,6 @@ public class PubOneTest {
     {
         URL url = resolver.getUrl("identity.xsl");
         assertNotNull(url);
-        log.info("found identity.xsl at " + url);
 
         // Instantiate an xslt transformer
         URLConnection xsltUrlConn = url.openConnection();
