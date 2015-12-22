@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -48,6 +49,13 @@ public class PubOneTest {
         compiler.setURIResolver(resolver);
     }
 
+    /**
+     * Use Saxon to drive an XSLT transformation of a test document.
+     * This can serve as an example of how it is done. It is intentionally
+     * verbose, so you can see all of the steps explicitly.
+     *
+     * @throws Exception
+     */
     @Test
     public void testXslt()
         throws Exception
@@ -64,8 +72,10 @@ public class PubOneTest {
         XsltTransformer transformer = executable.load();
 
         // Input document
+        String inXml = "<foo/>";
+        Reader inReader = new StringReader(inXml);
+        Source inSource = new StreamSource(inReader);
         DocumentBuilder docBuilder = saxonProcessor.newDocumentBuilder();
-        Source inSource = new StreamSource(new StringReader("<foo/>"));
         XdmNode inputDoc = docBuilder.build(inSource);
         transformer.setInitialContextNode(inputDoc);
 
