@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>gov.ncbi.pmc</groupId>
   <artifactId>pub-one</artifactId>
-  <version>1.0.3-SNAPSHOT</version>
+  <version>1.0.3</version>
   <name>PubOne resources</name>
 
   <properties>
@@ -45,8 +45,14 @@
 
     <dependency>
       <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.13</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.13</version>
+      <scope>test</scope>
     </dependency>
 
     <!-- hamcrest 2.0.0.0 and junit 4 -->
