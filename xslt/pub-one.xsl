@@ -2471,7 +2471,9 @@
    </xsl:template>
 
 
-<!-- LANGUAGE CLEANUP TEMPLATES -->
+<!-- **************************************************************** -->
+<!--                 LANGUAGE CLEANUP TEMPLATES                       -->
+<!-- **************************************************************** -->
 	<xsl:template name="get-lang">
 		<xsl:param name="code"/>
 		<xsl:choose>
@@ -3009,4 +3011,54 @@
 		<l three="zza" two=""/>
 		</xsl:variable>
 
+<!-- **************************************************************** -->
+<!--                 CHARACTER REPLACEMENT IN TEXT                    -->
+<!-- **************************************************************** -->
+<!--	<xsl:template match="text()">
+		<xsl:choose>
+			<xsl:when test="contains(.,'&#x2028;')">
+				<xsl:call-template name="replace-char">
+					<xsl:with-param name="str" select="."/>
+					<xsl:with-param name="parent" select="name(parent::node())"/>
+					</xsl:call-template>
+				</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:template>
+		
+	<xsl:template name="replace-char">
+		<xsl:param name="str"/>
+		<xsl:param name="parent"/>
+		<xsl:choose>
+			<xsl:when test="contains(.,'&#x2028;')">
+				<xsl:call-template name="replace-char">
+					<xsl:with-param name="str" select="if ($parent='aff') then (replace($str,'&#x2028;',', ')) else (replace($str,'&#x2028;',' '))"/>
+					<xsl:with-param name="parent" select="$parent"/>
+					</xsl:call-template>
+				</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$str"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:template>  -->
+
 </xsl:stylesheet>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
