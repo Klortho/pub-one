@@ -15,7 +15,7 @@ pom.xml file:
 <dependency>
   <groupId>gov.ncbi.pmc</groupId>
   <artifactId>pub-one</artifactId>
-  <version>1.0.3-SNAPSHOT</version>
+  <version>1.0.4-SNAPSHOT</version>
 </dependency>
 ```
 
