@@ -20,72 +20,6 @@
   <!-- <xsl:param name="book_id" as="xs:string?" select="tokenize(base-uri(), '\.')[last()-1]"/>  -->
   <xsl:param name="book_id" as="xs:string?"/>
 
-	<xsl:variable name="article-doi">
-		<xsl:variable name="pmc-doi">
-			<xsl:variable name="d1c">
-				<xsl:call-template name="clean-doi">
-					<xsl:with-param name="str" select="normalize-space(/article/front/article-meta/article-id[@pub-id-type='doi'])"/>
-					</xsl:call-template>
-				</xsl:variable>
-			<xsl:variable name="d1">
-				<xsl:call-template name="doi-format-test">
-					<xsl:with-param name="doi" select="$d1c"/>
-					</xsl:call-template>
-				</xsl:variable>
-			<xsl:if test="$d1='true'">
-				<xsl:value-of select="$d1c"/>
-			 </xsl:if>
-			</xsl:variable>
-		<xsl:variable name="pm-ArticleId">
-			<xsl:variable name="d2c">
-				<xsl:call-template name="clean-doi">
-					<xsl:with-param name="str" select="normalize-space(//PubmedArticle/PubmedData/ArticleIdList/ArticleId[@IdType='doi'])"/>
-					</xsl:call-template>
-				</xsl:variable>
-			<xsl:variable name="d2">
-				<xsl:call-template name="doi-format-test">
-					<xsl:with-param name="doi" select="$d2c"/>
-					</xsl:call-template>
-				</xsl:variable>
-			<xsl:if test="$d2='true'">
-				<xsl:value-of select="$d2c"/>
-			 </xsl:if>
-			</xsl:variable>
-		<xsl:variable name="pm-elocdoi">
-			<xsl:variable name="d3c">
-				<xsl:call-template name="clean-doi">
-					<xsl:with-param name="str" select="normalize-space(//PubmedArticle/MedlineCitation/Article/ELocationID[@EIdType='doi'])"/>
-					</xsl:call-template>
-				</xsl:variable>
-			<xsl:variable name="d3">
-				<xsl:call-template name="doi-format-test">
-					<xsl:with-param name="doi" select="$d3c"/>
-					</xsl:call-template>
-				</xsl:variable>
-			<xsl:if test="$d3='true'">
-				<xsl:value-of select="$d3c"/>
-			 </xsl:if>
-			</xsl:variable>
-	<xsl:choose>
-		<xsl:when test="normalize-space($pmc-doi)">
-			<xsl:value-of select="$pmc-doi"/>
-			</xsl:when>
-		<xsl:when test="normalize-space($pm-ArticleId) and normalize-space($pm-elocdoi)">
-			<xsl:if test="$pm-ArticleId=$pm-elocdoi">
-				<xsl:value-of select="$pm-ArticleId"/>
-				</xsl:if>
-			</xsl:when>
-		<xsl:when test="normalize-space($pm-ArticleId)">
-			<xsl:value-of select="$pm-ArticleId"/>
-			</xsl:when>
-		<xsl:when test="normalize-space($pm-elocdoi)">
-			<xsl:value-of select="$pm-elocdoi"/>
-			</xsl:when>
-		</xsl:choose>
-  </xsl:variable>
-  
-
-
   <xsl:template match="/">
     <xsl:apply-templates select="article | PubmedArticle | PubmedArticleSet | book | book-part | book-part-wrapper"/>
   </xsl:template>
@@ -362,10 +296,6 @@
     </document-meta>
   </xsl:template>
 
-
-
-
-
 <!-- JATS-specific templates -->
   <xsl:template match="journal-id">
     <object-id pub-id-type="{@journal-id-type}">
@@ -438,12 +368,27 @@
   </xsl:template> -->
 
   <xsl:template match="article-id[@pub-id-type='doi']">
-  	<xsl:if test="normalize-space($article-doi)">
-      <object-id pub-id-type="doi">
-        <xsl:value-of select="$article-doi"/>
-      </object-id>
-		</xsl:if>
-	</xsl:template>
+ 		<xsl:variable name="pmc-doi">
+			<xsl:variable name="d1c">
+				<xsl:call-template name="clean-doi">
+					<xsl:with-param name="str" select="normalize-space(/article/front/article-meta/article-id[@pub-id-type='doi'])"/>
+					</xsl:call-template>
+				</xsl:variable>
+			<xsl:variable name="d1">
+				<xsl:call-template name="doi-format-test">
+					<xsl:with-param name="doi" select="$d1c"/>
+					</xsl:call-template>
+				</xsl:variable>
+			<xsl:if test="$d1='true'">
+				<xsl:value-of select="$d1c"/>
+			 </xsl:if>
+			</xsl:variable>
+  		<xsl:if test="normalize-space($pmc-doi)">
+      	<object-id pub-id-type="doi">
+        		<xsl:value-of select="$pmc-doi"/>
+      	</object-id>
+			</xsl:if>
+		</xsl:template>
   
   
   
@@ -588,9 +533,6 @@
 			</xsl:otherwise>
 	 	</xsl:choose>
   </xsl:template>
-
-
-
 
   <xsl:template match="corresp">
     <fn fn-type="corresp">
@@ -929,15 +871,62 @@
       <xsl:apply-templates/>
     </object-id>
   </xsl:template>
-  
-  <xsl:template match="ArticleId[@IdType='doi']">
+
+
+	<xsl:template match="ArticleId[@IdType='doi']">
+		<xsl:variable name="article-doi">
+			<xsl:variable name="pm-ArticleId">
+			<xsl:variable name="d2c">
+				<xsl:call-template name="clean-doi">
+					<xsl:with-param name="str" select="normalize-space(ancestor::PubmedArticle/PubmedData/ArticleIdList/ArticleId[@IdType='doi'])"/>
+					</xsl:call-template>
+				</xsl:variable>
+			<xsl:variable name="d2">
+				<xsl:call-template name="doi-format-test">
+					<xsl:with-param name="doi" select="$d2c"/>
+					</xsl:call-template>
+				</xsl:variable>
+			<xsl:if test="$d2='true'">
+				<xsl:value-of select="$d2c"/>
+			 </xsl:if>
+			</xsl:variable>
+		<xsl:variable name="pm-elocdoi">
+			<xsl:variable name="d3c">
+				<xsl:call-template name="clean-doi">
+					<xsl:with-param name="str" select="normalize-space(ancestor::PubmedArticle/MedlineCitation/Article/ELocationID[@EIdType='doi'])"/>
+					</xsl:call-template>
+				</xsl:variable>
+			<xsl:variable name="d3">
+				<xsl:call-template name="doi-format-test">
+					<xsl:with-param name="doi" select="$d3c"/>
+					</xsl:call-template>
+				</xsl:variable>
+			<xsl:if test="$d3='true'">
+				<xsl:value-of select="$d3c"/>
+			 </xsl:if>
+			</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="normalize-space($pm-ArticleId) and normalize-space($pm-elocdoi)">
+				<xsl:if test="$pm-ArticleId=$pm-elocdoi">
+					<xsl:value-of select="$pm-ArticleId"/>
+					</xsl:if>
+				</xsl:when>
+			<xsl:when test="normalize-space($pm-ArticleId)">
+				<xsl:value-of select="$pm-ArticleId"/>
+				</xsl:when>
+			<xsl:when test="normalize-space($pm-elocdoi)">
+				<xsl:value-of select="$pm-elocdoi"/>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+		
   	<xsl:if test="normalize-space($article-doi)">
 		<object-id pub-id-type="doi">
   			<xsl:value-of select="$article-doi"/>
 		</object-id>
 		</xsl:if>
   	</xsl:template>
-  
+	
   <xsl:template match="PublicationTypeList">
     <subj-group subj-group-type="publication-type">
       <xsl:for-each select="PublicationType">
@@ -949,13 +938,13 @@
   
   <xsl:template match="AuthorList">
     <contrib-group>
-      <xsl:apply-templates select="Author[@ValidYN='Y']"/>
+      <xsl:apply-templates select="Author[@ValidYN='Y'] | Author[not(@ValidYN)]"/>
     </contrib-group>
   </xsl:template>
   
   <xsl:template match="InvestigatorList">
     <contrib-group>
-      <xsl:apply-templates select="Investigator[@ValidYN='Y']"/>
+      <xsl:apply-templates select="Investigator[@ValidYN='Y'] | Investigator[not(@ValidYN)]"/>
     </contrib-group>
   </xsl:template>
   
