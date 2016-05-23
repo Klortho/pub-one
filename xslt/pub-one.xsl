@@ -1371,6 +1371,16 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
+      <xsl:when test="contains($pgn,'-') and contains(substring-after($pgn,'-'),'-') and contains(substring-after($pgn,'-'),',')">
+		<!-- <MedlinePgn>163-6,171-7</MedlinePgn> pmid="636101" -->
+			<fpage>
+				<xsl:value-of select="substring-before($pgn,'-')"/>
+			</fpage>
+         <xsl:call-template name="lpage">
+				<xsl:with-param name="pagestring" select="normalize-space(substring-after($pgn,','))"/>
+				</xsl:call-template>
+			<page-range><xsl:value-of select="$pgn"/></page-range>
+			</xsl:when>
       <xsl:when test="contains($pgn,'-') and contains(substring-after($pgn,'-'),'-')">
       <!--<MedlinePgn>29-1 - 29-3</MedlinePgn> pmid="12179563 -->
         <fpage>
@@ -1379,7 +1389,8 @@
         <lpage>
           <xsl:value-of select="normalize-space(substring-after(substring-after($pgn,'-'),'-'))"/>
         </lpage>
-        </xsl:when>
+			<page-range><xsl:value-of select="$pgn"/></page-range>
+		  </xsl:when>
       <xsl:when test="contains($pgn,'-') and contains($pgn,',')">
         <xsl:variable name="ef" select="substring-before($pgn,',')"/>
         <xsl:variable name="el">
