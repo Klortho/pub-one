@@ -260,7 +260,7 @@
       <xsl:apply-templates select="front/article-meta/related-object | /article//related-article"/>
       
       <!-- write abstract(s) -->
-      <xsl:apply-templates select="MedlineCitation/Article/Abstract | front/article-meta/abstract | front/article-meta/trans-abstract |
+      <xsl:apply-templates select="MedlineCitation/Article/Abstract | MedlineCitation/OtherAbstract | front/article-meta/abstract | front/article-meta/trans-abstract |
               book-part-meta/abstract"/>
       
       <xsl:if test="book-part-meta and not(book-part-meta/abstract) and body/sec[@sec-type='pubmed-excerpt']">
@@ -1861,7 +1861,8 @@
   <!-- ============================ -->
   <xsl:template match="OtherAbstract">
     <xsl:choose>
-      <xsl:when test="@xml:lang=/descendant::Language[1] or @xml:lang=lower-case(/descendant::Language[1])">
+	 	<xsl:when test="AbstractText[1]='Abstract available from the publisher.'"/>
+      <xsl:when test="@Language=/descendant::Language[1] or @Language=lower-case(/descendant::Language[1])">
         <abstract>
           <xsl:if test="@Type">
             <xsl:attribute name="abstract-type" select="@Type"/>
@@ -1871,7 +1872,7 @@
         </xsl:when>
       <xsl:otherwise>
         <trans-abstract>
-          <xsl:apply-templates select="@xml:lang"/>
+          <xsl:apply-templates select="@Language"/>
           <xsl:if test="@Type">
             <xsl:attribute name="abstract-type" select="@Type"/>
               </xsl:if>
@@ -1881,7 +1882,7 @@
       </xsl:choose>
   </xsl:template>
   
-  <xsl:template match="@xml:lang">
+  <xsl:template match="@xml:lang | @Language">
 	 	<xsl:attribute name="xml:lang">
 	 		<xsl:call-template name="get-lang">
 				<xsl:with-param name="code" select="normalize-space()"/>
