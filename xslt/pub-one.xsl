@@ -281,9 +281,14 @@
       <!-- write funding information -->
       <xsl:apply-templates select="front/article-meta/funding-group | MedlineCitation/Article/GrantList"/>
       
-      <!-- write citationsubset in custom-meta -->
-      <xsl:apply-templates select="MedlineCitation/CitationSubset"/>
-      
+		<xsl:if test="MedlineCitation">
+			<xsl:call-template name="write-pubmed-custom-meta-group"/>
+      </xsl:if>
+		
+		<xsl:if test="front/article-meta/pub-date">
+			<xsl:call-template name="write-pmc-custom-meta-group"/>
+				</xsl:if>
+			
       <!-- write cited articles -->
       <xsl:apply-templates select="MedlineCitation/CommentsCorrectionsList" mode="cited"/>
       
@@ -2076,12 +2081,10 @@
   </xsl:template>
 
   <xsl:template match="CitationSubset">
-    <custom-meta-group>
       <custom-meta>
         <meta-name>CitationSubset</meta-name>
         <meta-value><xsl:apply-templates/></meta-value>
       </custom-meta>
-    </custom-meta-group>
     </xsl:template>
 
   <xsl:template match="GeneralNote">
@@ -2351,6 +2354,96 @@
 	</label>
 	</xsl:template>
 
+	<xsl:template name="write-pubmed-custom-meta-group">
+		<custom-meta-group>
+			<xsl:if test="PubmedData/PublicationStatus">
+				<custom-meta>
+					<meta-name>PublicationStatus</meta-name>
+					<meta-value>
+						<xsl:value-of select="PubmedData/PublicationStatus"/>
+						<!-- need PMC publication status here -->
+					</meta-value>
+				</custom-meta>
+				</xsl:if>
+			<custom-meta>
+ 				<meta-name>MedlineCitation-Status</meta-name>
+				<meta-value><xsl:value-of select="MedlineCitation/@Status"/></meta-value>
+			</custom-meta>
+			<custom-meta>
+				<meta-name>MedlineCitation-Owner</meta-name>
+				<meta-value><xsl:value-of select="MedlineCitation/@Owner"/></meta-value>
+			</custom-meta>
+			<!-- write citationsubset in custom-meta -->
+      	<xsl:apply-templates select="MedlineCitation/CitationSubset"/>
+		</custom-meta-group>
+	</xsl:template>
+
+
+	<xsl:template name="write-pmc-custom-meta-group">
+		<custom-meta-group>
+			<custom-meta>
+				<meta-name>PublicationStatus</meta-name>
+				<meta-value>
+					<xsl:call-template name="get-pubstatus"/>
+				</meta-value>
+			</custom-meta>
+		</custom-meta-group>
+		</xsl:template>
+
+
+	<xsl:template name="get-pubstatus">
+		<xsl:variable name="olf">
+			<xsl:if test="/article/processing-instruction('OLF')">olf</xsl:if>
+			</xsl:variable>
+			
+		<xsl:variable name="epub">
+			<xsl:copy-of select="front/article-meta/pub-date[@pub-type='epub'] | front/article-meta/pub-date[@date-type='pub'][@publication-format='electronic']"/>
+			</xsl:variable>
+		<xsl:variable name="collection">
+			<xsl:copy-of select="front/article-meta/pub-date[@pub-type='collection'] | front/article-meta/pub-date[@date-type='collection'][@publication-format='electronic']"/>
+			</xsl:variable>
+		<xsl:variable name="ppub">
+			<xsl:copy-of select="front/article-meta/pub-date[@pub-type='ppub'] | front/article-meta/pub-date[@date-type='pub'][@publication-format='print']"/>
+			</xsl:variable>
+		<xsl:variable name="epub-ppub">
+			<xsl:copy-of select="front/article-meta/pub-date[@pub-type='epub-ppub'] | front/article-meta/pub-date[@date-type='pub'][@publication-format='print-electronic']"/>
+			</xsl:variable>
+		<xsl:variable name="jidab">
+			<xsl:value-of select="front/journal-meta/journal-id[@journal-id-type='pmc']"/>
+			</xsl:variable>
+		
+		<xsl:choose>
+			<xsl:when test="$olf='olf'">
+				<!-- AOP -->
+				<xsl:value-of select="'aheadofprint'"/>
+				</xsl:when>
+			<xsl:when test="($jidab[1]='ploscurrents' or $jidab[1]='f1000res') and //processing-instruction('first_version_date')">
+				<xsl:value-of select="'epublish'"/>
+				</xsl:when>
+			<xsl:when test="normalize-space($ppub) and normalize-space($epub)">
+				<!-- When ppub and epub both exist, write ppub as PubDate and epub in History. PubMed loader picks up epub date from history and converts it to PubDate PubStatus="epub" -->
+				<xsl:value-of select="'epublish'"/>
+				</xsl:when>
+			<xsl:when test="count(front/article-meta/pub-date[@pub-type!='pmc-release'][@pub-type!='epreprint'])=1 and normalize-space($epub)">
+				<!-- When there's only 1 pub-date and it's an epub date, send as epublish and do not send ppublish value -->
+				<xsl:value-of select="'epublish'"/>
+				</xsl:when>
+			<xsl:when test="count(front/article-meta/pub-date[not(@pub-type='pmc-release')])>1 and normalize-space($epub) and normalize-space($collection)">
+				<!-- LO Instructions 3/27/13: send collection date as ppublish in history -->	
+				<xsl:value-of select="'epublish'"/>
+				</xsl:when>
+			<xsl:when test="normalize-space($collection)">
+				<xsl:value-of select="'ecollection'"/>
+				</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="'ppublish'"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+
+
+	
 
 <!--DOI CLEANUP TEMPLATES -->
 	<xsl:template name="clean-doi">
