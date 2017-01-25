@@ -281,8 +281,26 @@
       <!-- write funding information -->
       <xsl:apply-templates select="front/article-meta/funding-group | MedlineCitation/Article/GrantList"/>
       
-      <!-- write citationsubset in custom-meta -->
-      <xsl:apply-templates select="MedlineCitation/CitationSubset"/>
+		<custom-meta-group>
+			<xsl:if test="PubmedData/PublicationStatus">
+				<custom-meta>
+					<meta-name>PublicationStatus</meta-name>
+					<meta-value>
+						<xsl:value-of select="PubmedData/PublicationStatus"/>
+					</meta-value>
+				</custom-meta>
+				</xsl:if>
+			<custom-meta>
+ 				<meta-name>MedlineCitation-Status</meta-name>
+				<meta-value><xsl:value-of select="MedlineCitation/@Status"/></meta-value>
+			</custom-meta>
+			<custom-meta>
+				<meta-name>MedlineCitation-Owner</meta-name>
+				<meta-value><xsl:value-of select="MedlineCitation/@Owner"/></meta-value>
+			</custom-meta>
+			<!-- write citationsubset in custom-meta -->
+      	<xsl:apply-templates select="MedlineCitation/CitationSubset"/>
+		</custom-meta-group>
       
       <!-- write cited articles -->
       <xsl:apply-templates select="MedlineCitation/CommentsCorrectionsList" mode="cited"/>
@@ -2076,12 +2094,10 @@
   </xsl:template>
 
   <xsl:template match="CitationSubset">
-    <custom-meta-group>
       <custom-meta>
         <meta-name>CitationSubset</meta-name>
         <meta-value><xsl:apply-templates/></meta-value>
       </custom-meta>
-    </custom-meta-group>
     </xsl:template>
 
   <xsl:template match="GeneralNote">
