@@ -29,6 +29,9 @@
     <xsl:apply-templates/>
   </xsl:template>
 
+  <xsl:template match='pub-one-record-set'>
+    <xsl:apply-templates/>
+  </xsl:template>
 
   <xsl:template match="pm-record|pub-one-record">
     <xsl:variable name="article-id">
