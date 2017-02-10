@@ -38,10 +38,10 @@
 
      Revisions: editor and revision history at EOF
 -->
-<!-- Entity used to enable marked sections which enforces stricter		
-     checking of MathML syntax rules		
+<!-- Entity used to enable marked sections which enforces stricter    
+     checking of MathML syntax rules    
 -->
-<!ENTITY % MathMLstrict "IGNORE">		
+<!ENTITY % MathMLstrict "IGNORE">   
 
 <!-- MathML Qualified Names module ............................... -->
 <!ENTITY % mathml-qname.module "INCLUDE" >
@@ -290,7 +290,7 @@
 
 <!ENTITY % CommonAtt "
 %MATHML.NamespaceDecl.attrib;
-   %XLINK.prefix;:href   CDATA #IMPLIED	
+   %XLINK.prefix;:href   CDATA #IMPLIED 
   %XLINK.prefix;:type   CDATA #IMPLIED
   xml:lang   CDATA #IMPLIED
   xml:space   (default|preserve) #IMPLIED

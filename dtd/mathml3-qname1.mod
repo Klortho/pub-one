@@ -38,7 +38,7 @@
 
 <!-- XLink ............... -->
 
-<!ENTITY % XLINK.prefix         "xlink" >		
+<!ENTITY % XLINK.prefix         "xlink" >   
 <!ENTITY % XLINK.xmlns "http://www.w3.org/1999/xlink" >
 <!ENTITY % XLINK.xmlns.attrib
      "xmlns:%XLINK.prefix;  CDATA           #FIXED '%XLINK.xmlns;'"
@@ -46,7 +46,7 @@
 
 <!-- W3C XML Schema ............... -->
 
-<!ENTITY % Schema.prefix         "xsi" >		
+<!ENTITY % Schema.prefix         "xsi" >    
 <!ENTITY % Schema.xmlns "http://www.w3.org/2001/XMLSchema-instance" >
 <!ENTITY % Schema.xmlns.attrib
      "xmlns:%Schema.prefix;  CDATA           #IMPLIED"
