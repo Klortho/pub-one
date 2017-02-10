@@ -254,8 +254,8 @@ Version  Reason/Occasion                   (who) vx.x (yyyy-mm-dd)
                         <index-entry> element.                     -->
 <!ENTITY % index-div-model  
                         "(title-group?, (%para-level-minus-x;)*, 
-			                      (%index-entry.class; | %index-div.class; |
-			                       %x.class;)+                            )"  >
+                            (%index-entry.class; | %index-div.class; |
+                             %x.class;)+                            )"  >
 
 
 <!--                    INDEX DIVISION                             -->

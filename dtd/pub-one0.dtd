@@ -442,29 +442,29 @@
 <!ELEMENT  source-meta    %source.document-meta-model;                            >
 <!ATTLIST  source-meta
             %book-meta-atts;                                         >
-				
+        
 <!ELEMENT  document-meta    %source.document-meta-model;                     >
 <!ATTLIST  document-meta
             %book-meta-atts;                                         >
 
-<!ELEMENT source-id	(#PCDATA)								>
-<!ATTLIST source-id	
-			source-id-type		CDATA		#REQUIRED    
+<!ELEMENT source-id (#PCDATA)               >
+<!ATTLIST source-id 
+      source-id-type    CDATA   #REQUIRED    
           %jats-common-atts;                                        
              specific-use
                         CDATA                             #IMPLIED
              xml:lang   NMTOKEN                           #IMPLIED  >
-			
-			
+      
+      
 
-<!ELEMENT document-id	(#PCDATA)								>
-<!ATTLIST document-id	
-			document-id-type		CDATA		#REQUIRED    
+<!ELEMENT document-id (#PCDATA)               >
+<!ATTLIST document-id 
+      document-id-type    CDATA   #REQUIRED    
           %jats-common-atts;                                        
              specific-use
                         CDATA                             #IMPLIED
              xml:lang   NMTOKEN                           #IMPLIED  >
-			
+      
 
 
 <!-- ============================================================= -->
