@@ -795,6 +795,8 @@
   </xsl:template> 
   
   <xsl:template match="ArticleTitle">
+  	<xsl:variable name="length" select="string-length()"/>
+	<xsl:variable name="lastchar" select="substring(., $length,1)"/>
     <title-group>
       <xsl:choose>
         <xsl:when test="(starts-with(normalize-space(),'[') and (ends-with(normalize-space(),']') or ends-with(normalize-space(),'].'))) and count(following-sibling::Language) = 1 and following-sibling::VernacularTitle">
@@ -807,7 +809,16 @@
             </trans-title-group>
         </xsl:when>
         <xsl:otherwise>
-          <title><xsl:value-of select="."/></title>
+          <title>
+			 	<xsl:choose>
+					<xsl:when test="$lastchar='.'">
+						<xsl:value-of select="substring(.,1, $length - 1)"/>
+						</xsl:when>
+					<xsl:otherwise>
+			 			<xsl:value-of select="."/>
+						</xsl:otherwise>
+					</xsl:choose>
+			 </title>
           <xsl:for-each select="following-sibling::VernacularTitle">
             <trans-title-group>
               <trans-title>
