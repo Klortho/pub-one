@@ -190,7 +190,17 @@
       <xsl:apply-templates select="MedlineCitation/Article/ArticleTitle | 
               front/article-meta/title-group"/>
 
-      <xsl:apply-templates select="book-part-meta/title-group/subtitle[@content-type=$bookpartype]" mode="doctitle"/>
+
+
+	<xsl:choose>
+		<xsl:when test="book-part-meta/title-group/subtitle[@content-type=$bookpartype]">
+			<xsl:apply-templates select="book-part-meta/title-group/subtitle[@content-type=$bookpartype]" mode="doctitle"/>
+			</xsl:when>
+		<xsl:when test="book-part-meta/title-group/title">
+			<xsl:apply-templates select="book-part-meta/title-group/title" mode="doctitle"/>
+			</xsl:when>
+		</xsl:choose>
+		
       
       <!-- write-contrib-group -->
       <xsl:apply-templates select="front/article-meta/contrib-group | book-part-meta/contrib-group | 
@@ -692,9 +702,16 @@
   </xsl:template> 
   
   
-  <xsl:template match="subtitle" mode="doctitle">
+  <xsl:template match="subtitle | title" mode="doctitle">
     <title-group>
-      <title><xsl:apply-templates/></title>
+      <title><xsl:apply-templates/>
+		<xsl:if test="self::title and following-sibling::subtitle">
+			<named-content content-type="st-sep" xlink:type="simple">: </named-content>
+			<named-content content-type="chapter-subtitle">
+				<xsl:apply-templates select="following-sibling::subtitle/text() | following-sibling::subtitle/*"/>
+				</named-content>
+			</xsl:if>
+			</title>
     </title-group>
   </xsl:template> 
   
