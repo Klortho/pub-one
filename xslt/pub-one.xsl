@@ -705,7 +705,7 @@
     <xsl:variable name="did" select="/book-part/@id"/>
     <notes notes-type="sections">
       <xsl:for-each select="sec">
-        <sec id="{concat($sid,'__',$did,'__',@id)}">
+        <sec id="{concat($sid,'__',$did,'__',@id)}" sec-type="object">
           <xsl:apply-templates select="title"/>
         </sec>
         </xsl:for-each>
@@ -724,7 +724,7 @@
     </xsl:template>
   
   <xsl:template match="list-item" mode="write-chapters">
-    <sec id="{if (p/@id) then (concat(/book-part/book-meta/book-id[@pub-id-type='pmcid'],'__',p/@id)) else (concat(/book-part/book-meta/book-id[@pub-id-type='pmcid'],'__',p/related-object/@document-id))}">
+    <sec id="{if (p/@id) then (concat(/book-part/book-meta/book-id[@pub-id-type='pmcid'],'__',p/@id)) else (concat(/book-part/book-meta/book-id[@pub-id-type='pmcid'],'__',p/related-object/@document-id))}" sec-type="document">
       <xsl:apply-templates select="p/related-object/named-content[@content-type='label']" mode="write-chapters"/>
       <title><xsl:value-of select="p/related-object/text()"/></title>
       <xsl:if test="p/related-object[@document-type='part']">
