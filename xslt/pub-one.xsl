@@ -514,9 +514,13 @@
     
   </xsl:template>
 
-  <xsl:template match="xref[not(@ref-type) or (@ref-type!='aff' and @ref-type!='corresp')] | 
+  <xsl:template match="xref[not(@ref-type) or (@ref-type!='aff' and @ref-type!='corresp' and @ref-type!='bibr')] | 
         label"/>
-        
+   
+  <xsl:template match="xref[@ref-type='bibr']">
+  		<xsl:apply-templates/>
+		</xsl:template>	
+	     
 
   <xsl:template match="aff/@id | aff/@rid | aff-alternatives/@id | contrib/@rid | author-notes/fn/@id | aff/fn/@id | p/@id | mml:math/@name"/>
   
