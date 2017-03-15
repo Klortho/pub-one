@@ -63,7 +63,7 @@
     </pub-one-record>
   </xsl:template>
   
-  <xsl:template match="book-part[not(@book-part-type='toc')]">
+  <xsl:template match="book-part[not(@book-part-type='toc')] | book-part-wrapper">
     <pub-one-record record-type="{@book-part-type}">
 	 	<xsl:attribute name="xml:lang">
 	 		<xsl:call-template name="get-lang">
@@ -116,7 +116,7 @@
         <xsl:when test="/book-part/@book-part-type='toc'">
           <xsl:call-template name="write-oids-from-params"/>
         </xsl:when>
-        <xsl:when test="/book-part and $book_id != '' and $book_id != '0'">
+        <xsl:when test="(/book-part or /book-part-wrap) and $book_id != '' and $book_id != '0'">
           <object-id pub-id-type="pmcbookid">
             <xsl:value-of select="concat('NBK', $book_id)"/>
           </object-id>
@@ -178,8 +178,8 @@
 			<xsl:call-template name="get-pm-doi"/>
 			</xsl:if>		  
       <!-- write article-ids from parameters pmid and pmcid -->
-      <xsl:if test="self::article or self::book-part">
-        <xsl:call-template name="write-oids-from-params"/>
+      <xsl:if test="self::article or self::book-part or self::book-part-wrapper">
+		    <xsl:call-template name="write-oids-from-params"/>
       </xsl:if>
 
 
@@ -193,24 +193,24 @@
 
 
 	<xsl:choose>
-		<xsl:when test="book-part-meta/title-group/subtitle[@content-type=$bookpartype]">
-			<xsl:apply-templates select="book-part-meta/title-group/subtitle[@content-type=$bookpartype]" mode="doctitle"/>
+		<xsl:when test="descendant::book-part-meta/title-group/subtitle[@content-type=$bookpartype]">
+			<xsl:apply-templates select="descendant::book-part-meta/title-group/subtitle[@content-type=$bookpartype]" mode="doctitle"/>
 			</xsl:when>
-		<xsl:when test="book-part-meta/title-group/title">
-			<xsl:apply-templates select="book-part-meta/title-group/title" mode="doctitle"/>
+		<xsl:when test="descendant::book-part-meta/title-group/title">
+			<xsl:apply-templates select="descendant::book-part-meta/title-group/title" mode="doctitle"/>
 			</xsl:when>
 		</xsl:choose>
 		
       
       <!-- write-contrib-group -->
-      <xsl:apply-templates select="front/article-meta/contrib-group | book-part-meta/contrib-group | 
+      <xsl:apply-templates select="front/article-meta/contrib-group | descendant::book-part-meta/contrib-group | 
               MedlineCitation/Article/AuthorList"/>
       <xsl:if test="not(MedlineCitation/Article/AuthorList//CollectiveName) and MedlineCitation/InvestigatorList">
         <xsl:apply-templates select="MedlineCitation/InvestigatorList"/>
       </xsl:if>
       
       <!-- write pub-dates -->
-      <xsl:apply-templates select="front/article-meta/pub-date | book-part-meta/pub-date"/>
+      <xsl:apply-templates select="front/article-meta/pub-date | descendant::book-part-meta/pub-date"/>
       <xsl:if test="self::PubmedArticle">
         <xsl:call-template name="build-pub-dates">
           <xsl:with-param name="PubModel">
@@ -229,8 +229,8 @@
       <!-- write citation details -->
       <xsl:apply-templates select="front/article-meta/edition | front/article-meta/volume | front/article-meta/issue | front/article-meta/fpage | 
               front/article-meta/lpage | front/article-meta/elocation-id |
-              book-part-meta/edition | book-part-meta/volume | book-part-meta/issue | book-part-meta/fpage | 
-              book-part-meta/lpage | book-part-meta/elocation-id "/>
+              descendant::book-part-meta/edition | descendant::book-part-meta/volume | descendant::book-part-meta/issue | book-part-meta/fpage | 
+              descendant::book-part-meta/lpage | descendant::book-part-meta/elocation-id "/>
       
       <xsl:choose>
         <xsl:when test="contains(MedlineCitation/Article/Pagination/MedlinePgn,'Suppl')">
@@ -254,7 +254,7 @@
       </xsl:choose>
       
       <!-- write history -->
-      <xsl:apply-templates select="front/article-meta/history | book-part-meta/history | PubmedData/History"/>
+      <xsl:apply-templates select="front/article-meta/history | descendant::book-part-meta/history | PubmedData/History"/>
       <xsl:if test="not(PubmedData/History) and (MedlineCitation/DateCreated or MedlineCitation/DateCompleted or MedlineCitation/DateRevised)">
         <pub-history>
           <xsl:apply-templates select="MedlineCitation/DateCreated | MedlineCitation/DateCompleted | MedlineCitation/DateRevised"/>
@@ -262,7 +262,7 @@
       </xsl:if>
       
       <!-- write permissions -->
-      <xsl:apply-templates select="front/article-meta/permissions | book-part-meta/permissions"/>
+      <xsl:apply-templates select="front/article-meta/permissions | descendant::book-part-meta/permissions"/>
       <xsl:apply-templates select="MedlineCitation/Article/Abstract/CopyrightInformation"/>
       
       <!-- write related articles -->
@@ -271,9 +271,9 @@
       
       <!-- write abstract(s) -->
       <xsl:apply-templates select="MedlineCitation/Article/Abstract | MedlineCitation/OtherAbstract | front/article-meta/abstract | front/article-meta/trans-abstract |
-              book-part-meta/abstract"/>
+              descendant::book-part-meta/abstract"/>
       
-      <xsl:if test="book-part-meta and not(book-part-meta/abstract) and body/sec[@sec-type='pubmed-excerpt']">
+      <xsl:if test="descendant::book-part-meta and not(descendant::book-part-meta/abstract) and (body/sec[@sec-type='pubmed-excerpt'] or book-part/body/sec[@sec-type='pubmed-excerpt'])">
         <xsl:apply-templates select="body/sec[@sec-type='pubmed-excerpt']" mode="as-abstract"/>
       </xsl:if>
       
@@ -309,6 +309,9 @@
       <!-- write subsections -->
       <xsl:if test="self::book-part and body/sec">
         <xsl:apply-templates select="body" mode="write-sections"/>
+        </xsl:if>
+      <xsl:if test="self::book-part-wrapper and book-part/body/sec">
+        <xsl:apply-templates select="book-part/body" mode="write-sections"/>
         </xsl:if>
       
     </document-meta>
@@ -437,8 +440,8 @@
           </object-id>
         </xsl:when>
         <xsl:otherwise>
-          <object-id pub-id-type="pmcbookid">
-            <xsl:value-of select="$pmcid"/>
+         <object-id pub-id-type="pmcbookid">
+            <xsl:value-of select="if (number($pmcid)) then (concat('NBK', string($pmcid))) else $pmcid"/>
           </object-id>
         </xsl:otherwise>
       </xsl:choose>
@@ -1970,10 +1973,13 @@
             <kwd><xsl:apply-templates/></kwd>
             </xsl:for-each>
           </xsl:when>
-        <xsl:otherwise>
+        <xsl:when test="descendant-or-self::node()/@xml:lang">
           <xsl:for-each-group select="descendant-or-self::node()/@xml:lang" group-by=".">
             <kwd><xsl:value-of select="."/></kwd>
             </xsl:for-each-group>
+				</xsl:when>
+			<xsl:otherwise>
+				<kwd>en</kwd>
           </xsl:otherwise>  
         </xsl:choose>
     </kwd-group>
