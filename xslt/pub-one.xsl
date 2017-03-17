@@ -300,7 +300,10 @@
 				</xsl:if>
 			
       <!-- write cited articles -->
-      <xsl:apply-templates select="MedlineCitation/CommentsCorrectionsList" mode="cited"/>
+      <xsl:apply-templates select="MedlineCitation/CommentsCorrectionsList" mode="cited"/> <!--from PubMed -->
+		<xsl:if test="self::article"> <!-- from PMC -->
+			<xsl:call-template name="get-cited-articles"/>
+			</xsl:if>
       
       <!--- write general notes from pubmed -->
       <xsl:apply-templates select="MedlineCitation/GeneralNote"/>
@@ -2085,9 +2088,20 @@
           <xsl:apply-templates select="CommentsCorrections[@RefType='Cites']" mode="cited"/>
         </ref-list>
       </notes>  
-      
     </xsl:if>
   </xsl:template>
+  
+  <xsl:template name="get-cited-articles">
+    <xsl:if test="descendant::ref-list">
+      <notes notes-type="cited-articles">
+        <ref-list>
+          <xsl:apply-templates select="descendant::ref"/>
+        </ref-list>
+      </notes>  
+    </xsl:if>
+  	</xsl:template>
+  
+  
 
   <xsl:template match="CommentsCorrections" mode="cited">
     <ref><mixed-citation>
@@ -3179,6 +3193,164 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:template>  -->
+
+
+<!-- **************************************************************** -->
+<!--                 PMC REFERENCES CONVERSION                        -->
+<!-- **************************************************************** -->
+
+	<xsl:template match="ref">
+		<xsl:if test="element-citation[@publication-type='journal'] or
+		              mixed-citation[@publication-type='journal'] or
+						  citation[@citation-type='journal'] or
+						  nlm-citation[@citation-type='journal']">
+			<ref>
+				<xsl:apply-templates select="@*"/>
+				<xsl:apply-templates/>
+			</ref>
+			</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="mixed-citation | citation[normalize-space(text())]">
+		<xsl:variable name="refid" select="if (@id) then (@id) else (parent::ref/@id)"/>
+			
+		<mixed-citation>
+			<named-content content-type="citation-string"><xsl:apply-templates select="* except pub-id[@pub-id-type='pmid'] | text()" mode="dump-text"/></named-content>
+			<xsl:copy-of select="ncbi:write-pubid($refid)"/>
+		</mixed-citation>
+		</xsl:template>
+
+	<xsl:template match="element-citation | nlm-citation | citation[not(normalize-space(text()))]">
+		<xsl:variable name="refid" select="if (@id) then (@id) else (parent::ref/@id)"/>
+		<mixed-citation>
+			<named-content content-type="citation-string">
+				<xsl:apply-templates select="person-group" mode="write-out"/>
+				<xsl:apply-templates select="article-title" mode="write-out"/>
+				<xsl:apply-templates select="source" mode="write-out"/>
+				<xsl:call-template name="write-pubdate"/>
+				<xsl:call-template name="vol-iss"/>
+			</named-content>
+			<xsl:copy-of select="ncbi:write-pubid($refid)"/>
+		</mixed-citation>
+		</xsl:template>
+		
+	<xsl:template match="person-group" mode="dump-text">
+		<xsl:call-template name="pg-guts"/>
+		</xsl:template>	
+		
+	<xsl:template match="person-group" mode="write-out">
+		<xsl:call-template name="pg-guts"/>
+		</xsl:template>	
+	
+	<xsl:template match="article-title | source" mode="write-out">
+		<xsl:apply-templates/>
+		<xsl:value-of select="ncbi:final-punctuation('. ', normalize-space())"/>
+		</xsl:template>
+	
+	
+		
+	<xsl:template name="pg-guts">
+		<xsl:choose>
+			<xsl:when test="contains(normalize-space(),',') or contains(normalize-space(),';') "> <!-- has text as a child of person-group -->
+				<xsl:apply-templates mode="dump-text"/>
+				<xsl:if test="not(starts-with(following-sibling::text()[1],'.'))">
+					<xsl:text>. </xsl:text>
+					</xsl:if>
+				</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates mode="pg"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:template>	
+		
+	<xsl:template match="surname" mode="pg">
+		<xsl:apply-templates/>
+		<xsl:text> </xsl:text>
+		</xsl:template>
+		
+	<xsl:template match="surname" mode="dump-text">
+		<xsl:apply-templates/>
+		<xsl:text> </xsl:text>
+		</xsl:template>
+		
+	<xsl:template match="name" mode="pg">
+		<xsl:apply-templates mode="pg"/>
+		<xsl:value-of select="if (following-sibling::name or following-sibling::etal) then ', ' else '. '"/>
+		</xsl:template>
+		
+	<xsl:template match="etal" mode="pg">
+		<xsl:text>et al. </xsl:text>
+		</xsl:template>	
+		
+	<xsl:template name="write-pubdate">
+		<xsl:apply-templates select="year" mode="write-out"/>
+		<xsl:if test="month">
+			<xsl:text> </xsl:text>
+			<xsl:choose>
+				<xsl:when test="number(month)">
+					<xsl:choose>
+						<xsl:when test="number(month) = 1">Jan</xsl:when>
+						<xsl:when test="number(month) = 2">Feb</xsl:when>
+						<xsl:when test="number(month) = 3">Mar</xsl:when>
+						<xsl:when test="number(month) = 4">Apr</xsl:when>
+						<xsl:when test="number(month) = 5">May</xsl:when>
+						<xsl:when test="number(month) = 6">Jun</xsl:when>
+						<xsl:when test="number(month) = 7">Jul</xsl:when>
+						<xsl:when test="number(month) = 8">Aug</xsl:when>
+						<xsl:when test="number(month) = 9">Sep</xsl:when>
+						<xsl:when test="number(month) = 10">Oct</xsl:when>
+						<xsl:when test="number(month) = 11">Nov</xsl:when>
+						<xsl:when test="number(month) = 12">Dec</xsl:when>
+						</xsl:choose>
+					</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="month"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:if>
+		<xsl:if test="day">
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="day"/>
+			</xsl:if>
+		<xsl:text>;</xsl:text>
+		</xsl:template>
+	
+	<xsl:template name="vol-iss">
+		<xsl:if test="volume or issue">
+			<xsl:value-of select="volume"/>
+			<xsl:if test="issue">
+				<xsl:text>(</xsl:text>
+				<xsl:value-of select="issue"/>
+				<xsl:text>)</xsl:text>
+				</xsl:if>
+			<xsl:text>:</xsl:text>
+			</xsl:if>
+		<xsl:value-of select="fpage"/>
+		<xsl:if test="lpage">
+			<xsl:text>&#x2013;</xsl:text>
+			<xsl:value-of select="lpage"/>
+			</xsl:if>
+		<xsl:text>.</xsl:text>
+		</xsl:template>
+
+
+
+	<xsl:function name="ncbi:final-punctuation">
+		<xsl:param name="punct"/>
+		<xsl:param name="str"/>
+		<xsl:value-of select="if (ends-with($str,'.') or ends-with($str,'!') or 
+		                      ends-with($str,'?')) then '' else $punct"/>
+		</xsl:function>
+
+	<xsl:function name="ncbi:write-pubid">
+		<xsl:param name="refid"/>
+		<xsl:comment>
+			<xsl:text>PMIDREPLACESTART[</xsl:text>
+			<xsl:value-of select="$refid"/>
+			<xsl:text>]&lt;pub-id pub-id-type="pmid"&gt;###&lt;/pub-id&gt;PMIDREPLACEEND</xsl:text>
+			</xsl:comment>
+		</xsl:function>
+
 
 </xsl:stylesheet>
 
