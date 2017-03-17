@@ -17,6 +17,8 @@
   -->
   <xsl:param name="pmcid" as="xs:string" select="''"/>
   
+  <xsl:param name="pmcaiid" as="xs:string" select="''"/>
+  
   <!-- <xsl:param name="book_id" as="xs:string?" select="tokenize(base-uri(), '\.')[last()-1]"/>  -->
   <xsl:param name="book_id" as="xs:string?"/>
 
@@ -445,6 +447,11 @@
           </object-id>
         </xsl:otherwise>
       </xsl:choose>
+    </xsl:if>
+    <xsl:if test="$pmcaiid != ''">
+      <object-id pub-id-type="pmcaiid">
+        <xsl:value-of select="$pmcaiid"/>
+      </object-id>
     </xsl:if>
     <xsl:if test="$pmid!='' and $pmid != '0'">
       <object-id pub-id-type="pmid">
