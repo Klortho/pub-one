@@ -114,6 +114,9 @@
               MedlineCitation/MedlineJournalInfo/MedlineTA |
               MedlineCitation/MedlineJournalInfo/NlmUniqueID |
               front/journal-meta//journal-id[not(@journal-id-type='pubmed-jr-id') and not(@journal-id-type='issn')] "/>
+		<xsl:if test="/book-part or /book-part-wrapper">
+			<xsl:apply-templates select="book-meta/book-id[@pub-id-type='pmcid'] | book-meta/book-id[@book-id-type='pmcid']" mode="pmc-domain"/>
+			</xsl:if>
       <xsl:choose>
         <xsl:when test="/book-part/@book-part-type='toc'">
           <xsl:call-template name="write-oids-from-params"/>
@@ -662,6 +665,12 @@
 <!--PMC-book-specific templates -->
   <xsl:template match="book-id">
     <object-id pub-id-type="{@pub-id-type}">
+      <xsl:value-of select="."/>
+    </object-id>
+  </xsl:template> 
+  
+  <xsl:template match="book-id" mode="pmc-domain">
+    <object-id pub-id-type="pmcbook-name">
       <xsl:value-of select="."/>
     </object-id>
   </xsl:template> 
