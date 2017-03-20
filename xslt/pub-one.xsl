@@ -25,9 +25,9 @@
 
 
 
-	<xsl:variable name="ts-uri" select="concat('https://www.ncbi.nlm.nih.gov/pmc/utils/tags/srv/pmcai/',$pmcaiid,'/tags?site=live&amp;rt=frontend')"/>
+	<xsl:variable name="ts-uri" select="concat('https://XXXwww.ncbi.nlm.nih.gov/pmc/utils/tags/srv/pmcai/',$pmcaiid,'/tags?site=live&amp;rt=frontend')"/>
 
-	<xsl:variable name="ts-response" select="doc($ts-uri)"/>
+	<xsl:variable name="ts-response" select="if (doc-available($ts-uri)) then (doc($ts-uri)) else ()"/>
 
 
 
@@ -57,11 +57,6 @@
 			</xsl:attribute>
       <xsl:call-template name="write-source-meta"/>
       <xsl:call-template name="write-document-meta"/>
-		
-		
-<!--		<xsl:comment>======================================================================</xsl:comment>
-		<xsl:copy-of select="$ts-response"/>
-		-->
     </pub-one-record>
   </xsl:template>
   
