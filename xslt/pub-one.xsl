@@ -17,8 +17,19 @@
   -->
   <xsl:param name="pmcid" as="xs:string" select="''"/>
   
+  <xsl:param name="pmcaiid" as="xs:string" select="''"/>
+  
   <!-- <xsl:param name="book_id" as="xs:string?" select="tokenize(base-uri(), '\.')[last()-1]"/>  -->
   <xsl:param name="book_id" as="xs:string?"/>
+
+
+
+
+	<xsl:variable name="ts-uri" select="concat('https://www.ncbi.nlm.nih.gov/pmc/utils/tags/srv/pmcai/',$pmcaiid,'/tags?site=live&amp;rt=frontend')"/>
+
+	<xsl:variable name="ts-response" select="doc($ts-uri)"/>
+
+
 
   <xsl:template match="/">
     <xsl:apply-templates select="article | PubmedArticle | PubmedArticleSet | book | book-part | book-part-wrapper"/>
@@ -46,6 +57,11 @@
 			</xsl:attribute>
       <xsl:call-template name="write-source-meta"/>
       <xsl:call-template name="write-document-meta"/>
+		
+		
+<!--		<xsl:comment>======================================================================</xsl:comment>
+		<xsl:copy-of select="$ts-response"/>
+		-->
     </pub-one-record>
   </xsl:template>
   
@@ -3344,11 +3360,12 @@
 
 	<xsl:function name="ncbi:write-pubid">
 		<xsl:param name="refid"/>
-		<!--<xsl:comment>
-			<xsl:text>PMIDREPLACESTART[</xsl:text>
-			<xsl:value-of select="$refid"/>
-			<xsl:text>]&lt;pub-id pub-id-type="pmid"&gt;###&lt;/pub-id&gt;PMIDREPLACEEND</xsl:text>
-			</xsl:comment>  -->
+		<xsl:variable name="pmid" select="$ts-response//attributes[child::attribute[@name='reference_id' and @value=$refid]]/attribute[@name='pubmed_id']/@value"/>
+		<xsl:if test="$pmid != '' and $pmid != 0">
+			<pub-id pub-id-type="pmid">
+				<xsl:value-of select="$pmid"/>
+			</pub-id>
+		</xsl:if>
 		</xsl:function>
 
 
