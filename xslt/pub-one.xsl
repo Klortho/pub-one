@@ -3344,11 +3344,11 @@
 
 	<xsl:function name="ncbi:write-pubid">
 		<xsl:param name="refid"/>
-		<xsl:comment>
+		<!--<xsl:comment>
 			<xsl:text>PMIDREPLACESTART[</xsl:text>
 			<xsl:value-of select="$refid"/>
 			<xsl:text>]&lt;pub-id pub-id-type="pmid"&gt;###&lt;/pub-id&gt;PMIDREPLACEEND</xsl:text>
-			</xsl:comment>
+			</xsl:comment>  -->
 		</xsl:function>
 
 
