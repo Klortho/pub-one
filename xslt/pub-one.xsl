@@ -25,7 +25,7 @@
 
 
 
-	<xsl:variable name="ts-uri" select="concat('https://XXXwww.ncbi.nlm.nih.gov/pmc/utils/tags/srv/pmcai/',$pmcaiid,'/tags?site=live&amp;rt=frontend')"/>
+	<xsl:variable name="ts-uri" select="concat('https://www.ncbi.nlm.nih.gov/pmc/utils/tags/srv/pmcai/',$pmcaiid,'/tags?site=live&amp;rt=frontend')"/>
 
 	<xsl:variable name="ts-response" select="if (doc-available($ts-uri)) then (doc($ts-uri)) else ()"/>
 
@@ -55,6 +55,10 @@
 				<xsl:with-param name="code" select="if (@xml:lang) then (normalize-space(@xml:lang)) else 'eng'"/>
 				</xsl:call-template>
 			</xsl:attribute>
+	<!--		<xsl:comment>The PMC ArticleInstanceId should be passed into the XSL from the parameter. The value is currently [<xsl:value-of select="$pmcaiid"/>]. 
+			The passed in pmid is [<xsl:value-of select="$pmid"/>].
+			The passed in pmcid is [<xsl:value-of select="$pmcid"/>].
+			The Tag Server URI is [<xsl:value-of select="$ts-uri"/>].</xsl:comment>  -->
       <xsl:call-template name="write-source-meta"/>
       <xsl:call-template name="write-document-meta"/>
     </pub-one-record>
