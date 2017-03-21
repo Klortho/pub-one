@@ -460,6 +460,11 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
+    <xsl:if test="$pmcaiid != ''">
+      <object-id pub-id-type="pmcaiid">
+        <xsl:value-of select="$pmcaiid"/>
+      </object-id>
+    </xsl:if>
     <xsl:if test="$pmid!='' and $pmid != '0'">
       <object-id pub-id-type="pmid">
         <xsl:value-of select="$pmid"/>
