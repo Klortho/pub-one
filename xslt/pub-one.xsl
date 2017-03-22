@@ -58,9 +58,9 @@
 	<!--		<xsl:comment>The PMC ArticleInstanceId should be passed into the XSL from the parameter. The value is currently [<xsl:value-of select="$pmcaiid"/>]. 
 			The passed in pmid is [<xsl:value-of select="$pmid"/>].
 			The passed in pmcid is [<xsl:value-of select="$pmcid"/>].
-			The Tag Server URI is [<xsl:value-of select="$ts-uri"/>].</xsl:comment>   -->
+			The Tag Server URI is [<xsl:value-of select="$ts-uri"/>].</xsl:comment>  
 			
-			<xsl:message><xsl:value-of select="$ts-uri"/></xsl:message>
+			<xsl:message><xsl:value-of select="$ts-uri"/></xsl:message> -->
 			
       <xsl:call-template name="write-source-meta"/>
       <xsl:call-template name="write-document-meta"/>
