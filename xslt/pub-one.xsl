@@ -58,7 +58,7 @@
 	<!--		<xsl:comment>The PMC ArticleInstanceId should be passed into the XSL from the parameter. The value is currently [<xsl:value-of select="$pmcaiid"/>]. 
 			The passed in pmid is [<xsl:value-of select="$pmid"/>].
 			The passed in pmcid is [<xsl:value-of select="$pmcid"/>].
-			The Tag Server URI is [<xsl:value-of select="$ts-uri"/>].</xsl:comment>  -->
+			The Tag Server URI is [<xsl:value-of select="$ts-uri"/>].</xsl:comment>   -->
       <xsl:call-template name="write-source-meta"/>
       <xsl:call-template name="write-document-meta"/>
     </pub-one-record>
@@ -3373,13 +3373,14 @@
 
 	<xsl:function name="ncbi:write-pubid">
 		<xsl:param name="refid"/>
-		<xsl:variable name="pmid" select="$ts-response//attributes[child::attribute[@name='reference_id' and @value=$refid]]/attribute[@name='pubmed_id']/@value"/>
-		<xsl:if test="$pmid != '' and $pmid != 0">
+		<xsl:variable name="pmid" select="$ts-response//attributes[child::attribute[@name='reference_id' and @value=$refid][1]]/attribute[@name='pubmed_id']/@value" as="xs:string"/>
+		<xsl:if test="$pmid != '' and $pmid != '0'">
 			<pub-id pub-id-type="pmid">
 				<xsl:value-of select="$pmid"/>
 			</pub-id>
 		</xsl:if>
 		</xsl:function>
+
 
 
 </xsl:stylesheet>
