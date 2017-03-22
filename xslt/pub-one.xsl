@@ -58,7 +58,10 @@
 	<!--		<xsl:comment>The PMC ArticleInstanceId should be passed into the XSL from the parameter. The value is currently [<xsl:value-of select="$pmcaiid"/>]. 
 			The passed in pmid is [<xsl:value-of select="$pmid"/>].
 			The passed in pmcid is [<xsl:value-of select="$pmcid"/>].
-			The Tag Server URI is [<xsl:value-of select="$ts-uri"/>].</xsl:comment>   -->
+			The Tag Server URI is [<xsl:value-of select="$ts-uri"/>].</xsl:comment>  
+			
+			<xsl:message><xsl:value-of select="$ts-uri"/></xsl:message> -->
+			
       <xsl:call-template name="write-source-meta"/>
       <xsl:call-template name="write-document-meta"/>
     </pub-one-record>
@@ -3244,7 +3247,8 @@
 		<xsl:variable name="refid" select="if (@id) then (@id) else (parent::ref/@id)"/>
 			
 		<mixed-citation>
-			<named-content content-type="citation-string"><xsl:apply-templates select="* except pub-id[@pub-id-type='pmid'] | text()" mode="dump-text"/></named-content>
+			<named-content content-type="citation-string"><xsl:apply-templates select="* except pub-id | text()" mode="dump-text"/></named-content>
+			<xsl:copy-of select="pub-id[@pub-id-type='doi']"  copy-namespaces="no"/>
 			<xsl:copy-of select="ncbi:write-pubid($refid)"/>
 		</mixed-citation>
 		</xsl:template>
@@ -3259,6 +3263,7 @@
 				<xsl:call-template name="write-pubdate"/>
 				<xsl:call-template name="vol-iss"/>
 			</named-content>
+			<xsl:copy-of select="pub-id[@pub-id-type='doi']" copy-namespaces="no"/>
 			<xsl:copy-of select="ncbi:write-pubid($refid)"/>
 		</mixed-citation>
 		</xsl:template>
@@ -3373,12 +3378,16 @@
 
 	<xsl:function name="ncbi:write-pubid">
 		<xsl:param name="refid"/>
-		<xsl:variable name="pmid" select="$ts-response//attributes[child::attribute[@name='reference_id' and @value=$refid][1]]/attribute[@name='pubmed_id']/@value" as="xs:string"/>
-		<xsl:if test="$pmid != '' and $pmid != '0'">
+	<xsl:variable name="tspmid" select="if ($ts-response//attributes[child::attribute[@name='reference_id' and @value=$refid]]/attribute[@name='pubmed_id']/@value) 
+		                                  then ($ts-response//attributes[child::attribute[@name='reference_id' and @value=$refid]]/attribute[@name='pubmed_id']/@value)
+													 else ('0')" /> 
+		<xsl:variable name="pmid" select="string($tspmid[1])"/>											 
+													 
+	<xsl:if test="$pmid != '' and $pmid != '0'">
 			<pub-id pub-id-type="pmid">
 				<xsl:value-of select="$pmid"/>
 			</pub-id>
-		</xsl:if>
+		</xsl:if> 
 		</xsl:function>
 
 
