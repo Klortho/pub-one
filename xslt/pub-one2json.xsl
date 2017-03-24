@@ -149,7 +149,7 @@
 
   <xsl:template match="string-name|collab|on-behalf-of">
     <s k="family">
-      <xsl:value-of select="."/>
+      <xsl:value-of select="child::text()"/>
     </s>
   </xsl:template>
 
