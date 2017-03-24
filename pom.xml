@@ -20,9 +20,17 @@
           <include>samples/**</include>
           <include>xslt/**</include>
         </includes>
-        <targetPath>.</targetPath>
+        <targetPath>${project.build.directory}</targetPath>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+           <include>log4j.properties</include>
+        </includes>
+        <targetPath>${project.build.directory}</targetPath>
       </resource>
     </resources>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -31,6 +39,22 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>gov.ncbi.pub1.Transform</mainClass>
         </configuration>
       </plugin>
 
@@ -57,6 +81,9 @@
         </executions>
       </plugin>
 
+      <!--
+        This plugin creates a combine .jar file with all of the dependencies
+      -->
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
@@ -80,17 +107,30 @@
       <artifactId>xml-resolver</artifactId>
       <version>1.2</version>
     </dependency>
+
+
+
+  <!--     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.25</version>
+      <scope>test</scope>
+    </dependency> -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.13</version>
+      <version>1.7.25</version>
     </dependency>
+
+
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.13</version>
-      <scope>test</scope>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.7.25</version>
     </dependency>
+
+
+
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>

@@ -2,21 +2,19 @@ package gov.ncbi.pub1;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +31,7 @@ import net.sf.saxon.s9api.XsltTransformer;
 
 
 public class Transform {
+    private static final Logger log = LoggerFactory.getLogger(Transform.class);
     private Processor saxonProcessor;
     private Resolver resolver;
     private XsltCompiler compiler;
@@ -123,27 +122,9 @@ public class Transform {
     }
 
 
-    public static void checkDir(File dir) {
-        if (!dir.exists() || !dir.isDirectory()) {
-            System.err.println("Unable to find the directory " + dir);
-            System.exit(1);
-        }
-    }
 
     public static void main(String[] args) {
         try {
-            String v0 = System.getProperty("PUB1DIR");
-            String v1 = v0 == null || v0.length() == 0 ? "xslt" : v0;
-            File pub1Dir = new File(v1);
-            checkDir(pub1Dir);
-            File xsltDir = new File(pub1Dir, "xslt");
-            checkDir(xsltDir);
-
-            if (!pub1Dir.exists() || !pub1Dir.isDirectory()) {
-                System.err.println("Unable to find the pub-one xslt directory `" + v1 + "`");
-                System.exit(1);
-            }
-
             if (args.length != 2) {
                 System.err.println(
                     "Usage:  ./transform.sh <in> <xslt>" +
@@ -156,17 +137,45 @@ public class Transform {
                 System.exit(1);
             }
 
+            // Find the input file
             File inFile = new File(args[0]);
             if (!inFile.exists()) {
                 System.err.println("Unable to find input file " + inFile.getAbsolutePath());
                 System.exit(1);
             }
-            //System.out.println("inFile : " + inFile.getAbsolutePath());
+            log.debug("Input file: " + inFile.getAbsolutePath());
 
+            // Find the XSLT
             String xsltArg = args[1];
             String xsltName = xsltArg.endsWith(".xsl") ? xsltArg : xsltArg + ".xsl";
-            File xsltFile = new File(xsltDir, xsltName);
-            //System.out.println("xsltFile: " + xsltFile);
+
+            String p1Prop = System.getProperty("PUB1DIR");
+            String p1Spec = p1Prop == null || p1Prop.length() == 0 ? "." : p1Prop;
+            File p1Dir = new File(p1Spec);
+
+            File[] ppDirs = new File[] {
+                new File(p1Dir, "xslt"),
+                p1Dir,
+                new File(".")
+            };
+            System.out.println("Will try: " +
+                    ppDirs[0].getAbsolutePath() + ", " +
+                    ppDirs[1].getAbsolutePath() + ", " +
+                    ppDirs[2].getAbsolutePath()
+            );
+
+            File xsltFile = null;
+            for (File pp : ppDirs) {
+                xsltFile = new File(pp, xsltName);
+                if (xsltFile.exists()) break;
+            }
+            if (!xsltFile.exists()) {
+                System.err.println("Unable to find the XSLT file at any of these locations:");
+                for (File pp : ppDirs) {
+                    System.err.println("  " + pp.getAbsolutePath());
+                }
+            }
+            log.debug("XSLT file: " + xsltFile.getAbsolutePath());
 
             Transform t = new Transform();
             String result = t.transform(toSource(inFile), toSource(xsltFile));
