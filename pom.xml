@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>gov.ncbi.pmc</groupId>
   <artifactId>pub-one</artifactId>
-  <version>1.0.4-SNAPSHOT</version>
+  <version>1.0.6</version>
   <name>PubOne resources</name>
 
   <properties>
@@ -20,7 +20,7 @@
           <include>samples/**</include>
           <include>xslt/**</include>
         </includes>
-        <targetPath>gov/ncbi/pmc/pub-one</targetPath>
+        <targetPath>gov/ncbi/pmc/pub_one</targetPath>
       </resource>
     </resources>
     <plugins>
@@ -31,6 +31,41 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+        </configuration>
+      </plugin>
+
+      <!--
+        The surefire plugin runs the test and generates the reports
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.12.4</version>
+        <configuration>
+          <systemPropertyVariables>
+            <rootLogLevel>DEBUG</rootLogLevel>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
+      <!--
+        This plugin provides access to the test.Transformer's main()
+        method from the command line.
+      -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.6.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>gov.ncbi.pmc.pub_one.test.Transformer</mainClass>
+          <classpathScope>test</classpathScope>
         </configuration>
       </plugin>
     </plugins>
@@ -46,14 +81,23 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.13</version>
+      <version>1.7.25</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.7.25</version>
+      <scope>test</scope>
+    </dependency>
+
+  <!--
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.13</version>
       <scope>test</scope>
-    </dependency>
+    </dependency>-->
 
     <!-- hamcrest 2.0.0.0 and junit 4 -->
     <dependency>

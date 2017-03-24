@@ -29,6 +29,9 @@
     <xsl:apply-templates/>
   </xsl:template>
 
+  <xsl:template match='pub-one-record-set'>
+    <xsl:apply-templates/>
+  </xsl:template>
 
   <xsl:template match="pm-record|pub-one-record">
     <xsl:variable name="article-id">
@@ -146,7 +149,7 @@
 
   <xsl:template match="string-name|collab|on-behalf-of">
     <s k="family">
-      <xsl:value-of select="."/>
+      <xsl:value-of select="child::text()"/>
     </s>
   </xsl:template>
 
