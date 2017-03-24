@@ -23,6 +23,7 @@
         <targetPath>gov/ncbi/pmc/pub_one</targetPath>
       </resource>
     </resources>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -35,7 +36,9 @@
       </plugin>
 
       <!--
-        The surefire plugin runs the test and generates the reports
+        The surefire plugin runs the test and generates the reports.
+        Normally it's not necessary to declare it (it's used by default),
+        but we do so here in order to set a system property default value.
       -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -50,7 +53,8 @@
 
       <!--
         This plugin provides access to the test.Transformer's main()
-        method from the command line.
+        method from the command line. This is used in the transform.sh
+        script.
       -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -68,14 +72,47 @@
           <classpathScope>test</classpathScope>
         </configuration>
       </plugin>
+
+      <!--
+        This causes the active classpath to be written to classpath.txt,
+        for reference.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>build-classpath</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>build-classpath</goal>
+            </goals>
+            <configuration>
+              <outputFile>classpath.txt</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+
     </plugins>
   </build>
 
   <dependencies>
+
+    <!-- Runtime dependencies -->
+
     <dependency>
       <groupId>xml-resolver</groupId>
       <artifactId>xml-resolver</artifactId>
       <version>1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>Saxon-HE</artifactId>
+      <version>9.6.0-7</version>
     </dependency>
 
     <dependency>
@@ -84,20 +121,15 @@
       <version>1.7.25</version>
     </dependency>
 
+    <!-- Test dependencies -->
+
+    <!-- Binds slf4j to log4j; turns logging on -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.7.25</version>
       <scope>test</scope>
     </dependency>
-
-  <!--
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.13</version>
-      <scope>test</scope>
-    </dependency>-->
 
     <!-- hamcrest 2.0.0.0 and junit 4 -->
     <dependency>
@@ -113,11 +145,6 @@
       </exclusions>
     </dependency>
 
-    <dependency>
-      <groupId>net.sf.saxon</groupId>
-      <artifactId>Saxon-HE</artifactId>
-      <version>9.6.0-7</version>
-    </dependency>
   </dependencies>
 
 </project>

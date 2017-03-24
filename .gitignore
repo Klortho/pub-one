@@ -1,5 +1,5 @@
-*.xpr
-/target/
-
 /bin/
+/classpath.txt
+/target/
 /test-log.log
+*.xpr
