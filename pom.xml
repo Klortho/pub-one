@@ -35,6 +35,20 @@
       </plugin>
 
       <!--
+        The surefire plugin runs the test and generates the reports
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.12.4</version>
+        <configuration>
+          <systemPropertyVariables>
+            <rootLogLevel>DEBUG</rootLogLevel>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
+      <!--
         This plugin provides access to the test.Transformer's main()
         method from the command line.
       -->
@@ -67,14 +81,23 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.13</version>
+      <version>1.7.25</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.7.25</version>
+      <scope>test</scope>
+    </dependency>
+
+  <!--
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.13</version>
       <scope>test</scope>
-    </dependency>
+    </dependency>-->
 
     <!-- hamcrest 2.0.0.0 and junit 4 -->
     <dependency>

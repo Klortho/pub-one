@@ -12,7 +12,6 @@ import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.transform.Source;
@@ -42,15 +41,19 @@ import net.sf.saxon.s9api.XsltTransformer;
 
 public class Transformer {
     private static final Logger log = LoggerFactory.getLogger(Transformer.class);
+
     public final static String xsltPath = "gov/ncbi/pmc/pub-one/xslt";
-    private static Processor saxonProcessor = new Processor(false);
-    private static Resolver resolver = new Resolver();
-    private static XsltCompiler compiler = saxonProcessor.newXsltCompiler();
-    private static DocumentBuilder docBuilder = saxonProcessor.newDocumentBuilder();
+    public static Processor saxonProcessor = new Processor(false);
+    public static Resolver resolver = new Resolver();
+    public static XsltCompiler compiler = saxonProcessor.newXsltCompiler();
+    public static DocumentBuilder docBuilder = saxonProcessor.newDocumentBuilder();
     static {
         compiler.setURIResolver(resolver);
     }
 
+    /**
+     * Convenience utility to read the contents of a file into a String.
+     */
     public static String readFile(String path, Charset encoding)
             throws IOException
     {
@@ -58,6 +61,10 @@ public class Transformer {
         return new String(encoded, encoding);
     }
 
+    /**
+     * Convenience utility to read the contents of a UTF-8 encoded file
+     * into a String.
+     */
     public static String readFile(String path)
         throws IOException
     {
@@ -65,12 +72,10 @@ public class Transformer {
     }
 
     /**
-     * Use Saxon to drive an XSLT transformation of a test document.
-     * This can serve as an example of how it is done. It is intentionally
-     * verbose, so you can see all of the steps explicitly.
+     * Use Saxon to transform an XML document with XSLT.
      */
     public static String transform(String in, URL xsltUrl,
-                            Map<String, String> params)
+            Map<String, String> params)
         throws IOException, SaxonApiException
     {
         // Instantiate an xslt transformer
