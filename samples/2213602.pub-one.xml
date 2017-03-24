@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pub-one-record-set xmlns:p1="http://pubmed.gov/pub-one"
+  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <pub-one-record p1:id="pubmed_22113602" p1:pmid="pubmed_22113602" record-type="article"
+    xml:lang="eng">
+    <source-meta>
+      <object-id pub-id-type="iso-abbrev">Acta Reumatol Port</object-id>
+      <object-id pub-id-type="nlm-ta">Acta Reumatol Port</object-id>
+      <object-id pub-id-type="nlm-journal-id">0431702</object-id>
+      <title-group>
+        <title>Acta reumatológica portuguesa</title>
+      </title-group>
+      <issn publication-format="print">0303-464X</issn>
+      <issn-l>0303-464X</issn-l>
+    </source-meta>
+    <document-meta>
+      <object-id pub-id-type="pmid">22113602</object-id>
+      <subj-group subj-group-type="publication-type">
+        <subject>Journal Article</subject>
+        <subject>Practice Guideline</subject>
+        <subject>Research Support, Non-U.S. Gov't</subject>
+      </subj-group>
+      <title-group>
+        <title>Physiotherapy in hip and knee osteoarthritis: development of a practice guideline
+          concerning initial assessment, treatment and evaluation.</title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Peter</surname>
+            <given-names initials="WF">W F</given-names>
+          </name>
+          <aff>Department of Rheumatology, Leiden University Medical Center, The Netherlands.
+            w.f.h.peter@lumc.nl</aff>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Jansen</surname>
+            <given-names initials="MJ">M J</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Hurkmans</surname>
+            <given-names initials="EJ">E J</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Bloo</surname>
+            <given-names initials="H">H</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Dekker</surname>
+            <given-names initials="J">J</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Dilling</surname>
+            <given-names initials="RG">R G</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Hilberdink</surname>
+            <given-names initials="W">W</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Kersten-Smit</surname>
+            <given-names initials="C">C</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>de Rooij</surname>
+            <given-names initials="M">M</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Veenhof</surname>
+            <given-names initials="C">C</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Vermeulen</surname>
+            <given-names initials="HM">H M</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>de Vos</surname>
+            <given-names initials="RJ">R J</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Schoones</surname>
+            <given-names initials="JW">J W</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Vliet Vlieland</surname>
+            <given-names initials="TP">T P</given-names>
+          </name>
+        </contrib>
+        <contrib contrib-type="author">
+          <collab>Guideline Steering Committee - Hip and Knee Osteoarthritis 
+            <contrib-group>
+              <contrib contrib-type="investigator"><name><surname>Boerwinkle</surname><given-names
+                    initials="E">Eric</given-names></name></contrib>
+              <contrib contrib-type="investigator"><name><surname>Buse</surname><given-names
+                    initials="J">John</given-names></name></contrib>
+              <contrib contrib-type="investigator"><name><surname>DeFronzo</surname><given-names
+                    initials="R">Ralph</given-names></name></contrib>
+              <contrib contrib-type="investigator"><name><surname>Ehrmann</surname><given-names
+                    initials="D">David</given-names></name></contrib>
+              <contrib contrib-type="investigator"><name><surname>Elbein</surname><given-names
+                    initials="SC">Steven C</given-names></name></contrib>
+              <contrib
+                contrib-type="investigator"><name><surname>Fujimoto</surname><given-names
+                    initials="W">Wilfred</given-names></name></contrib>
+              <contrib
+                contrib-type="investigator"><name><surname>Kahn</surname><given-names initials="SE"
+                    >Steven E</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Hanis</surname><given-names initials="CL">Craig
+                  L</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Mulivor</surname><given-names initials="RA">Richard
+                    A</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Beck</surname><given-names initials="JC">Jeanne
+                  C</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Norris</surname><given-names initials="J"
+                  >Jill</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Permutt</surname><given-names initials="M">M
+                  Alan</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Behn</surname><given-names initials="P"
+                  >Philip</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Raffel</surname><given-names initials="L"
+                  >Leslie</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Robbins</surname><given-names initials="DC">David
+                    C</given-names></name></contrib></contrib-group><contrib-group><contrib
+                contrib-type="investigator"><name><surname>Kapur</surname><given-names initials="N"
+                    >Navneet</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Kendall</surname><given-names initials="T"
+                  >Tim</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Anigbogu</surname><given-names initials="B"
+                    >Benedict</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Allen</surname><given-names initials="G"
+                  >Gareth</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Baston</surname><given-names initials="S"
+                  >Simon</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Bhatti</surname><given-names initials="H"
+                  >Henna</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Briggs</surname><given-names initials="A"
+                  >Andrew</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Briggs</surname><given-names initials="S"
+                  >Stephen</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Cox</surname><given-names initials="A"
+                  >Anthony</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Chan</surname><given-names initials="M"
+                  >Melissa</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Dyer</surname><given-names initials="M"
+                  >Matthew</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Evans</surname><given-names initials="J"
+                  >Jonathan</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Gill</surname><given-names initials="P"
+                  >Paul</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Glover</surname><given-names initials="N"
+                  >Naomi</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Halton</surname><given-names initials="M"
+                  >Marie</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Hunt</surname><given-names initials="K"
+                  >Kate</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Kearney</surname><given-names initials="S"
+                  >Suzanne</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Leggett</surname><given-names initials="K"
+                    >Katherine</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Meader</surname><given-names initials="N"
+                  >Nick</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>O'Connor</surname><given-names initials="R"
+                  >Rory</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Pacitti</surname><given-names initials="R"
+                  >Richard</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Stockton</surname><given-names initials="S"
+                  >Sarah</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Swales</surname><given-names initials="M"
+                  >Michaela</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Taylor</surname><given-names initials="C"
+                  >Clare</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Wood</surname><given-names initials="A"
+                  >Alison</given-names></name></contrib></contrib-group><contrib-group><contrib
+                contrib-type="investigator"><name><surname>Beckles</surname><given-names
+                    initials="Z">Zosia</given-names></name></contrib><contrib
+                contrib-type="investigator"><name><surname>Burman-Roy</surname><given-names
+                    initials="S">Shona</given-names></name></contrib><contrib
+                contrib-type="investigator"><name><surname>Franklin</surname><given-names
+                    initials="R">Rupert</given-names></name></contrib><contrib
+                contrib-type="investigator"><name><surname>Gholitabar</surname><given-names
+                    initials="M">Maryam</given-names></name></contrib><contrib
+                contrib-type="investigator"><name><surname>Jacklin</surname><given-names
+                    initials="P">Paul</given-names></name></contrib><contrib
+                contrib-type="investigator"><name><surname>James</surname><given-names initials="D"
+                    >David</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Newbatt</surname><given-names initials="E"
+                  >Emma</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Ullman</surname><given-names initials="R"
+                  >Roz</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Derrick</surname><given-names initials="DC">Debbie
+                    Chippington</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Griffiths</surname><given-names initials="M"
+                    >Malcolm</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Jibodu</surname><given-names initials="O"
+                  >Olujimi</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Johnson</surname><given-names initials="C"
+                    >Christine</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Khazaezadeh</surname><given-names initials="N"
+                    >Nina</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Loughney</surname><given-names initials="A"
+                  >Andrew</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Lucas</surname><given-names initials="N"
+                  >Nuala</given-names></name></contrib><contrib contrib-type="investigator"
+                    ><name><surname>Nightingale</surname><given-names initials="P"
+                    >Pippa</given-names></name></contrib></contrib-group></collab>
+        </contrib>
+      </contrib-group>
+      <pub-date date-type="ppub">
+        <season>Jul-Sep</season>
+        <year>2011</year>
+      </pub-date>
+      <volume>36</volume>
+      <issue>3</issue>
+      <fpage>268</fpage>
+      <lpage>281</lpage>
+      <pub-history>
+        <date date-type="entrez" iso-8601-date="20111125T060000">
+          <day>25</day>
+          <month>11</month>
+          <year>2011</year>
+        </date>
+        <date date-type="pubmed" iso-8601-date="20111125T060000">
+          <day>25</day>
+          <month>11</month>
+          <year>2011</year>
+        </date>
+        <date date-type="medline" iso-8601-date="20120404T060000">
+          <day>4</day>
+          <month>4</month>
+          <year>2012</year>
+        </date>
+      </pub-history>
+      <abstract>
+        <sec>
+          <title>Background</title>
+          <p>An update of a Dutch physiotherapy practice guideline in Hip and Knee Osteoarthritis
+            (HKOA) was made, based on current evidence and best practice.</p>
+        </sec>
+        <sec>
+          <title>Methods</title>
+          <p>A guideline steering committee, comprising 10 expert physiotherapists, selected topics
+            concerning the guideline chapters: initial assessment, treatment and evaluation. With
+            respect to treatment a systematic literature search was performed using various
+            databases, and the evidence was graded (1-4). For the initial assessment and evaluation
+            mainly review papers and textbooks were used. Based on evidence and expert opinion,
+            recommendations were formulated. A first draft of the guideline was reviewed by 17
+            experts from different professional backgrounds. A second draft was field-tested by 45
+            physiotherapists.</p>
+        </sec>
+        <sec>
+          <title>Results</title>
+          <p>In total 11 topics were selected. For the initial assessment, three recommendations
+            were formulated, pertaining to history taking, red flags, and formulating treatment
+            goals. Concerning treatment, 7 recommendations were formulated; (supervised) exercise
+            therapy, education and self management interventions, a combination of exercise and
+            manual therapy, postoperative exercise therapy and taping of the patella were
+            recommended. Balneotherapy and hydrotherapy in HKOA, and thermotherapy, TENS, and
+            Continuous Passive Motion in knee OA were neither recommended nor discouraged. Massage
+            therapy, ultrasound, electrotherapy, electromagnetic field, Low Level Laser Therapy,
+            preoperative physiotherapy and education could not be recommended. For the evaluation of
+            treatment goals the following measurement instruments were recommended: Lequesne index,
+            Western Ontario and McMaster Universities osteoarthritis index, Hip disability and
+            Osteoarthritis Outcome Score and Knee injury and Osteoarthritis Outcome Score, 6-minute
+            walktest, Timed Up and Go test, Patient Specific Complaint list, Visual Analoge Scale
+            for pain, Intermittent and Constant OsteoArthritis Pain Questionnaire, goniometry,
+            Medical Research Council for strength, handheld dynamometer.</p>
+        </sec>
+        <sec>
+          <title>Conclusions</title>
+          <p>This update of a Dutch physiotherapy practice guideline on HKOA included 11
+            recommendations on the initial assessment, treatment and evaluation. The implementation
+            of the guideline in clinical practice needs further evaluation.</p>
+        </sec>
+      </abstract>
+      <kwd-group kwd-group-type="MeshHeadingList">
+        <kwd content-type="not-major">Humans</kwd>
+        <nested-kwd>
+          <kwd content-type="not-major">Osteoarthritis, Hip</kwd>
+          <nested-kwd>
+            <kwd content-type="major">therapy</kwd>
+          </nested-kwd>
+        </nested-kwd>
+        <nested-kwd>
+          <kwd content-type="not-major">Osteoarthritis, Knee</kwd>
+          <nested-kwd>
+            <kwd content-type="not-major">therapy</kwd>
+          </nested-kwd>
+        </nested-kwd>
+        <nested-kwd>
+          <kwd content-type="not-major">Physical Therapy Modalities</kwd>
+          <nested-kwd>
+            <kwd content-type="major">standards</kwd>
+          </nested-kwd>
+        </nested-kwd>
+      </kwd-group>
+      <kwd-group kwd-group-type="document-languages">
+        <kwd>eng</kwd>
+      </kwd-group>
+      <custom-meta-group>
+        <custom-meta>
+          <meta-name>CitationSubset</meta-name>
+          <meta-value>IM</meta-value>
+        </custom-meta>
+      </custom-meta-group>
+    </document-meta>
+  </pub-one-record>
+</pub-one-record-set>

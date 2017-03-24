@@ -1,4 +1,4 @@
-package gov.ncbi.pmc.pub_one;
+package gov.ncbi.pub1;
 
 import java.io.IOException;
 import java.io.InputStream;
