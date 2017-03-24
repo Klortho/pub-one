@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 
 public class Resolver implements URIResolver {
-    final static String xsltPath = "gov/ncbi/pmc/pub-one/xslt";
+    final static String xsltPath = "gov/ncbi/pmc/pub_one/xslt";
     Logger log = LoggerFactory.getLogger(URIResolver.class);
     ClassLoader classLoader;
 

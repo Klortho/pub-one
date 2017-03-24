@@ -20,7 +20,7 @@
           <include>samples/**</include>
           <include>xslt/**</include>
         </includes>
-        <targetPath>gov/ncbi/pmc/pub-one</targetPath>
+        <targetPath>gov/ncbi/pmc/pub_one</targetPath>
       </resource>
     </resources>
     <plugins>
@@ -31,6 +31,27 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+        </configuration>
+      </plugin>
+
+      <!--
+        This plugin provides access to the test.Transformer's main()
+        method from the command line.
+      -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.6.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>gov.ncbi.pmc.pub_one.test.Transformer</mainClass>
+          <classpathScope>test</classpathScope>
         </configuration>
       </plugin>
     </plugins>

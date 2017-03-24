@@ -1,8 +1,8 @@
 package gov.ncbi.pmc.pub_one.test;
 
+import static gov.ncbi.pmc.pub_one.test.Transformer.readFile;
 import static org.hamcrest.text.MatchesPattern.matchesPattern;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -12,14 +12,10 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.transform.Source;
-import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Before;
@@ -28,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.ncbi.pmc.pub_one.Resolver;
+
 import net.sf.saxon.s9api.Destination;
 import net.sf.saxon.s9api.DocumentBuilder;
 import net.sf.saxon.s9api.Processor;
@@ -72,7 +69,6 @@ public class PubOneTest {
         XsltTransformer transformer = executable.load();
 
         // Input document
-        //String inXml = "<foo/>";
         Reader inReader = new StringReader(in);
         Source inSource = new StreamSource(inReader);
         DocumentBuilder docBuilder = saxonProcessor.newDocumentBuilder();
@@ -94,19 +90,6 @@ public class PubOneTest {
         transformer.setDestination(dest);
         transformer.transform();
         return out.toString();
-    }
-
-    public static String readFile(String path, Charset encoding)
-            throws IOException
-    {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, encoding);
-    }
-
-    public static String readFile(String path)
-        throws IOException
-    {
-        return readFile(path, Charset.forName("UTF-8"));
     }
 
     @Test
