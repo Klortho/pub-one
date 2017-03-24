@@ -5,16 +5,21 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.transform.Source;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Before;
@@ -27,6 +32,7 @@ import net.sf.saxon.s9api.Destination;
 import net.sf.saxon.s9api.DocumentBuilder;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.QName;
+import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XdmAtomicValue;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XsltCompiler;
@@ -35,9 +41,11 @@ import net.sf.saxon.s9api.XsltTransformer;
 
 
 public class PubOneTest {
+    Logger log = LoggerFactory.getLogger(PubOneTest.class);
     Processor saxonProcessor;
     Resolver resolver;
     XsltCompiler compiler;
+    final static String xsltPath = "gov/ncbi/pmc/pub-one/xslt";
 
     @Before
     public void setup()  throws Exception
@@ -52,26 +60,20 @@ public class PubOneTest {
      * Use Saxon to drive an XSLT transformation of a test document.
      * This can serve as an example of how it is done. It is intentionally
      * verbose, so you can see all of the steps explicitly.
-     *
-     * @throws Exception
      */
-    @Test
-    public void testXslt()
-        throws Exception
+    public String transform(String in, URL xsltUrl)
+        throws IOException, SaxonApiException
     {
-        URL url = resolver.getUrl("identity.xsl");
-        assertNotNull(url);
-
         // Instantiate an xslt transformer
-        URLConnection xsltUrlConn = url.openConnection();
+        URLConnection xsltUrlConn = xsltUrl.openConnection();
         InputStream xsltInputStream = xsltUrlConn.getInputStream();
         Source xsltSource = new StreamSource(xsltInputStream);
         XsltExecutable executable = compiler.compile(xsltSource);
         XsltTransformer transformer = executable.load();
 
         // Input document
-        String inXml = "<foo/>";
-        Reader inReader = new StringReader(inXml);
+        //String inXml = "<foo/>";
+        Reader inReader = new StringReader(in);
         Source inSource = new StreamSource(inReader);
         DocumentBuilder docBuilder = saxonProcessor.newDocumentBuilder();
         XdmNode inputDoc = docBuilder.build(inSource);
@@ -91,7 +93,44 @@ public class PubOneTest {
         Destination dest = saxonProcessor.newSerializer(out);
         transformer.setDestination(dest);
         transformer.transform();
-        assertThat(out.toString(), matchesPattern("^.*<foo/>.*$"));
+        return out.toString();
     }
 
+    public static String readFile(String path, Charset encoding)
+            throws IOException
+    {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, encoding);
+    }
+
+    public static String readFile(String path)
+        throws IOException
+    {
+        return readFile(path, Charset.forName("UTF-8"));
+    }
+
+    @Test
+    public void testIdentityTransform()
+        throws Exception
+    {
+        URL xsltUrl = resolver.getUrl("identity.xsl");
+        assertNotNull(xsltUrl);
+        String result = transform("<foo/>", xsltUrl);
+        log.debug("Output from identity.xsl is '" + result + "'");
+        assertThat(result, matchesPattern("^.*<foo/>.*$"));
+    }
+
+    @Test
+    public void testPubOneToJson()
+        throws Exception
+    {
+        URL xsltUrl = resolver.getUrl("pub-one2json.xsl");
+        assertNotNull(xsltUrl);
+
+        String pub1File = "samples/2213602.pub-one.xml";
+        String pub1Str = readFile(pub1File);
+
+        String result = transform(pub1Str, xsltUrl);
+        log.info("Output from pub-one2json.xsl is '" + result + "'");
+    }
 }
