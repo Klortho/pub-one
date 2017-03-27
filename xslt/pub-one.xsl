@@ -3247,16 +3247,18 @@
 
 	<xsl:template match="mixed-citation | citation[normalize-space(text())]">
 		<xsl:variable name="refid" select="if (@id) then (@id) else (parent::ref/@id)"/>
+		<xsl:variable name="source-pmid" select="pub-id[@pub-id-type='pmid']"/>
 			
 		<mixed-citation>
 			<named-content content-type="citation-string"><xsl:apply-templates select="* except pub-id | text()" mode="dump-text"/></named-content>
 			<xsl:copy-of select="pub-id[@pub-id-type='doi']"  copy-namespaces="no"/>
-			<xsl:copy-of select="ncbi:write-pubid($refid)"/>
+			<xsl:copy-of select="ncbi:write-pubid($refid, $source-pmid)"/>
 		</mixed-citation>
 		</xsl:template>
 
 	<xsl:template match="element-citation | nlm-citation | citation[not(normalize-space(text()))]">
 		<xsl:variable name="refid" select="if (@id) then (@id) else (parent::ref/@id)"/>
+		<xsl:variable name="source-pmid" select="pub-id[@pub-id-type='pmid']"/>
 		<mixed-citation>
 			<named-content content-type="citation-string">
 				<xsl:apply-templates select="person-group" mode="write-out"/>
@@ -3266,7 +3268,7 @@
 				<xsl:call-template name="vol-iss"/>
 			</named-content>
 			<xsl:copy-of select="pub-id[@pub-id-type='doi']" copy-namespaces="no"/>
-			<xsl:copy-of select="ncbi:write-pubid($refid)"/>
+			<xsl:copy-of select="ncbi:write-pubid($refid, $source-pmid)"/>
 		</mixed-citation>
 		</xsl:template>
 		
@@ -3380,16 +3382,23 @@
 
 	<xsl:function name="ncbi:write-pubid">
 		<xsl:param name="refid"/>
+		<xsl:param name="source-pmid"/>
 	<xsl:variable name="tspmid" select="if ($ts-response//attributes[child::attribute[@name='reference_id' and @value=$refid]]/attribute[@name='pubmed_id']/@value) 
 		                                  then ($ts-response//attributes[child::attribute[@name='reference_id' and @value=$refid]]/attribute[@name='pubmed_id']/@value)
 													 else ('0')" /> 
 		<xsl:variable name="pmid" select="string($tspmid[1])"/>											 
-													 
-	<xsl:if test="$pmid != '' and $pmid != '0'">
+		<xsl:choose>											 
+	<xsl:when test="$pmid != '' and $pmid != '0'">
 			<pub-id pub-id-type="pmid">
 				<xsl:value-of select="$pmid"/>
 			</pub-id>
-		</xsl:if> 
+		</xsl:when> 
+		<xsl:when test="$source-pmid != '' and $source-pmid != '0'">
+			<pub-id pub-id-type="pmid">
+				<xsl:value-of select="$source-pmid"/>
+			</pub-id>
+			</xsl:when>
+		</xsl:choose>
 		</xsl:function>
 
 
