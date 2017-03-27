@@ -2187,7 +2187,9 @@
     </xsl:template>
 
 
-
+	<xsl:template match="city | state | institution | address-line | zip">
+		<xsl:apply-templates mode="dump-text"/>
+		</xsl:template>
 
 
 
