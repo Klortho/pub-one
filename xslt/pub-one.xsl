@@ -1735,6 +1735,8 @@
       <xsl:when test="$reftype='CommentIn'">commentary</xsl:when>
       <xsl:when test="$reftype='ErratumIn'">correction-forward</xsl:when>
       <xsl:when test="$reftype='ErratumFor'">corrected-article</xsl:when>
+      <xsl:when test="$reftype='ExpressionOfConcernFor'">object-of-concern</xsl:when>
+      <xsl:when test="$reftype='ExpressionOfConcernIn'">expression-of-concern</xsl:when>
       <xsl:when test="$reftype='PartialRetractionIn'">retraction-forward</xsl:when>
       <xsl:when test="$reftype='PartialRetractionOf'">retracted-article</xsl:when>
       <xsl:when test="$reftype='RepublishedFrom'">republished-article</xsl:when>
