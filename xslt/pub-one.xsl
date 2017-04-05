@@ -329,6 +329,8 @@
       <!--- write general notes from pubmed -->
       <xsl:apply-templates select="MedlineCitation/GeneralNote"/>
       
+      <!--- write Conflict of Interest statement from pubmed -->
+      <xsl:apply-templates select="MedlineCitation/CoiStatement"/>
       
       <!-- write subsections -->
       <xsl:if test="self::book-part and body/sec">
@@ -2180,7 +2182,14 @@
       </p>
     </notes>
   </xsl:template>
-
+  
+  <xsl:template match="CoiStatement">
+    <notes notes-type="COI-statement">
+      <p>
+        <xsl:apply-templates/>
+      </p>
+    </notes>
+  </xsl:template>
 
   <xsl:template match="OtherID">
     <object-id pub-id-type="{@Source}">
