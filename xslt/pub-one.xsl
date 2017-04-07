@@ -1208,6 +1208,7 @@
             <pub-date date-type="epub">
               <xsl:apply-templates select="MedlineCitation/Article/Journal/JournalIssue/PubDate/Day"/>
               <xsl:apply-templates select="MedlineCitation/Article/Journal/JournalIssue/PubDate/Month"/>
+              <xsl:apply-templates select="MedlineCitation/Article/Journal/JournalIssue/PubDate/Season"/>
               <xsl:apply-templates select="MedlineCitation/Article/Journal//JournalIssue/PubDate/Year"/>
             </pub-date>
           </xsl:otherwise>
@@ -1343,6 +1344,7 @@
     </xsl:attribute>
     <xsl:apply-templates select="Day"/>
     <xsl:apply-templates select="Month"/>
+    <xsl:apply-templates select="Season"/>
     <xsl:apply-templates select="Year"/>
   </xsl:template>
 
@@ -1352,6 +1354,14 @@
       <day>
         <xsl:value-of select="number()"/>
       </day>
+      </xsl:if>
+  </xsl:template> 
+  
+  <xsl:template match="Season">
+    <xsl:if test="normalize-space()">
+      <season>
+        <xsl:value-of select="."/>
+      </season>
       </xsl:if>
   </xsl:template> 
   
