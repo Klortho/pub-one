@@ -161,8 +161,9 @@
       <!-- write-contributors -->
       <xsl:apply-templates select="book-meta/contrib-group"/>
       
-      <!-- write book publication details -->
-      <xsl:apply-templates select="book-meta/pub-date"/>
+      <!-- write book publication details 
+      <xsl:apply-templates select="book-meta/pub-date"/>-->
+		<xsl:call-template name="book-pub-dates"/>
       
       <!-- write publisher -->
       <xsl:apply-templates select="front/journal-meta/publisher | 
@@ -711,6 +712,37 @@
     </title>  
   </xsl:template> 
   
+  <xsl:template name="book-pub-dates">
+  	<xsl:choose>
+		<xsl:when test="book-meta/pub-date[@date-type='pubr' or date-type='ppubr']">
+		<xsl:call-template name="book-date-range">
+			<xsl:with-param name="pubr" select="book-meta/pub-date[@date-type='pubr' or date-type='ppubr']"/>
+			</xsl:call-template>
+			</xsl:when>
+		<xsl:otherwise>
+			<xsl:apply-templates select="book-meta/pub-date"/>
+			</xsl:otherwise>
+		</xsl:choose>
+  	</xsl:template>
+
+	<xsl:template name="book-date-range">
+		<xsl:param name="pubr"/>
+		<xsl:if test="$pubr">
+			<pub-date date-type="{if ($pubr[1]/@publication-format='electronic') then 'epub' else
+	                       (if ($pubr[1]/@publication-format='print') then 'ppub' else
+								   (if ($pubr[1]/@date-type) then ($pubr[1]/@date-type) else ($pubr[1]/@pub-type)))}">
+				<string-date>
+					<xsl:value-of select="normalize-space($pubr[1]//text())"/>
+					<xsl:text>&#x2013;</xsl:text>
+					<xsl:value-of select="normalize-space($pubr[2]//text())"/>
+				</string-date>
+			</pub-date>
+		</xsl:if>
+		</xsl:template>
+
+
+
+
   
   <xsl:template match="pub-date">
     <pub-date date-type="{if (@publication-format='electronic') then 'epub' else
