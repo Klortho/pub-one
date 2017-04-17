@@ -488,6 +488,9 @@
   <xsl:template match="contrib-group">
    <contrib-group>
       <xsl:apply-templates select="* except aff[@id]"/>
+     <xsl:if test="count(contrib)=1 and not(contrib/xref) and //author-notes/corresp">
+       <xsl:apply-templates select="//author-notes/corresp"/>
+     </xsl:if>
     </contrib-group>
     </xsl:template>
   
@@ -538,7 +541,7 @@
     </xsl:apply-templates>
   </xsl:template>
   
-  <xsl:template match="xref[@ref-type='aff' or @ref-type='corresp']">
+  <xsl:template match="xref[@ref-type='aff' or @ref-type='corresp' or @ref-type='author-notes']">
     <xsl:param name="write-out"/>
     <xsl:variable name="RID" select="@rid"/>    
     <xsl:choose>
@@ -559,7 +562,7 @@
     
   </xsl:template>
 
-  <xsl:template match="xref[not(@ref-type) or (@ref-type!='aff' and @ref-type!='corresp' and @ref-type!='bibr')] | 
+  <xsl:template match="xref[not(@ref-type) or (@ref-type!='aff' and @ref-type!='corresp' and @ref-type!='author-notes' and @ref-type!='bibr')] | 
         label"/>
    
   <xsl:template match="xref[@ref-type='bibr']">
