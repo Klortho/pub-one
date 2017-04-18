@@ -24,10 +24,10 @@
 
 
 
+<!-- per GWS-1333 - we no longer will be doing a tag server lookup during conversion
+	<xsl:variable name="ts-uri" select="concat('https://www.ncbi.nlm.nih.gov/pmc/utils/tags/srv/pmcai/',$pmcaiid,'/tags?site=live&amp;rt=frontend')"/> 
 
-	<xsl:variable name="ts-uri" select="concat('https://www.ncbi.nlm.nih.gov/pmc/utils/tags/srv/pmcai/',$pmcaiid,'/tags?site=live&amp;rt=frontend')"/>
-
-	<xsl:variable name="ts-response" select="if (doc-available($ts-uri)) then (doc($ts-uri)) else ()"/>
+	<xsl:variable name="ts-response" select="if (doc-available($ts-uri)) then (doc($ts-uri)) else ()"/>   -->
 
 
 
@@ -3308,7 +3308,7 @@
 		<mixed-citation>
 			<named-content content-type="citation-string"><xsl:apply-templates select="* except pub-id | text()" mode="dump-text"/></named-content>
 			<xsl:copy-of select="pub-id[@pub-id-type='doi']"  copy-namespaces="no"/>
-			<xsl:copy-of select="ncbi:write-pubid($refid, $source-pmid)"/>
+			<xsl:copy-of select="ncbi:write-pubid-comment($refid)"/>
 		</mixed-citation>
 		</xsl:template>
 
@@ -3324,7 +3324,7 @@
 				<xsl:call-template name="vol-iss"/>
 			</named-content>
 			<xsl:copy-of select="pub-id[@pub-id-type='doi']" copy-namespaces="no"/>
-			<xsl:copy-of select="ncbi:write-pubid($refid, $source-pmid)"/>
+			<xsl:copy-of select="ncbi:write-pubid-comment($refid)"/>
 		</mixed-citation>
 		</xsl:template>
 		
@@ -3436,6 +3436,19 @@
 		                      ends-with($str,'?')) then '' else $punct"/>
 		</xsl:function>
 
+	<!-- GWS-1333 -->
+	<xsl:function name="ncbi:write-pubid-comment">
+		<xsl:param name="refid"/>
+		<xsl:comment>
+			<xsl:text>PUBIDSTART&lt;pub-id pub-id-type="pmid"&gt;##{</xsl:text>
+			<xsl:value-of select="$refid"/>
+			<xsl:text>}##&lt;/pub-id&gt;PUBIDEND</xsl:text>
+			</xsl:comment>
+		</xsl:function>
+
+
+<!-- GWS-1333 - no longer looking up pmids in Tag Server
+
 	<xsl:function name="ncbi:write-pubid">
 		<xsl:param name="refid"/>
 		<xsl:param name="source-pmid"/>
@@ -3455,7 +3468,7 @@
 			</pub-id>
 			</xsl:when>
 		</xsl:choose>
-		</xsl:function>
+		</xsl:function>  -->
 
 
 
