@@ -1787,15 +1787,15 @@
       <xsl:when test="$reftype='PartialRetractionIn'">retraction-forward</xsl:when>
       <xsl:when test="$reftype='PartialRetractionOf'">retracted-article</xsl:when>
       <xsl:when test="$reftype='RepublishedFrom'">republished-article</xsl:when>
-      <xsl:when test="$reftype='RepublishedIn'">republished-article</xsl:when>
+      <xsl:when test="$reftype='RepublishedIn'">republication</xsl:when>
       <xsl:when test="$reftype='RetractionOf'">retracted-article</xsl:when>
       <xsl:when test="$reftype='RetractionIn'">retraction-forward</xsl:when>
       <xsl:when test="$reftype='UpdateIn'">update</xsl:when>
       <xsl:when test="$reftype='UpdateOf'">updated-article</xsl:when>
       <xsl:when test="$reftype='SummaryForPatientsIn'">companion</xsl:when>
       <xsl:when test="$reftype='OriginalReportIn'">companion</xsl:when>
-      <xsl:when test="$reftype='ReprintOf'">republished-article</xsl:when>
-      <xsl:when test="$reftype='ReprintIn'">republished-article</xsl:when>
+      <xsl:when test="$reftype='ReprintOf'">reprinted-article</xsl:when>
+      <xsl:when test="$reftype='ReprintIn'">reprint</xsl:when>
       <xsl:when test="$reftype='Cites'">cites</xsl:when>
     </xsl:choose>
   </xsl:template>
