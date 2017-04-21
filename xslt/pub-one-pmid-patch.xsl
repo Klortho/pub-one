@@ -24,10 +24,10 @@
 
 
 
+<!-- per GWS-1333 - we no longer will be doing a tag server lookup during conversion
+	<xsl:variable name="ts-uri" select="concat('https://www.ncbi.nlm.nih.gov/pmc/utils/tags/srv/pmcai/',$pmcaiid,'/tags?site=live&amp;rt=frontend')"/> 
 
-	<xsl:variable name="ts-uri" select="concat('https://www.ncbi.nlm.nih.gov/pmc/utils/tags/srv/pmcai/',$pmcaiid,'/tags?site=live&amp;rt=frontend')"/>
-
-	<xsl:variable name="ts-response" select="if (doc-available($ts-uri)) then (doc($ts-uri)) else ()"/>
+	<xsl:variable name="ts-response" select="if (doc-available($ts-uri)) then (doc($ts-uri)) else ()"/>   -->
 
 
 
@@ -488,32 +488,47 @@
   <xsl:template match="contrib-group">
    <contrib-group>
       <xsl:apply-templates select="* except aff[@id]"/>
-     <xsl:if test="count(contrib)=1 and not(contrib/xref) and //author-notes/corresp">
-       <xsl:apply-templates select="//author-notes/corresp"/>
-     </xsl:if>
     </contrib-group>
     </xsl:template>
   
-  <xsl:template match="contrib[@rid]">
-    <xsl:copy copy-namespaces="no">
-      <xsl:apply-templates select="*|@*|text()|processing-instruction()"/>
-      <xsl:variable name="RID" select="@rid"/>
-      <xsl:choose>
-        <xsl:when test="parent::contrib-group/parent::collab">
+  <xsl:template match="contrib">
+    <xsl:choose>
+      <xsl:when test="@rid">
+        <xsl:copy copy-namespaces="no">
+          <xsl:apply-templates select="*|@*|text()|processing-instruction()"/>
+          <xsl:variable name="RID" select="@rid"/>
           <xsl:choose>
-            <xsl:when test="$RID=ancestor::contrib/@id"/>
-            <xsl:otherwise>
-              <xsl:if test="not(parent::article-title)">
-                <xsl:apply-templates select="/descendant::node()[@id=$RID]"/>
-              </xsl:if>
-            </xsl:otherwise>
+            <xsl:when test="parent::contrib-group/parent::collab">
+              <xsl:choose>
+                <xsl:when test="$RID=ancestor::contrib/@id"/>
+                <xsl:otherwise>
+                  <xsl:if test="not(parent::article-title)">
+                    <xsl:apply-templates select="/descendant::node()[@id=$RID]"/>
+                  </xsl:if>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:when test="not(parent::article-title)">
+              <xsl:apply-templates select="/descendant::node()[@id=$RID]"/>
+            </xsl:when>       
           </xsl:choose>
-        </xsl:when>
-        <xsl:when test="not(parent::article-title)">
-          <xsl:apply-templates select="/descendant::node()[@id=$RID]"/>
-        </xsl:when>       
-      </xsl:choose>
-    </xsl:copy>
+        </xsl:copy>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy copy-namespaces="no">
+          <xsl:apply-templates select="*|@*|text()|processing-instruction()"/>
+          <xsl:if test="count(//contrib)=1 and not(xref)">
+            <xsl:if test="not(aff)">
+              <xsl:apply-templates select="//article-meta/aff"/>
+            </xsl:if>
+            <xsl:if test="//author-notes/corresp">
+              <xsl:apply-templates select="//author-notes/corresp"/>
+              </xsl:if>
+          </xsl:if>
+        </xsl:copy>
+      </xsl:otherwise>
+    </xsl:choose>
+    
   </xsl:template>
 
   <xsl:template match="given-names">
@@ -1787,15 +1802,15 @@
       <xsl:when test="$reftype='PartialRetractionIn'">retraction-forward</xsl:when>
       <xsl:when test="$reftype='PartialRetractionOf'">retracted-article</xsl:when>
       <xsl:when test="$reftype='RepublishedFrom'">republished-article</xsl:when>
-      <xsl:when test="$reftype='RepublishedIn'">republished-article</xsl:when>
+      <xsl:when test="$reftype='RepublishedIn'">republication</xsl:when>
       <xsl:when test="$reftype='RetractionOf'">retracted-article</xsl:when>
       <xsl:when test="$reftype='RetractionIn'">retraction-forward</xsl:when>
       <xsl:when test="$reftype='UpdateIn'">update</xsl:when>
       <xsl:when test="$reftype='UpdateOf'">updated-article</xsl:when>
       <xsl:when test="$reftype='SummaryForPatientsIn'">companion</xsl:when>
       <xsl:when test="$reftype='OriginalReportIn'">companion</xsl:when>
-      <xsl:when test="$reftype='ReprintOf'">republished-article</xsl:when>
-      <xsl:when test="$reftype='ReprintIn'">republished-article</xsl:when>
+      <xsl:when test="$reftype='ReprintOf'">reprinted-article</xsl:when>
+      <xsl:when test="$reftype='ReprintIn'">reprint</xsl:when>
       <xsl:when test="$reftype='Cites'">cites</xsl:when>
     </xsl:choose>
   </xsl:template>
@@ -3308,7 +3323,7 @@
 		<mixed-citation>
 			<named-content content-type="citation-string"><xsl:apply-templates select="* except pub-id | text()" mode="dump-text"/></named-content>
 			<xsl:copy-of select="pub-id[@pub-id-type='doi']"  copy-namespaces="no"/>
-			<xsl:copy-of select="ncbi:write-pubid($refid, $source-pmid)"/>
+			<xsl:copy-of select="ncbi:write-pubid-comment($refid)"/>
 		</mixed-citation>
 		</xsl:template>
 
@@ -3324,7 +3339,7 @@
 				<xsl:call-template name="vol-iss"/>
 			</named-content>
 			<xsl:copy-of select="pub-id[@pub-id-type='doi']" copy-namespaces="no"/>
-			<xsl:copy-of select="ncbi:write-pubid($refid, $source-pmid)"/>
+			<xsl:copy-of select="ncbi:write-pubid-comment($refid)"/>
 		</mixed-citation>
 		</xsl:template>
 		
@@ -3436,6 +3451,19 @@
 		                      ends-with($str,'?')) then '' else $punct"/>
 		</xsl:function>
 
+	<!-- GWS-1333 -->
+	<xsl:function name="ncbi:write-pubid-comment">
+		<xsl:param name="refid"/>
+		<xsl:comment>
+			<xsl:text>PUBIDSTART&lt;pub-id pub-id-type="pmid"&gt;##{</xsl:text>
+			<xsl:value-of select="$refid"/>
+			<xsl:text>}##&lt;/pub-id&gt;PUBIDEND</xsl:text>
+			</xsl:comment>
+		</xsl:function>
+
+
+<!-- GWS-1333 - no longer looking up pmids in Tag Server
+
 	<xsl:function name="ncbi:write-pubid">
 		<xsl:param name="refid"/>
 		<xsl:param name="source-pmid"/>
@@ -3455,7 +3483,7 @@
 			</pub-id>
 			</xsl:when>
 		</xsl:choose>
-		</xsl:function>
+		</xsl:function>  -->
 
 
 
