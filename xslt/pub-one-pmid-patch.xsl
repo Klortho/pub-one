@@ -1807,8 +1807,8 @@
       <xsl:when test="$reftype='RetractionIn'">retraction-forward</xsl:when>
       <xsl:when test="$reftype='UpdateIn'">update</xsl:when>
       <xsl:when test="$reftype='UpdateOf'">updated-article</xsl:when>
-      <xsl:when test="$reftype='SummaryForPatientsIn'">companion</xsl:when>
-      <xsl:when test="$reftype='OriginalReportIn'">companion</xsl:when>
+      <xsl:when test="$reftype='SummaryForPatientsIn'">summary</xsl:when>
+      <xsl:when test="$reftype='OriginalReportIn'">original-report</xsl:when>
       <xsl:when test="$reftype='ReprintOf'">reprinted-article</xsl:when>
       <xsl:when test="$reftype='ReprintIn'">reprint</xsl:when>
       <xsl:when test="$reftype='Cites'">cites</xsl:when>
