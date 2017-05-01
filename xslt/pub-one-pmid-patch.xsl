@@ -19,6 +19,8 @@
   
   <xsl:param name="pmcaiid" as="xs:string" select="''"/>
   
+  <xsl:param name="doi" as="xs:string" select="''"/>
+  
   <!-- <xsl:param name="book_id" as="xs:string?" select="tokenize(base-uri(), '\.')[last()-1]"/>  -->
   <xsl:param name="book_id" as="xs:string?"/>
 
@@ -194,8 +196,20 @@
 
       <!-- write <object-id> -->
       <xsl:apply-templates select="PubmedData/ArticleIdList/ArticleId | MedlineCitation/OtherID[not(@Source='NLM')] |
-              front/article-meta/article-id | 
+              front/article-meta/article-id[@pub-id-type!='doi'] | 
               book-part-meta/book-part-id"/>
+		<!-- process doi from xsl parameter then from article content if available -->
+		<xsl:choose>
+			<xsl:when test="$doi!=''">
+				<object-id pub-id-type="doi">
+					<xsl:value-of select="$doi"/>
+				</object-id>
+				</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates select="front/article-meta/article-id[@pub-id-type!='doi']"/>
+				</xsl:otherwise>
+			</xsl:choose>
+				  
 		<xsl:if test="PubmedData and not(PubmedData/ArticleIdList/ArticleId[@IdType='doi'])">
 			<xsl:call-template name="get-pm-doi"/>
 			</xsl:if>		  
