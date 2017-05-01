@@ -3460,11 +3460,6 @@
 			<xsl:text>}##&lt;/pub-id&gt;PMIDEND</xsl:text>
 			</xsl:comment>
 		<xsl:comment>
-			<xsl:text>DOISTART&lt;pub-id pub-id-type="pmid"&gt;##{</xsl:text>
-			<xsl:value-of select="$refid"/>
-			<xsl:text>}##&lt;/pub-id&gt;DOIEND</xsl:text>
-			</xsl:comment>
-		<xsl:comment>
 			<xsl:text>PMCIDSTART&lt;pub-id pub-id-type="pmid"&gt;##{</xsl:text>
 			<xsl:value-of select="$refid"/>
 			<xsl:text>}##&lt;/pub-id&gt;PMCIDEND</xsl:text>
