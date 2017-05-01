@@ -3318,10 +3318,12 @@
 
 	<xsl:template match="mixed-citation | citation[normalize-space(text())]">
 		<xsl:variable name="refid" select="if (@id) then (@id) else (parent::ref/@id)"/>
-		<xsl:variable name="source-pmid" select="pub-id[@pub-id-type='pmid']"/>
+		<xsl:variable name="source-pmid" select="pub-id[@pub-id-type='pmid']"/>  
 			
 		<mixed-citation>
-			<named-content content-type="citation-string"><xsl:apply-templates select="* except pub-id | text()" mode="dump-text"/></named-content>
+			<named-content content-type="citation-string"><xsl:apply-templates select="* except ( pub-id |ext-link[@ext-link-type='doi'] | ext-link[@ext-link-type='doi' and contains(@xlink:href,'dx.doi.org/')])| text()" mode="dump-text"/></named-content>
+			<xsl:apply-templates select="ext-link[@ext-link-type='doi']" mode="write-pubid"/>
+			<xsl:apply-templates select="ext-link[@ext-link-type='uri' and (contains(@xlink:href,'dx.doi.org/') or contains(.,'dx.doi.org/'))]" mode="write-pubid"/>
 			<xsl:copy-of select="pub-id[@pub-id-type='doi']"  copy-namespaces="no"/>
 			<xsl:copy-of select="ncbi:write-pubid-comment($refid)"/>
 		</mixed-citation>
@@ -3338,6 +3340,8 @@
 				<xsl:call-template name="write-pubdate"/>
 				<xsl:call-template name="vol-iss"/>
 			</named-content>
+			<xsl:apply-templates select="ext-link[@ext-link-type='doi']" mode="write-pubid"/>
+			<xsl:apply-templates select="ext-link[@ext-link-type='uri' and (contains(@xlink:href,'dx.doi.org/') or contains(.,'dx.doi.org/'))]" mode="write-pubid"/>
 			<xsl:copy-of select="pub-id[@pub-id-type='doi']" copy-namespaces="no"/>
 			<xsl:copy-of select="ncbi:write-pubid-comment($refid)"/>
 		</mixed-citation>
@@ -3356,6 +3360,17 @@
 		<xsl:value-of select="ncbi:final-punctuation('. ', normalize-space())"/>
 		</xsl:template>
 	
+	<xsl:template match="ext-link[@ext-link-type='doi']" mode="write-pubid">
+		<pub-id pub-id-type="doi">
+			<xsl:value-of select="if (normalize-space(@xlink:href)) then (normalize-space(@xlink:href)) else ."/>
+		</pub-id>
+		</xsl:template>
+	
+	<xsl:template match="ext-link[@ext-link-type='uri']" mode="write-pubid">
+		<pub-id pub-id-type="doi">
+			<xsl:value-of select="if (contains(normalize-space(@xlink:href),'dx.doi.org/')) then (substring-after(normalize-space(@xlink:href),'dx.doi.org/')) else (if (contains(.,'dx.doi.org/')) then (substring-after(.,'dx.doi.org/')) else (.))"/>
+		</pub-id>
+		</xsl:template>
 	
 		
 	<xsl:template name="pg-guts">
