@@ -3484,14 +3484,9 @@
 	<xsl:function name="ncbi:write-pubid-comment">
 		<xsl:param name="refid"/>
 		<xsl:comment>
-			<xsl:text>PMIDSTART&lt;pub-id pub-id-type="pmid"&gt;##{</xsl:text>
+			<xsl:text>REFIDPATCH##{</xsl:text>
 			<xsl:value-of select="$refid"/>
-			<xsl:text>}##&lt;/pub-id&gt;PMIDEND</xsl:text>
-			</xsl:comment>
-		<xsl:comment>
-			<xsl:text>PMCIDSTART&lt;pub-id pub-id-type="pmid"&gt;##{</xsl:text>
-			<xsl:value-of select="$refid"/>
-			<xsl:text>}##&lt;/pub-id&gt;PMCIDEND</xsl:text>
+			<xsl:text>}##</xsl:text>
 			</xsl:comment>
 		</xsl:function>
 
