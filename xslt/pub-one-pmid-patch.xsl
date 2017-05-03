@@ -3425,26 +3425,30 @@
 		<xsl:if test="month">
 			<xsl:text> </xsl:text>
 			<xsl:choose>
-				<xsl:when test="number(month)">
-					<xsl:choose>
-						<xsl:when test="number(month) = 1">Jan</xsl:when>
-						<xsl:when test="number(month) = 2">Feb</xsl:when>
-						<xsl:when test="number(month) = 3">Mar</xsl:when>
-						<xsl:when test="number(month) = 4">Apr</xsl:when>
-						<xsl:when test="number(month) = 5">May</xsl:when>
-						<xsl:when test="number(month) = 6">Jun</xsl:when>
-						<xsl:when test="number(month) = 7">Jul</xsl:when>
-						<xsl:when test="number(month) = 8">Aug</xsl:when>
-						<xsl:when test="number(month) = 9">Sep</xsl:when>
-						<xsl:when test="number(month) = 10">Oct</xsl:when>
-						<xsl:when test="number(month) = 11">Nov</xsl:when>
-						<xsl:when test="number(month) = 12">Dec</xsl:when>
-						</xsl:choose>
+				<xsl:when test="count(month) = 2">
+					<xsl:call-template name="monthstuff">
+						<xsl:with-param name="mon" select="month[1]"/>
+						</xsl:call-template>
+						<xsl:text>&#x2014;</xsl:text>
+					<xsl:call-template name="monthstuff">
+						<xsl:with-param name="mon" select="month[2]"/>
+						</xsl:call-template>
+					</xsl:when>
+				<xsl:when test="count(month) = 1">
+					<xsl:call-template name="monthstuff">
+						<xsl:with-param name="mon" select="month"/>
+						</xsl:call-template>
 					</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="month"/>
+					<xsl:for-each select="month">
+					<xsl:call-template name="monthstuff">
+						<xsl:with-param name="mon" select="."/>
+						</xsl:call-template>
+						<xsl:text> </xsl:text>
+					</xsl:for-each>
 					</xsl:otherwise>
 				</xsl:choose>
+
 			</xsl:if>
 		<xsl:if test="day">
 			<xsl:text> </xsl:text>
@@ -3452,6 +3456,34 @@
 			</xsl:if>
 		<xsl:text>;</xsl:text>
 		</xsl:template>
+	
+	<xsl:template name="monthstuff">
+		<xsl:param name="mon"/>
+			<xsl:choose>
+				<xsl:when test="number($mon)">
+					<xsl:choose>
+						<xsl:when test="number($mon) = 1">Jan</xsl:when>
+						<xsl:when test="number($mon) = 2">Feb</xsl:when>
+						<xsl:when test="number($mon) = 3">Mar</xsl:when>
+						<xsl:when test="number($mon) = 4">Apr</xsl:when>
+						<xsl:when test="number($mon) = 5">May</xsl:when>
+						<xsl:when test="number($mon) = 6">Jun</xsl:when>
+						<xsl:when test="number($mon) = 7">Jul</xsl:when>
+						<xsl:when test="number($mon) = 8">Aug</xsl:when>
+						<xsl:when test="number($mon) = 9">Sep</xsl:when>
+						<xsl:when test="number($mon) = 10">Oct</xsl:when>
+						<xsl:when test="number($mon) = 11">Nov</xsl:when>
+						<xsl:when test="number($mon) = 12">Dec</xsl:when>
+						</xsl:choose>
+					</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$mon"/>
+					</xsl:otherwise>
+				</xsl:choose>
+		</xsl:template>
+	
+	
+	
 	
 	<xsl:template name="vol-iss">
 		<xsl:if test="volume or issue">
