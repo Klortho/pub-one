@@ -2037,7 +2037,7 @@
   <xsl:template match="CollectiveName">
     <collab>
       <xsl:apply-templates/>
-      <xsl:apply-templates select="/descendant::InvestigatorList"/>
+      <xsl:apply-templates select="ancestor::MedlineCitation//InvestigatorList"/>
     </collab>
     </xsl:template>
 
