@@ -19,15 +19,17 @@
   
   <xsl:param name="pmcaiid" as="xs:string" select="''"/>
   
+  <xsl:param name="doi" as="xs:string" select="''"/>
+  
   <!-- <xsl:param name="book_id" as="xs:string?" select="tokenize(base-uri(), '\.')[last()-1]"/>  -->
   <xsl:param name="book_id" as="xs:string?"/>
 
 
 
+<!-- per GWS-1333 - we no longer will be doing a tag server lookup during conversion
+	<xsl:variable name="ts-uri" select="concat('https://www.ncbi.nlm.nih.gov/pmc/utils/tags/srv/pmcai/',$pmcaiid,'/tags?site=live&amp;rt=frontend')"/> 
 
-	<xsl:variable name="ts-uri" select="concat('https://www.ncbi.nlm.nih.gov/pmc/utils/tags/srv/pmcai/',$pmcaiid,'/tags?site=live&amp;rt=frontend')"/>
-
-	<xsl:variable name="ts-response" select="if (doc-available($ts-uri)) then (doc($ts-uri)) else ()"/>
+	<xsl:variable name="ts-response" select="if (doc-available($ts-uri)) then (doc($ts-uri)) else ()"/>   -->
 
 
 
@@ -194,8 +196,20 @@
 
       <!-- write <object-id> -->
       <xsl:apply-templates select="PubmedData/ArticleIdList/ArticleId | MedlineCitation/OtherID[not(@Source='NLM')] |
-              front/article-meta/article-id | 
+              front/article-meta/article-id[@pub-id-type!='doi'] | 
               book-part-meta/book-part-id"/>
+		<!-- process doi from xsl parameter then from article content if available -->
+		<xsl:choose>
+			<xsl:when test="$doi!=''">
+				<object-id pub-id-type="doi">
+					<xsl:value-of select="$doi"/>
+				</object-id>
+				</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates select="front/article-meta/article-id[@pub-id-type!='doi']"/>
+				</xsl:otherwise>
+			</xsl:choose>
+				  
 		<xsl:if test="PubmedData and not(PubmedData/ArticleIdList/ArticleId[@IdType='doi'])">
 			<xsl:call-template name="get-pm-doi"/>
 			</xsl:if>		  
@@ -3303,12 +3317,14 @@
 
 	<xsl:template match="mixed-citation | citation[normalize-space(text())]">
 		<xsl:variable name="refid" select="if (@id) then (@id) else (parent::ref/@id)"/>
-		<xsl:variable name="source-pmid" select="pub-id[@pub-id-type='pmid']"/>
+		<xsl:variable name="source-pmid" select="pub-id[@pub-id-type='pmid']"/>  
 			
 		<mixed-citation>
-			<named-content content-type="citation-string"><xsl:apply-templates select="* except pub-id | text()" mode="dump-text"/></named-content>
+			<named-content content-type="citation-string"><xsl:apply-templates select="* except ( pub-id |ext-link[@ext-link-type='doi'] | ext-link[@ext-link-type='doi' and contains(@xlink:href,'dx.doi.org/')])| text()" mode="dump-text"/></named-content>
+			<xsl:apply-templates select="ext-link[@ext-link-type='doi']" mode="write-pubid"/>
+			<xsl:apply-templates select="ext-link[@ext-link-type='uri' and (contains(@xlink:href,'dx.doi.org/') or contains(.,'dx.doi.org/'))]" mode="write-pubid"/>
 			<xsl:copy-of select="pub-id[@pub-id-type='doi']"  copy-namespaces="no"/>
-			<xsl:copy-of select="ncbi:write-pubid($refid, $source-pmid)"/>
+			<xsl:copy-of select="ncbi:write-pubid-comment($refid)"/>
 		</mixed-citation>
 		</xsl:template>
 
@@ -3323,8 +3339,10 @@
 				<xsl:call-template name="write-pubdate"/>
 				<xsl:call-template name="vol-iss"/>
 			</named-content>
+			<xsl:apply-templates select="ext-link[@ext-link-type='doi']" mode="write-pubid"/>
+			<xsl:apply-templates select="ext-link[@ext-link-type='uri' and (contains(@xlink:href,'dx.doi.org/') or contains(.,'dx.doi.org/'))]" mode="write-pubid"/>
 			<xsl:copy-of select="pub-id[@pub-id-type='doi']" copy-namespaces="no"/>
-			<xsl:copy-of select="ncbi:write-pubid($refid, $source-pmid)"/>
+			<xsl:copy-of select="ncbi:write-pubid-comment($refid)"/>
 		</mixed-citation>
 		</xsl:template>
 		
@@ -3341,6 +3359,17 @@
 		<xsl:value-of select="ncbi:final-punctuation('. ', normalize-space())"/>
 		</xsl:template>
 	
+	<xsl:template match="ext-link[@ext-link-type='doi']" mode="write-pubid">
+		<pub-id pub-id-type="doi">
+			<xsl:value-of select="if (normalize-space(@xlink:href)) then (normalize-space(@xlink:href)) else ."/>
+		</pub-id>
+		</xsl:template>
+	
+	<xsl:template match="ext-link[@ext-link-type='uri']" mode="write-pubid">
+		<pub-id pub-id-type="doi">
+			<xsl:value-of select="if (contains(normalize-space(@xlink:href),'dx.doi.org/')) then (substring-after(normalize-space(@xlink:href),'dx.doi.org/')) else (if (contains(.,'dx.doi.org/')) then (substring-after(.,'dx.doi.org/')) else (.))"/>
+		</pub-id>
+		</xsl:template>
 	
 		
 	<xsl:template name="pg-guts">
@@ -3381,26 +3410,30 @@
 		<xsl:if test="month">
 			<xsl:text> </xsl:text>
 			<xsl:choose>
-				<xsl:when test="number(month)">
-					<xsl:choose>
-						<xsl:when test="number(month) = 1">Jan</xsl:when>
-						<xsl:when test="number(month) = 2">Feb</xsl:when>
-						<xsl:when test="number(month) = 3">Mar</xsl:when>
-						<xsl:when test="number(month) = 4">Apr</xsl:when>
-						<xsl:when test="number(month) = 5">May</xsl:when>
-						<xsl:when test="number(month) = 6">Jun</xsl:when>
-						<xsl:when test="number(month) = 7">Jul</xsl:when>
-						<xsl:when test="number(month) = 8">Aug</xsl:when>
-						<xsl:when test="number(month) = 9">Sep</xsl:when>
-						<xsl:when test="number(month) = 10">Oct</xsl:when>
-						<xsl:when test="number(month) = 11">Nov</xsl:when>
-						<xsl:when test="number(month) = 12">Dec</xsl:when>
-						</xsl:choose>
+				<xsl:when test="count(month) = 2">
+					<xsl:call-template name="monthstuff">
+						<xsl:with-param name="mon" select="month[1]"/>
+						</xsl:call-template>
+						<xsl:text>&#x2014;</xsl:text>
+					<xsl:call-template name="monthstuff">
+						<xsl:with-param name="mon" select="month[2]"/>
+						</xsl:call-template>
+					</xsl:when>
+				<xsl:when test="count(month) = 1">
+					<xsl:call-template name="monthstuff">
+						<xsl:with-param name="mon" select="month"/>
+						</xsl:call-template>
 					</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="month"/>
+					<xsl:for-each select="month">
+					<xsl:call-template name="monthstuff">
+						<xsl:with-param name="mon" select="."/>
+						</xsl:call-template>
+						<xsl:text> </xsl:text>
+					</xsl:for-each>
 					</xsl:otherwise>
 				</xsl:choose>
+
 			</xsl:if>
 		<xsl:if test="day">
 			<xsl:text> </xsl:text>
@@ -3408,6 +3441,34 @@
 			</xsl:if>
 		<xsl:text>;</xsl:text>
 		</xsl:template>
+	
+	<xsl:template name="monthstuff">
+		<xsl:param name="mon"/>
+			<xsl:choose>
+				<xsl:when test="number($mon)">
+					<xsl:choose>
+						<xsl:when test="number($mon) = 1">Jan</xsl:when>
+						<xsl:when test="number($mon) = 2">Feb</xsl:when>
+						<xsl:when test="number($mon) = 3">Mar</xsl:when>
+						<xsl:when test="number($mon) = 4">Apr</xsl:when>
+						<xsl:when test="number($mon) = 5">May</xsl:when>
+						<xsl:when test="number($mon) = 6">Jun</xsl:when>
+						<xsl:when test="number($mon) = 7">Jul</xsl:when>
+						<xsl:when test="number($mon) = 8">Aug</xsl:when>
+						<xsl:when test="number($mon) = 9">Sep</xsl:when>
+						<xsl:when test="number($mon) = 10">Oct</xsl:when>
+						<xsl:when test="number($mon) = 11">Nov</xsl:when>
+						<xsl:when test="number($mon) = 12">Dec</xsl:when>
+						</xsl:choose>
+					</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$mon"/>
+					</xsl:otherwise>
+				</xsl:choose>
+		</xsl:template>
+	
+	
+	
 	
 	<xsl:template name="vol-iss">
 		<xsl:if test="volume or issue">
@@ -3436,6 +3497,19 @@
 		                      ends-with($str,'?')) then '' else $punct"/>
 		</xsl:function>
 
+	<!-- GWS-1333 -->
+	<xsl:function name="ncbi:write-pubid-comment">
+		<xsl:param name="refid"/>
+		<xsl:comment>
+			<xsl:text>REFIDPATCH##{</xsl:text>
+			<xsl:value-of select="$refid"/>
+			<xsl:text>}##</xsl:text>
+			</xsl:comment>
+		</xsl:function>
+
+
+<!-- GWS-1333 - no longer looking up pmids in Tag Server
+
 	<xsl:function name="ncbi:write-pubid">
 		<xsl:param name="refid"/>
 		<xsl:param name="source-pmid"/>
@@ -3455,25 +3529,8 @@
 			</pub-id>
 			</xsl:when>
 		</xsl:choose>
-		</xsl:function>
+		</xsl:function>  -->
 
 
 
 </xsl:stylesheet>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
