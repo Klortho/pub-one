@@ -764,15 +764,19 @@
 	                       (if ($pubr[1]/@publication-format='print') then 'ppub' else
 								   (if ($pubr[1]/@date-type) then ($pubr[1]/@date-type) else ($pubr[1]/@pub-type)))}">
 				<string-date>
-					<xsl:value-of select="normalize-space($pubr[1]//text())"/>
+					<xsl:apply-templates select="$pubr[1]" mode="write-pubdate"/>
 					<xsl:text>&#x2013;</xsl:text>
-					<xsl:value-of select="normalize-space($pubr[2]//text())"/>
+					<xsl:apply-templates select="$pubr[2]" mode="write-pubdate"/>
 				</string-date>
 			</pub-date>
 		</xsl:if>
 		</xsl:template>
 
-
+<xsl:template match="pub-date" mode="write-pubdate">
+	<xsl:call-template name="write-pubdate">
+		<xsl:with-param name="nopunct" select="'yes'"/>
+		</xsl:call-template>
+	</xsl:template>
 
 
   
@@ -3421,6 +3425,7 @@
 		</xsl:template>	
 		
 	<xsl:template name="write-pubdate">
+		<xsl:param name="nopunct"/>
 		<xsl:apply-templates select="year" mode="write-out"/>
 		<xsl:if test="month">
 			<xsl:text> </xsl:text>
@@ -3429,7 +3434,9 @@
 					<xsl:call-template name="monthstuff">
 						<xsl:with-param name="mon" select="month[1]"/>
 						</xsl:call-template>
-						<xsl:text>&#x2014;</xsl:text>
+						<xsl:if test="$nopunct!='yes'">
+							<xsl:text>&#x2014;</xsl:text>
+							</xsl:if>
 					<xsl:call-template name="monthstuff">
 						<xsl:with-param name="mon" select="month[2]"/>
 						</xsl:call-template>
@@ -3444,7 +3451,9 @@
 					<xsl:call-template name="monthstuff">
 						<xsl:with-param name="mon" select="."/>
 						</xsl:call-template>
-						<xsl:text> </xsl:text>
+						<xsl:if test="$nopunct!='yes'">
+							<xsl:text> </xsl:text>
+							</xsl:if>
 					</xsl:for-each>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -3454,7 +3463,9 @@
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="day"/>
 			</xsl:if>
-		<xsl:text>;</xsl:text>
+		<xsl:if test="$nopunct!='yes'">
+			<xsl:text>;</xsl:text>
+			</xsl:if>
 		</xsl:template>
 	
 	<xsl:template name="monthstuff">
