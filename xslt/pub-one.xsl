@@ -502,32 +502,47 @@
   <xsl:template match="contrib-group">
    <contrib-group>
       <xsl:apply-templates select="* except aff[@id]"/>
-     <xsl:if test="count(contrib)=1 and not(contrib/xref) and //author-notes/corresp">
-       <xsl:apply-templates select="//author-notes/corresp"/>
-     </xsl:if>
     </contrib-group>
     </xsl:template>
   
-  <xsl:template match="contrib[@rid]">
-    <xsl:copy copy-namespaces="no">
-      <xsl:apply-templates select="*|@*|text()|processing-instruction()"/>
-      <xsl:variable name="RID" select="@rid"/>
-      <xsl:choose>
-        <xsl:when test="parent::contrib-group/parent::collab">
+  <xsl:template match="contrib">
+    <xsl:choose>
+      <xsl:when test="@rid">
+        <xsl:copy copy-namespaces="no">
+          <xsl:apply-templates select="*|@*|text()|processing-instruction()"/>
+          <xsl:variable name="RID" select="@rid"/>
           <xsl:choose>
-            <xsl:when test="$RID=ancestor::contrib/@id"/>
-            <xsl:otherwise>
-              <xsl:if test="not(parent::article-title)">
-                <xsl:apply-templates select="/descendant::node()[@id=$RID]"/>
-              </xsl:if>
-            </xsl:otherwise>
+            <xsl:when test="parent::contrib-group/parent::collab">
+              <xsl:choose>
+                <xsl:when test="$RID=ancestor::contrib/@id"/>
+                <xsl:otherwise>
+                  <xsl:if test="not(parent::article-title)">
+                    <xsl:apply-templates select="/descendant::node()[@id=$RID]"/>
+                  </xsl:if>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:when test="not(parent::article-title)">
+              <xsl:apply-templates select="/descendant::node()[@id=$RID]"/>
+            </xsl:when>       
           </xsl:choose>
-        </xsl:when>
-        <xsl:when test="not(parent::article-title)">
-          <xsl:apply-templates select="/descendant::node()[@id=$RID]"/>
-        </xsl:when>       
-      </xsl:choose>
-    </xsl:copy>
+        </xsl:copy>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy copy-namespaces="no">
+          <xsl:apply-templates select="*|@*|text()|processing-instruction()"/>
+          <xsl:if test="count(//contrib)=1 and not(xref)">
+            <xsl:if test="not(aff)">
+              <xsl:apply-templates select="//article-meta/aff"/>
+            </xsl:if>
+            <xsl:if test="//author-notes/corresp">
+              <xsl:apply-templates select="//author-notes/corresp"/>
+              </xsl:if>
+          </xsl:if>
+        </xsl:copy>
+      </xsl:otherwise>
+    </xsl:choose>
+    
   </xsl:template>
 
   <xsl:template match="given-names">
@@ -1801,15 +1816,15 @@
       <xsl:when test="$reftype='PartialRetractionIn'">retraction-forward</xsl:when>
       <xsl:when test="$reftype='PartialRetractionOf'">retracted-article</xsl:when>
       <xsl:when test="$reftype='RepublishedFrom'">republished-article</xsl:when>
-      <xsl:when test="$reftype='RepublishedIn'">republished-article</xsl:when>
+      <xsl:when test="$reftype='RepublishedIn'">republication</xsl:when>
       <xsl:when test="$reftype='RetractionOf'">retracted-article</xsl:when>
       <xsl:when test="$reftype='RetractionIn'">retraction-forward</xsl:when>
       <xsl:when test="$reftype='UpdateIn'">update</xsl:when>
       <xsl:when test="$reftype='UpdateOf'">updated-article</xsl:when>
-      <xsl:when test="$reftype='SummaryForPatientsIn'">companion</xsl:when>
-      <xsl:when test="$reftype='OriginalReportIn'">companion</xsl:when>
-      <xsl:when test="$reftype='ReprintOf'">republished-article</xsl:when>
-      <xsl:when test="$reftype='ReprintIn'">republished-article</xsl:when>
+      <xsl:when test="$reftype='SummaryForPatientsIn'">summary</xsl:when>
+      <xsl:when test="$reftype='OriginalReportIn'">original-report</xsl:when>
+      <xsl:when test="$reftype='ReprintOf'">reprinted-article</xsl:when>
+      <xsl:when test="$reftype='ReprintIn'">reprint</xsl:when>
       <xsl:when test="$reftype='Cites'">cites</xsl:when>
     </xsl:choose>
   </xsl:template>
