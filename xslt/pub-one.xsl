@@ -5,7 +5,7 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   exclude-result-prefixes="ncbi xs">
 
-  <xsl:output method="xml" omit-xml-declaration="yes" indent="no"
+  <xsl:output method="xml" omit-xml-declaration="yes" indent="no" encoding="ascii"
     doctype-system="http://www.ncbi.nlm.nih.gov/staff/beck/pub-one/schemas/dtd/pub-one0.dtd"/>
 
   <xsl:include href="dates-and-strings.xsl"/>
