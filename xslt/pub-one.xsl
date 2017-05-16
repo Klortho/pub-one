@@ -3322,7 +3322,7 @@
 <!--                 PMC REFERENCES CONVERSION                        -->
 <!-- **************************************************************** -->
 
-	<xsl:template match="ref">
+<!-- GWS-1333	<xsl:template match="ref">
 		<xsl:if test="element-citation[@publication-type='journal'] or
 		              mixed-citation[@publication-type='journal'] or
 						  citation[@citation-type='journal'] or
@@ -3332,6 +3332,13 @@
 				<xsl:apply-templates/>
 			</ref>
 			</xsl:if>
+	</xsl:template>  -->
+
+	<xsl:template match="ref">
+			<ref>
+				<xsl:apply-templates select="@*"/>
+				<xsl:apply-templates/>
+			</ref>
 	</xsl:template>
 
 	<xsl:template match="mixed-citation | citation[normalize-space(text())]">
