@@ -69,7 +69,7 @@
     </pub-one-record>
   </xsl:template>
   
-  <xsl:template match="book | book-part[@book-part-type='toc']">
+	<xsl:template match="book | book-part[@book-part-type='toc'] | book-part-wrapper[@content-type='toc']">
     <pub-one-record record-type="book">
 	 	<xsl:attribute name="xml:lang">
 	 		<xsl:call-template name="get-lang">
@@ -83,8 +83,8 @@
     </pub-one-record>
   </xsl:template>
   
-  <xsl:template match="book-part[not(@book-part-type='toc')] | book-part-wrapper">
-    <pub-one-record record-type="{@book-part-type}">
+	<xsl:template match="book-part[not(@book-part-type='toc')] | book-part-wrapper[not(@content-type='toc')]">
+    <pub-one-record record-type="{@book-part-type | @content-type}">
 	 	<xsl:attribute name="xml:lang">
 	 		<xsl:call-template name="get-lang">
 				<xsl:with-param name="code" select="if (@xml:lang) then (normalize-space(@xml:lang)) else 'eng'"/>
@@ -136,10 +136,10 @@
 			<xsl:apply-templates select="book-meta/book-id[@pub-id-type='pmcid'] | book-meta/book-id[@book-id-type='pmcid']" mode="pmc-domain"/>
 			</xsl:if>
       <xsl:choose>
-        <xsl:when test="/book-part/@book-part-type='toc'">
+      	<xsl:when test="/book-part/@book-part-type='toc' or /book-part-wrapper/@content-type='toc'">
           <xsl:call-template name="write-oids-from-params"/>
         </xsl:when>
-        <xsl:when test="(/book-part or /book-part-wrap) and $book_id != '' and $book_id != '0'">
+        <xsl:when test="(/book-part or /book-part-wrapper) and $book_id != '' and $book_id != '0'">
           <object-id pub-id-type="pmcbookid">
             <xsl:value-of select="concat('NBK', $book_id)"/>
           </object-id>
@@ -173,7 +173,7 @@
       
       <xsl:apply-templates select="book-meta/edition"/>
       <xsl:apply-templates select="book-meta/volume"/>
-      <xsl:apply-templates select="book-meta/history"/>
+	<xsl:apply-templates select="book-meta/history | book-meta/pub-histoy"/>
       <xsl:apply-templates select="book-meta/permissions"/>
       <xsl:if test="$metalevel!='abbreviated'">
         <xsl:apply-templates select="book-meta/abstract"/>
@@ -183,12 +183,15 @@
       <xsl:if test="self::book-part and /book-part/@book-part-type='toc' and body/list and $metalevel!='abbreviated'">
         <xsl:apply-templates select="body" mode="write-chapters"/>
         </xsl:if>
+	  <xsl:if test="self::book-part-wrapper and toc  and $metalevel!='abbreviated'">  
+		<xsl:apply-templates select="toc" mode="write-chapters"/>
+	    </xsl:if>
       
   </xsl:template>
 
 
   <xsl:template name="write-document-meta">
-    <xsl:variable name="bookpartype" select="/book-part/@book-part-type"/>
+  	<xsl:variable name="bookpartype" select="/book-part/@book-part-type | /book-part-wrapper/@content-type"/>
     <document-meta>
       <xsl:if test='//processing-instruction(OLF)'>
         <ahead-of-print/>
@@ -838,11 +841,9 @@
   </xsl:template>
   
   <xsl:template match="body" mode="write-sections">
-    <xsl:variable name="sid" select="/book-part/book-meta/book-id[@pub-id-type='pmcid']"/>
-    <xsl:variable name="did" select="/book-part/@id"/>
     <notes notes-type="sections">
-      <xsl:for-each select="sec">
-        <sec id="{concat($sid,'__',$did,'__',@id)}" sec-type="object">
+      <xsl:for-each select="sec[@id and title]">
+        <sec id="{@id}" sec-type="object">
           <xsl:apply-templates select="title"/>
         </sec>
         </xsl:for-each>
@@ -850,7 +851,6 @@
     </xsl:template> 
   
   <xsl:template match="body" mode="write-chapters">
-    <xsl:variable name="sid" select="/book-part/book-meta/book-id[@pub-id-type='pmcid']"/>
     <notes notes-type="sections">
       <xsl:apply-templates select="list" mode="write-chapters"/>
     </notes>
@@ -861,18 +861,61 @@
     </xsl:template>
   
   <xsl:template match="list-item" mode="write-chapters">
-    <sec id="{if (p/@id) then (concat(/book-part/book-meta/book-id[@pub-id-type='pmcid'],'__',p/@id)) else (concat(/book-part/book-meta/book-id[@pub-id-type='pmcid'],'__',p/related-object/@document-id))}" sec-type="document">
-      <xsl:apply-templates select="p/related-object/named-content[@content-type='label']" mode="write-chapters"/>
-      <title><xsl:value-of select="p/related-object/text()"/></title>
-      <xsl:if test="p/related-object[@document-type='part']">
-        <xsl:apply-templates select="list" mode="write-chapters"/>
-        </xsl:if>
-    </sec>
+  	<xsl:variable name="doc-id" select="p[1]/related-object/@document-id"/>
+  	<xsl:variable name="obj-id" select="p[1]/related-object/@object-id"/>
+  	<xsl:if test="$doc-id != '' and ($obj-id = '' or $obj-id = $doc-id)">
+  		<sec id="{$doc-id}" sec-type="document">
+  			<xsl:apply-templates select="p/related-object/named-content[@content-type='label']" mode="write-chapters"/>
+  			<title><xsl:value-of select="p/related-object/text()"/></title>  			
+  			<xsl:apply-templates select="list" mode="write-chapters"/>  			
+  		</sec>
+  	</xsl:if>
     </xsl:template>
-  
+
   <xsl:template match="named-content[@content-type='label']" mode="write-chapters">
-    <label><xsl:apply-templates/></label>
-    </xsl:template>
+  	<label><xsl:apply-templates/></label>
+  </xsl:template>
+	
+	<xsl:template match="toc" mode="write-chapters">
+		<xsl:if test="not(descendant::toc-entry/nav-pointer-group)">
+			<notes notes-type="sections">
+				<xsl:apply-templates select="toc-entry | toc-div" mode="write-chapters"/>
+			</notes>
+		</xsl:if>		
+	</xsl:template> 
+	
+	<xsl:template match="toc-div" mode="write-chapters">	
+		<xsl:choose>
+			<xsl:when test="not(title-group | toc-title-group)">
+				<xsl:apply-templates select="toc-entry | toc-div" mode="write-chapters"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<sec>
+					<xsl:apply-templates select="title-group/title | toc-title-group/title "/>
+					<xsl:apply-templates select="toc-entry | toc-div" mode="write-chapters"/>
+				</sec>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:variable name="doc-id" select="string(nav-pointer/related-object[1]/@document-id)"/>
+		<xsl:variable name="obj-id" select="string(nav-pointer/related-object[1]/@object-id)"/>
+		<xsl:if test="$doc-id != '' and $obj-id = '' ">
+			<sec id="{$doc-id}" sec-type="document">
+				<xsl:apply-templates select="label | title"/>
+				<xsl:apply-templates select="toc-entry" mode="write-chapters"/>
+			</sec>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="toc-entry" mode="write-chapters">		
+		<xsl:variable name="doc-id" select="string(nav-pointer/related-object[1]/@document-id)"/>
+		<xsl:variable name="obj-id" select="string(nav-pointer/related-object[1]/@object-id)"/>
+		<xsl:if test="$doc-id != '' and $obj-id = '' ">
+			<sec id="{$doc-id}" sec-type="document">
+				<xsl:apply-templates select="label | title"/>
+				<xsl:apply-templates select="toc-entry" mode="write-chapters"/>
+			</sec>
+		</xsl:if>
+	</xsl:template>
     
   <xsl:template match="ext-link[@qualifier]/@xlink:href">
     <xsl:attribute name="xlink:href" select="concat(../@qualifier, ':', .)"/>
