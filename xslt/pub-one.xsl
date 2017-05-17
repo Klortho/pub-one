@@ -365,7 +365,9 @@
       <xsl:if test="self::book-part-wrapper and book-part/body/sec">
         <xsl:apply-templates select="book-part/body" mode="write-sections"/>
         </xsl:if>
-      
+    	<xsl:if test="self::book-part-wrapper[not(@content-type = 'toc')] and book-part/*/toc/toc-entry/nav-pointer/related-object[@link-type='booklink']">
+    		<xsl:apply-templates select="book-part/*/toc" mode="write-sections"/>
+    	</xsl:if>
     </document-meta>
   </xsl:template>
 
@@ -840,16 +842,33 @@
     </abstract>
   </xsl:template>
   
-  <xsl:template match="body" mode="write-sections">
-    <notes notes-type="sections">
-      <xsl:for-each select="sec[@id and title]">
-        <sec id="{@id}" sec-type="object">
-          <xsl:apply-templates select="title"/>
-        </sec>
-        </xsl:for-each>
-    </notes>
-    </xsl:template> 
-  
+	<xsl:template match="body" mode="write-sections">
+		<notes notes-type="sections">
+			<xsl:choose>
+				<xsl:when test="sec[@sec-type = 'chapter.contents']">
+					<xsl:for-each select="sec[@sec-type = 'chapter.contents']/p/related-object">
+						<sec id="{@document-id}" sec-type="document">
+							<title>
+								<xsl:apply-templates/>
+							</title>
+						</sec>
+					</xsl:for-each>      		
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:for-each select="sec[@id and normalize-space(title) != '' ]">
+						<sec id="{@id}" sec-type="object">
+							<xsl:apply-templates select="title"/>
+						</sec>
+					</xsl:for-each>
+				</xsl:otherwise>
+			</xsl:choose>
+		</notes>
+	</xsl:template> 
+	
+	<xsl:template match="toc" mode="write-sections">
+		<xsl:apply-templates select="." mode="write-chapters"/>
+	</xsl:template>
+	
   <xsl:template match="body" mode="write-chapters">
     <notes notes-type="sections">
       <xsl:apply-templates select="list" mode="write-chapters"/>
