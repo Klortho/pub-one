@@ -246,7 +246,15 @@
       </xsl:if>
       
       <!-- write pub-dates -->
-      <xsl:apply-templates select="front/article-meta/pub-date | descendant::book-part-meta/pub-date"/>
+      <xsl:apply-templates select="front/article-meta/pub-date"/>
+      <xsl:if test="self::book-part | self::book-part-wrapper">
+      	<xsl:apply-templates select="descendant::book-part-meta/pub-date"/>      	
+      	<xsl:for-each select="descendant::book-part-meta[not(pub-date)]/*/date[@date-type = 'created']">
+      		<pub-date date-type="{if (/*/book-meta/pub-date[@publication-format= 'electronic' or starts-with(@pub-type, 'epub')]) then 'epub' else 'ppub'}">      			
+      			<xsl:apply-templates/>
+      		</pub-date>
+      	</xsl:for-each>
+      </xsl:if>
       <xsl:if test="self::PubmedArticle">
         <xsl:call-template name="build-pub-dates">
           <xsl:with-param name="PubModel">
