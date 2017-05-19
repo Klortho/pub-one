@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pub-one-record-set xmlns:p1="http://pubmed.gov/pub-one"
+  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <pub-one-record p1:bookid="book_132404" p1:id="book_132404" p1:pmid="pubmed_23420913"
+    record-type="chapter" xml:lang="eng">
+    <source-meta>
+      <object-id pub-id-type="iso-abbrev">Pediatrics</object-id>
+      <object-id pub-id-type="nlm-ta">Pediatrics</object-id>
+      <object-id pub-id-type="nlm-journal-id">0376422</object-id>
+      <object-id pub-id-type="pmcbook-name">dare</object-id>
+      <object-id pub-id-type="pmcbookid">NBK285222</object-id>
+      <title-group>
+        <title>Pediatrics</title>
+      </title-group>
+      <issn publication-format="electronic">1098-4275</issn>
+      <issn-l>0031-4005</issn-l>
+      <pub-date date-type="epubr" iso-8601-date="1995">
+        <year>1995</year>
+      </pub-date>
+      <publisher>
+        <publisher-name>Centre for Reviews and Dissemination (UK)</publisher-name>
+        <publisher-loc>York (UK)</publisher-loc>
+      </publisher>
+      <permissions>
+        <copyright-statement>Copyright © 2014 University of York</copyright-statement>
+      </permissions>
+    </source-meta>
+    <document-meta>
+      <object-id pub-id-type="pmid">23420913</object-id>
+      <object-id pub-id-type="pii">peds.2012-2121</object-id>
+      <object-id pub-id-type="doi">10.1542/peds.2012-2121</object-id>
+      <object-id pub-id-type="pmcbookid">NBK132404</object-id>
+      <object-id pub-id-type="pmcaiid">132404</object-id>
+      <subj-group subj-group-type="publication-type">
+        <subject>Journal Article</subject>
+        <subject>Meta-Analysis</subject>
+        <subject>Review</subject>
+      </subj-group>
+      <title-group>
+        <title>NIDCAP: a systematic review and meta-analyses of randomized controlled trials</title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Ohlsson</surname>
+            <given-names initials="A">Arne</given-names>
+          </name>
+          <aff>Department of Paediatrics, University of Toronto, Ontario, Canada.
+            aohlsson@mtsinai.on.ca</aff>
+        </contrib>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Jacobs</surname>
+            <given-names initials="SE">Susan E</given-names>
+          </name>
+        </contrib>
+      </contrib-group>
+      <volume>131</volume>
+      <issue>3</issue>
+      <fpage>e881</fpage>
+      <lpage>e893</lpage>
+      <pub-history>
+        <date date-type="entrez" iso-8601-date="20130220T060000">
+          <day>20</day>
+          <month>2</month>
+          <year>2013</year>
+        </date>
+        <date date-type="pubmed" iso-8601-date="20130220T060000">
+          <day>20</day>
+          <month>2</month>
+          <year>2013</year>
+        </date>
+        <date date-type="medline" iso-8601-date="20130504T060000">
+          <day>4</day>
+          <month>5</month>
+          <year>2013</year>
+        </date>
+      </pub-history>
+      <related-article ext-link-type="pubmed" id="d8586e4870" page="e550"
+        related-article-type="commentary" vol="132" xlink:href="23908320">Pediatrics. 2013
+        Aug;132(2):e550</related-article>
+      <abstract>
+        <sec>
+          <title>Background and objective</title>
+          <p>The "synactive" theory of neurobehavioral development forms the basis of the Newborn
+            Individualized Developmental Care and Assessment Program (NIDCAP). Our objective was to
+            assess the effectiveness of NIDCAP in improving outcomes in preterm infants.</p>
+        </sec>
+        <sec>
+          <title>Methods</title>
+          <p>Medline, CINAHL, Embase, PsychInfo, The Cochrane Library, Pediatric Academic Societies'
+            Abstracts and Web of Science were searched in July 2010 and February 2012. The studies
+            selected were randomized controlled trials testing the effectiveness of NIDCAP on
+            medical and neurodevelopmental outcomes. The authors abstracted baseline characteristics
+            of infants and outcomes. The risk of bias was assessed by using Cochrane criteria.
+            RevMan 5.1 was used to synthesize data by the use of relative risk and risk difference
+            for dichotomous outcomes and mean or standardized mean difference for continuous
+            outcomes.</p>
+        </sec>
+        <sec>
+          <title>Results</title>
+          <p>Eleven primary and 7 secondary studies enrolling 627 neonates were included, with 2 of
+            high quality. The composite primary outcomes of death or major sensorineural disability
+            at 18 months corrected age or later in childhood (3 trials, 302 children; relative risk
+            0.89 [95% confidence interval 0.61 to 1.29]) and survival free of disability at 18
+            months corrected age or later in childhood (2 trials, 192 infants; relative risk 0.97
+            [95% confidence interval 0.69 to 1.35]), were not significantly different between the
+            NIDCAP and control groups. With the sensitivity analysis that excluded the 2
+            statistically heterogeneous outlying studies, there were no significant differences
+            between groups for short-term medical outcomes.</p>
+        </sec>
+        <sec>
+          <title>Conclusions</title>
+          <p>This systematic review including 627 preterm infants did not find any evidence that
+            NIDCAP improves long-term neurodevelopmental or short-term medical outcomes.</p>
+        </sec>
+      </abstract>
+      <kwd-group kwd-group-type="MeshHeadingList">
+        <nested-kwd>
+          <kwd content-type="not-major">Child Development</kwd>
+          <nested-kwd>
+            <kwd content-type="major">physiology</kwd>
+          </nested-kwd>
+        </nested-kwd>
+        <kwd content-type="not-major">Humans</kwd>
+        <kwd content-type="not-major">Infant, Newborn</kwd>
+        <nested-kwd>
+          <kwd content-type="not-major">Infant, Premature</kwd>
+          <nested-kwd>
+            <kwd content-type="major">growth &amp; development</kwd>
+          </nested-kwd>
+        </nested-kwd>
+        <nested-kwd>
+          <kwd content-type="not-major">Neonatal Screening</kwd>
+          <nested-kwd>
+            <kwd content-type="major">methods</kwd>
+            <kwd content-type="not-major">standards</kwd>
+          </nested-kwd>
+        </nested-kwd>
+        <nested-kwd>
+          <kwd content-type="not-major">Program Evaluation</kwd>
+          <nested-kwd>
+            <kwd content-type="not-major">methods</kwd>
+            <kwd content-type="not-major">standards</kwd>
+          </nested-kwd>
+        </nested-kwd>
+        <nested-kwd>
+          <kwd content-type="not-major">Randomized Controlled Trials as Topic</kwd>
+          <nested-kwd>
+            <kwd content-type="not-major">methods</kwd>
+            <kwd content-type="not-major">standards</kwd>
+          </nested-kwd>
+        </nested-kwd>
+      </kwd-group>
+      <kwd-group kwd-group-type="document-languages">
+        <kwd>eng</kwd>
+      </kwd-group>
+      <notes notes-type="sections">
+        <sec id="dare__d12013017334__d12013017334_abs" sec-type="object">
+          <title>Abstract</title>
+        </sec>
+      </notes>
+    </document-meta>
+  </pub-one-record>
+</pub-one-record-set>

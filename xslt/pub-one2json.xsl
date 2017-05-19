@@ -71,9 +71,12 @@
           <xsl:when test="@record-type='book'">
             <xsl:text>book</xsl:text>
           </xsl:when>
-          <xsl:when test="@record-type='section'">
+          <xsl:when test="@record-type='section' or @record-type='chapter'">
             <xsl:text>chapter</xsl:text>
           </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>article-journal</xsl:text>
+          </xsl:otherwise>
         </xsl:choose>
       </s>
     </o>

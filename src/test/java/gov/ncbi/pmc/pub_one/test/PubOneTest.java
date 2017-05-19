@@ -40,4 +40,35 @@ public class PubOneTest {
         String result = transform(pub1Str, xsltUrl);
         log.debug("Output from pub-one2json.xsl is '" + result + "'");
     }
+
+    @Test
+    public void testPubOneChapter()
+        throws Exception
+    {
+        URL xsltUrl = resolver.getUrl("pub-one2json.xsl");
+        assertNotNull(xsltUrl);
+
+        String pub1File = "samples/23420913.pub-one.xml";
+        String pub1Str = readFile(pub1File);
+
+        String result = transform(pub1Str, xsltUrl);
+        log.debug("Output from pub-one2json.xsl is '" + result + "'");
+        assert(result.contains("\"type\": \"chapter\""));
+    }
+
+    @Test
+    public void testPub1NoRecordType()
+        throws Exception
+    {
+        URL xsltUrl = resolver.getUrl("pub-one2json.xsl");
+        assertNotNull(xsltUrl);
+
+        String pub1File = "samples/28141899.pub-one.xml";
+        String pub1Str = readFile(pub1File);
+
+        String result = transform(pub1Str, xsltUrl);
+        log.debug("Output from pub-one2json.xsl is '" + result + "'");
+        assert(result.contains("\"type\": \"article-journal\""));
+    }
+
 }
